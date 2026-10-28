@@ -4,6 +4,7 @@
 //! running when the window is closed and Parcels stays in the background.
 
 use std::cell::{Cell, OnceCell, RefCell};
+use std::future::Future;
 use std::sync::Arc;
 use std::time::{Duration, Instant};
 
@@ -95,7 +96,6 @@ impl Default for Session {
 
 impl Session {
     /// The client of the connected server, for making API calls.
-    #[allow(dead_code)] // Used from phase 2 on
     pub fn client(&self) -> Option<Arc<Client>> {
         self.imp().client.borrow().clone()
     }
@@ -243,6 +243,27 @@ impl Session {
                 return;
             }
         }
+    }
+
+    /// Runs an API call on the connected server, then refreshes the list
+    /// so the result shows up right away. Errors are user-readable.
+    pub async fn call<T, F, Fut>(&self, f: F) -> Result<T, String>
+    where
+        F: FnOnce(Arc<Client>) -> Fut + Send + 'static,
+        Fut: Future<Output = Result<T, Error>> + Send + 'static,
+        T: Send + 'static,
+    {
+        let Some(client) = self.client() else {
+            return Err(gettext("Not connected to a server"));
+        };
+        let result = runtime::run(async move { f(client).await }).await;
+        self.refresh_now();
+
+        result.map_err(|err| {
+            tracing::warn!("Request failed: {err}");
+            let auth_method = self.server().map(|s| s.auth_method()).unwrap_or_default();
+            error_message(&err, auth_method)
+        })
     }
 
     pub fn reconnect(&self) {

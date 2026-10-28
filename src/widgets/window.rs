@@ -14,6 +14,8 @@ use crate::session::{ConnectionState, Session};
 use crate::utils;
 use crate::widgets::{ServerDialog, Sidebar, TorrentRow};
 
+mod actions;
+
 mod imp {
     use super::*;
 
@@ -57,6 +59,12 @@ mod imp {
         #[template_child]
         pub banner: TemplateChild<adw::Banner>,
         #[template_child]
+        pub selection_bar: TemplateChild<gtk::ActionBar>,
+        #[template_child]
+        pub selection_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub selection_menu_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
         pub list_stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub torrent_view: TemplateChild<gtk::ListView>,
@@ -69,6 +77,10 @@ mod imp {
         pub filter: OnceCell<gtk::CustomFilter>,
         pub sorter: OnceCell<gtk::CustomSorter>,
         pub filter_model: OnceCell<gtk::FilterListModel>,
+        pub selection: OnceCell<gtk::MultiSelection>,
+        /// Actions on the selected torrents, for the selection bar and context menu
+        pub torrent_menu: OnceCell<gio::Menu>,
+        pub category_items: gio::Menu,
         pub search: RefCell<String>,
     }
 
@@ -93,6 +105,9 @@ mod imp {
                 search_bar: Default::default(),
                 search_entry: Default::default(),
                 banner: Default::default(),
+                selection_bar: Default::default(),
+                selection_label: Default::default(),
+                selection_menu_button: Default::default(),
                 list_stack: Default::default(),
                 torrent_view: Default::default(),
                 empty_page: Default::default(),
@@ -102,6 +117,9 @@ mod imp {
                 filter: Default::default(),
                 sorter: Default::default(),
                 filter_model: Default::default(),
+                selection: Default::default(),
+                torrent_menu: Default::default(),
+                category_items: gio::Menu::new(),
                 search: Default::default(),
             }
         }
@@ -198,8 +216,14 @@ impl Window {
         imp.manager.set(manager.clone()).expect("set once");
         imp.session.set(session.clone()).expect("set once");
 
+        let torrent_menu = gio::Menu::new();
+        imp.selection_menu_button
+            .set_menu_model(Some(&torrent_menu));
+        imp.torrent_menu.set(torrent_menu).expect("set once");
+
         self.setup_actions();
         self.setup_torrent_list();
+        self.setup_torrent_actions();
 
         // The closures below hold weak references to the window: the manager
         // and session outlive it, and must not keep a closed window alive.
@@ -349,15 +373,57 @@ impl Window {
         let filter_model =
             gtk::FilterListModel::new(Some(torrents.model().clone()), Some(filter.clone()));
         let sort_model = gtk::SortListModel::new(Some(filter_model.clone()), Some(sorter.clone()));
-        imp.torrent_view
-            .set_model(Some(&gtk::NoSelection::new(Some(sort_model))));
+        let selection = gtk::MultiSelection::new(Some(sort_model));
+        selection.connect_selection_changed(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_, _, _| win.update_selection_actions()
+        ));
+        selection.connect_items_changed(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_, _, _, _| win.update_selection_actions()
+        ));
+        imp.torrent_view.set_model(Some(&selection));
+        // Scoped to the list: a window-wide Delete would also fire while typing
+        // in the search entry. The list view has Ctrl+A and Ctrl+Shift+A built in.
+        let shortcuts = gtk::ShortcutController::new();
+        shortcuts.add_shortcut(gtk::Shortcut::new(
+            gtk::ShortcutTrigger::parse_string("Delete|KP_Delete"),
+            Some(gtk::NamedAction::new("win.delete")),
+        ));
+        shortcuts.add_shortcut(gtk::Shortcut::new(
+            gtk::ShortcutTrigger::parse_string("<Shift>F10|Menu"),
+            Some(gtk::CallbackAction::new(|view, _| {
+                // The focused child is the list's item widget; the row is inside it
+                let row = view
+                    .focus_child()
+                    .and_then(|item| item.first_child())
+                    .and_downcast::<TorrentRow>();
+                match row {
+                    Some(row) => {
+                        row.open_menu_from_keyboard();
+                        glib::Propagation::Stop
+                    }
+                    None => glib::Propagation::Proceed,
+                }
+            })),
+        ));
+        imp.torrent_view.add_controller(shortcuts);
+        imp.selection.set(selection).expect("set once");
 
         let factory = gtk::SignalListItemFactory::new();
-        factory.connect_setup(|_, item| {
-            let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
-            item.set_child(Some(&TorrentRow::default()));
-            item.set_activatable(false);
-        });
+        factory.connect_setup(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_, item| {
+                let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
+                let row = TorrentRow::default();
+                win.setup_context_menu(&row, item);
+                item.set_child(Some(&row));
+                item.set_activatable(false);
+            }
+        ));
         factory.connect_bind(|_, item| {
             let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
             let row = item
@@ -392,6 +458,57 @@ impl Window {
         imp.filter.set(filter).expect("set once");
         imp.sorter.set(sorter).expect("set once");
         imp.filter_model.set(filter_model).expect("set once");
+    }
+
+    /// Right click or long press on a row opens the torrent menu. Like in file
+    /// managers, it acts on the selection, which is the clicked row unless
+    /// the row is already part of a larger selection.
+    fn setup_context_menu(&self, row: &TorrentRow, item: &gtk::ListItem) {
+        let open = clone!(
+            #[weak(rename_to = win)]
+            self,
+            #[weak]
+            row,
+            #[weak]
+            item,
+            move |x: f64, y: f64| {
+                let (Some(selection), Some(menu)) =
+                    (win.imp().selection.get(), win.imp().torrent_menu.get())
+                else {
+                    return;
+                };
+                let position = item.position();
+                if position == gtk::INVALID_LIST_POSITION {
+                    return;
+                }
+                if !selection.is_selected(position) {
+                    selection.select_item(position, true);
+                }
+                row.popup_menu(menu.upcast_ref(), x, y);
+            }
+        );
+
+        row.set_menu_opener(open.clone());
+
+        let click = gtk::GestureClick::builder()
+            .button(gtk::gdk::BUTTON_SECONDARY)
+            .build();
+        click.connect_pressed(clone!(
+            #[strong]
+            open,
+            move |gesture, _, x, y| {
+                gesture.set_state(gtk::EventSequenceState::Claimed);
+                open(x, y);
+            }
+        ));
+        row.add_controller(click);
+
+        let long_press = gtk::GestureLongPress::builder().touch_only(true).build();
+        long_press.connect_pressed(move |gesture, x, y| {
+            gesture.set_state(gtk::EventSequenceState::Claimed);
+            open(x, y);
+        });
+        row.add_controller(long_press);
     }
 
     fn compare(&self, a: &Torrent, b: &Torrent) -> Ordering {

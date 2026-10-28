@@ -311,3 +311,75 @@ async fn fetches_maindata_with_rid() {
     assert_eq!(data.rid, 8);
     assert_eq!(data.torrents["abc"].dlspeed, Some(1024));
 }
+
+#[tokio::test]
+async fn actions_post_the_expected_forms() {
+    let server = MockServer::start().await;
+    let expectations = [
+        ("/api/v2/torrents/start", "hashes=a%7Cb"),
+        ("/api/v2/torrents/stop", "hashes=a%7Cb"),
+        ("/api/v2/torrents/delete", "hashes=a%7Cb&deleteFiles=true"),
+        (
+            "/api/v2/torrents/setCategory",
+            "hashes=a%7Cb&category=linux+isos",
+        ),
+        (
+            "/api/v2/torrents/createCategory",
+            "category=linux&savePath=%2Fdata",
+        ),
+        (
+            "/api/v2/torrents/addTags",
+            "hashes=a%7Cb&tags=iso%2Cweekend",
+        ),
+        ("/api/v2/torrents/removeTags", "hashes=a%7Cb&tags=iso"),
+        (
+            "/api/v2/torrents/setLocation",
+            "hashes=a%7Cb&location=%2Fdata%2Fmovies",
+        ),
+        ("/api/v2/torrents/rename", "hash=a&name=New+name"),
+        ("/api/v2/transfer/toggleSpeedLimitsMode", ""),
+    ];
+    for (endpoint, body) in expectations {
+        Mock::given(method("POST"))
+            .and(path(endpoint))
+            .and(body_string(body))
+            .respond_with(ResponseTemplate::new(200))
+            .expect(1)
+            .mount(&server)
+            .await;
+    }
+
+    let client = client(&server, "", Credentials::None);
+    let hashes = ["a".to_owned(), "b".to_owned()];
+    client.start(&hashes).await.unwrap();
+    client.stop(&hashes).await.unwrap();
+    client.delete(&hashes, true).await.unwrap();
+    client.set_category(&hashes, "linux isos").await.unwrap();
+    client.create_category("linux", "/data").await.unwrap();
+    client
+        .add_tags(&hashes, &["iso".into(), "weekend".into()])
+        .await
+        .unwrap();
+    client.remove_tags(&hashes, &["iso".into()]).await.unwrap();
+    client.set_location(&hashes, "/data/movies").await.unwrap();
+    client.rename("a", "New name").await.unwrap();
+    client.toggle_alternative_speed_limits().await.unwrap();
+}
+
+#[tokio::test]
+async fn action_errors_are_reported() {
+    let server = MockServer::start().await;
+    Mock::given(path("/api/v2/torrents/setLocation"))
+        .respond_with(ResponseTemplate::new(409).set_body_string("Cannot create directory"))
+        .mount(&server)
+        .await;
+
+    let err = client(&server, "", Credentials::None)
+        .set_location(&["a".into()], "/nope")
+        .await
+        .unwrap_err();
+    assert!(
+        matches!(&err, Error::Http { status, body } if status.as_u16() == 409 && body == "Cannot create directory"),
+        "{err:?}"
+    );
+}

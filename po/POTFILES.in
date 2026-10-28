@@ -13,5 +13,7 @@ src/session.rs
 src/utils.rs
 src/widgets/server_dialog.rs
 src/widgets/sidebar.rs
+src/widgets/tags_dialog.rs
 src/widgets/torrent_row.rs
 src/widgets/window.rs
+src/widgets/window/actions.rs

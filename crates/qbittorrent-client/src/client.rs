@@ -216,6 +216,103 @@ impl Client {
             .await
     }
 
+    /// Starts (resumes) torrents. Was `torrents/resume` before qBittorrent 5.0.
+    pub async fn start(&self, hashes: &[String]) -> Result<()> {
+        self.post_form("torrents/start", &[("hashes", join_hashes(hashes))])
+            .await
+    }
+
+    /// Stops (pauses) torrents. Was `torrents/pause` before qBittorrent 5.0.
+    pub async fn stop(&self, hashes: &[String]) -> Result<()> {
+        self.post_form("torrents/stop", &[("hashes", join_hashes(hashes))])
+            .await
+    }
+
+    /// Removes torrents, and their downloaded data if `delete_files` is true.
+    pub async fn delete(&self, hashes: &[String], delete_files: bool) -> Result<()> {
+        self.post_form(
+            "torrents/delete",
+            &[
+                ("hashes", join_hashes(hashes)),
+                ("deleteFiles", delete_files.to_string()),
+            ],
+        )
+        .await
+    }
+
+    /// Sets the category of torrents; an empty `category` removes it.
+    pub async fn set_category(&self, hashes: &[String], category: &str) -> Result<()> {
+        self.post_form(
+            "torrents/setCategory",
+            &[
+                ("hashes", join_hashes(hashes)),
+                ("category", category.to_owned()),
+            ],
+        )
+        .await
+    }
+
+    /// Creates a category. An empty `save_path` uses the default path.
+    pub async fn create_category(&self, name: &str, save_path: &str) -> Result<()> {
+        self.post_form(
+            "torrents/createCategory",
+            &[
+                ("category", name.to_owned()),
+                ("savePath", save_path.to_owned()),
+            ],
+        )
+        .await
+    }
+
+    /// Adds tags to torrents, creating tags that don't exist yet.
+    pub async fn add_tags(&self, hashes: &[String], tags: &[String]) -> Result<()> {
+        self.post_form(
+            "torrents/addTags",
+            &[("hashes", join_hashes(hashes)), ("tags", tags.join(","))],
+        )
+        .await
+    }
+
+    pub async fn remove_tags(&self, hashes: &[String], tags: &[String]) -> Result<()> {
+        self.post_form(
+            "torrents/removeTags",
+            &[("hashes", join_hashes(hashes)), ("tags", tags.join(","))],
+        )
+        .await
+    }
+
+    /// Moves the data of torrents to `location`, a path on the server.
+    pub async fn set_location(&self, hashes: &[String], location: &str) -> Result<()> {
+        self.post_form(
+            "torrents/setLocation",
+            &[
+                ("hashes", join_hashes(hashes)),
+                ("location", location.to_owned()),
+            ],
+        )
+        .await
+    }
+
+    /// Renames a torrent (not its files).
+    pub async fn rename(&self, hash: &str, name: &str) -> Result<()> {
+        self.post_form(
+            "torrents/rename",
+            &[("hash", hash.to_owned()), ("name", name.to_owned())],
+        )
+        .await
+    }
+
+    /// Switches between the normal and the alternative speed limits.
+    pub async fn toggle_alternative_speed_limits(&self) -> Result<()> {
+        self.post_form("transfer/toggleSpeedLimitsMode", &[]).await
+    }
+
+    async fn post_form(&self, endpoint: &str, form: &[(&str, String)]) -> Result<()> {
+        self.execute(Method::POST, endpoint, |r| r.form(form))
+            .await
+            .map(drop)
+    }
+
     async fn get_json<T: serde::de::DeserializeOwned>(
         &self,
         endpoint: &str,
@@ -295,6 +392,11 @@ impl Client {
 
         check_status(response).await
     }
+}
+
+/// Hashes are sent as a single parameter, separated by `|`.
+fn join_hashes(hashes: &[String]) -> String {
+    hashes.join("|")
 }
 
 async fn check_status(response: Response) -> Result<Response> {

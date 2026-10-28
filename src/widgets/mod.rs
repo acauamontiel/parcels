@@ -1,5 +1,6 @@
 mod server_dialog;
 mod sidebar;
+mod tags_dialog;
 mod torrent_row;
 mod window;
 

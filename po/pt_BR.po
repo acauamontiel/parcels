@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 03:59+0000\n"
+"POT-Creation-Date: 2026-10-28 11:33+0000\n"
 "PO-Revision-Date: 2026-10-28 01:41+0000\n"
 "Last-Translator: Acauã Montiel\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -101,6 +101,9 @@ msgid "Parcels is not affiliated with the qBittorrent project."
 msgstr "O Parcels não tem vínculo com o projeto qBittorrent."
 
 #: data/resources/ui/server-dialog.blp:17 src/widgets/server_dialog.rs:370
+#: src/widgets/tags_dialog.rs:72 src/widgets/window/actions.rs:301
+#: src/widgets/window/actions.rs:420 src/widgets/window/actions.rs:565
+#: src/widgets/window/actions.rs:623
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -154,23 +157,43 @@ msgstr "_Testar conexão"
 msgid "_Remove Server"
 msgstr "_Remover servidor"
 
-#: data/resources/ui/shortcuts-dialog.blp:6
-msgid "General"
-msgstr "Geral"
+#: data/resources/ui/shortcuts-dialog.blp:6 data/resources/ui/window.blp:291
+msgid "Torrents"
+msgstr "Torrents"
 
-#: data/resources/ui/shortcuts-dialog.blp:9
-msgid "Keyboard Shortcuts"
-msgstr "Atalhos de teclado"
-
-#: data/resources/ui/shortcuts-dialog.blp:14 data/resources/ui/window.blp:207
+#: data/resources/ui/shortcuts-dialog.blp:9 data/resources/ui/window.blp:214
 msgid "Search"
 msgstr "Buscar"
 
+#: data/resources/ui/shortcuts-dialog.blp:14
+msgid "Select All"
+msgstr "Selecionar tudo"
+
 #: data/resources/ui/shortcuts-dialog.blp:19
+msgid "Unselect All"
+msgstr "Desfazer seleção"
+
+#: data/resources/ui/shortcuts-dialog.blp:24 data/resources/ui/window.blp:275
+msgid "Delete"
+msgstr "Apagar"
+
+#: data/resources/ui/shortcuts-dialog.blp:29
+msgid "Open Context Menu"
+msgstr "Abrir menu de contexto"
+
+#: data/resources/ui/shortcuts-dialog.blp:35
+msgid "General"
+msgstr "Geral"
+
+#: data/resources/ui/shortcuts-dialog.blp:38
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: data/resources/ui/shortcuts-dialog.blp:43
 msgid "Close Window"
 msgstr "Fechar janela"
 
-#: data/resources/ui/shortcuts-dialog.blp:24
+#: data/resources/ui/shortcuts-dialog.blp:48
 msgid "Quit"
 msgstr "Sair"
 
@@ -218,87 +241,108 @@ msgstr "_Editar servidor"
 msgid "All"
 msgstr "Todos"
 
-#: data/resources/ui/window.blp:200
+#: data/resources/ui/window.blp:198
+msgid "Alternative Speed Limits"
+msgstr "Limites alternativos de velocidade"
+
+#: data/resources/ui/window.blp:207
 msgid "Sort"
 msgstr "Ordenar"
 
-#: data/resources/ui/window.blp:218
+#: data/resources/ui/window.blp:225
 msgid "Search torrents"
 msgstr "Buscar torrents"
 
-#: data/resources/ui/window.blp:227
+#: data/resources/ui/window.blp:234
 msgid "Connection lost. Retrying…"
 msgstr "Conexão perdida. Tentando de novo…"
 
-#: data/resources/ui/window.blp:228
+#: data/resources/ui/window.blp:235
 msgid "_Retry"
 msgstr "_Tentar de novo"
 
-#: data/resources/ui/window.blp:243
-msgid "Torrents"
-msgstr "Torrents"
+#: data/resources/ui/window.blp:246
+msgid "Start"
+msgstr "Iniciar"
 
 #: data/resources/ui/window.blp:253
+msgid "Stop"
+msgstr "Parar"
+
+#: data/resources/ui/window.blp:269
+msgid "More Actions"
+msgstr "Mais ações"
+
+#: data/resources/ui/window.blp:301
 msgid "No Torrents"
 msgstr "Nenhum torrent"
 
-#: data/resources/ui/window.blp:254
+#: data/resources/ui/window.blp:302
 msgid "Torrents on this server will appear here"
 msgstr "Os torrents deste servidor aparecerão aqui"
 
-#: data/resources/ui/window.blp:263
+#: data/resources/ui/window.blp:311
 msgid "No Results Found"
 msgstr "Nenhum resultado encontrado"
 
-#: data/resources/ui/window.blp:264
+#: data/resources/ui/window.blp:312
 msgid "Try a different search or filter"
 msgstr "Tente outra busca ou outro filtro"
 
-#: data/resources/ui/window.blp:279
+#: data/resources/ui/window.blp:327
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de teclado"
 
-#: data/resources/ui/window.blp:284
+#: data/resources/ui/window.blp:332
 msgid "_About Parcels"
 msgstr "_Sobre o Parcels"
 
-#: data/resources/ui/window.blp:292
+#: data/resources/ui/window.blp:341
+msgid "_Select All"
+msgstr "_Selecionar tudo"
+
+#: data/resources/ui/window.blp:346
+msgid "_Unselect All"
+msgstr "_Desfazer seleção"
+
+#: data/resources/ui/window.blp:352
 msgid "Sort By"
 msgstr "Ordenar por"
 
-#: data/resources/ui/window.blp:295
+#: data/resources/ui/window.blp:355
 msgid "Date Added"
 msgstr "Data de adição"
 
-#: data/resources/ui/window.blp:301
+#: data/resources/ui/window.blp:361 src/widgets/window/actions.rs:404
+#: src/widgets/window/actions.rs:607
 msgid "Name"
 msgstr "Nome"
 
-#: data/resources/ui/window.blp:307
+#: data/resources/ui/window.blp:367
 msgid "Progress"
 msgstr "Progresso"
 
-#: data/resources/ui/window.blp:313
+#: data/resources/ui/window.blp:373
 msgid "Size"
 msgstr "Tamanho"
 
-#: data/resources/ui/window.blp:319
+#: data/resources/ui/window.blp:379
 msgid "Download Speed"
 msgstr "Velocidade de download"
 
-#: data/resources/ui/window.blp:325
+#: data/resources/ui/window.blp:385
 msgid "Upload Speed"
 msgstr "Velocidade de upload"
 
-#: data/resources/ui/window.blp:331
+#: data/resources/ui/window.blp:391
 msgid "Time Remaining"
 msgstr "Tempo restante"
 
-#: data/resources/ui/window.blp:337
+#: data/resources/ui/window.blp:397
 msgid "Ratio"
 msgstr "Proporção"
 
-#: data/resources/ui/window.blp:345
+#: data/resources/ui/window.blp:405
 msgid "_Descending"
 msgstr "_Decrescente"
 
@@ -345,22 +389,26 @@ msgstr "Sem tags"
 msgid "Parcels server “{}”"
 msgstr "Servidor “{}” do Parcels"
 
-#: src/session.rs:278 src/widgets/server_dialog.rs:145
+#: src/session.rs:257
+msgid "Not connected to a server"
+msgstr "Sem conexão com um servidor"
+
+#: src/session.rs:299 src/widgets/server_dialog.rs:145
 msgid "Could not read the password from the keyring"
 msgstr "Não foi possível ler a senha do chaveiro"
 
-#: src/session.rs:304
+#: src/session.rs:325
 msgid "The server address is not valid"
 msgstr "O endereço do servidor não é válido"
 
-#: src/session.rs:306
+#: src/session.rs:327
 msgid ""
 "Could not reach the server. Check the address and your network connection."
 msgstr ""
 "Não foi possível alcançar o servidor. Verifique o endereço e a sua conexão "
 "de rede."
 
-#: src/session.rs:309
+#: src/session.rs:330
 msgid ""
 "The server certificate is not trusted. If this server uses a self-signed "
 "certificate, turn on “Accept Invalid Certificates” in the server settings."
@@ -369,11 +417,11 @@ msgstr ""
 "certificado autoassinado, ative “Aceitar certificados inválidos” nas "
 "configurações do servidor."
 
-#: src/session.rs:311
+#: src/session.rs:332
 msgid "Invalid username or password"
 msgstr "Usuário ou senha inválidos"
 
-#: src/session.rs:313
+#: src/session.rs:334
 msgid ""
 "This device is temporarily banned by qBittorrent after too many failed login "
 "attempts. Try again later."
@@ -381,22 +429,22 @@ msgstr ""
 "Este dispositivo foi bloqueado temporariamente pelo qBittorrent depois de "
 "muitas tentativas de login sem sucesso. Tente de novo mais tarde."
 
-#: src/session.rs:317
+#: src/session.rs:338
 msgid "The API key was rejected. API keys require qBittorrent 5.2 or later."
 msgstr ""
 "A chave de API foi recusada. Chaves de API exigem o qBittorrent 5.2 ou mais "
 "recente."
 
-#: src/session.rs:319
+#: src/session.rs:340
 msgid "The server requires a username and password"
 msgstr "O servidor exige usuário e senha"
 
-#: src/session.rs:321
+#: src/session.rs:342
 msgid "No qBittorrent WebUI was found at this address"
 msgstr "Nenhuma WebUI do qBittorrent foi encontrada neste endereço"
 
 #. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
-#: src/session.rs:324
+#: src/session.rs:345
 #, rust-format
 msgid ""
 "qBittorrent {found} is not supported. Parcels requires version {minimum} or "
@@ -406,12 +454,12 @@ msgstr ""
 "ou mais recente."
 
 #. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
-#: src/session.rs:330
+#: src/session.rs:351
 #, rust-format
 msgid "The server returned an unexpected error ({})"
 msgstr "O servidor retornou um erro inesperado ({})"
 
-#: src/session.rs:333
+#: src/session.rs:354
 msgid "The server sent a response Parcels could not understand"
 msgstr "O servidor enviou uma resposta que o Parcels não conseguiu entender"
 
@@ -548,40 +596,230 @@ msgstr "Categorias"
 msgid "Tags"
 msgstr "Tags"
 
+#: src/widgets/tags_dialog.rs:67
+msgid "Edit Tags"
+msgstr "Editar tags"
+
+#: src/widgets/tags_dialog.rs:81
+msgid "_Apply"
+msgstr "_Aplicar"
+
+#: src/widgets/tags_dialog.rs:100
+msgid "New Tag"
+msgstr "Nova tag"
+
+#: src/widgets/tags_dialog.rs:120
+msgid "Tags marked with a dash are on some of the selected torrents"
+msgstr "As tags marcadas com um traço estão em parte dos torrents selecionados"
+
 #. Translators: Accessible label of the progress bar; {} is the torrent name
-#: src/widgets/torrent_row.rs:125
+#: src/widgets/torrent_row.rs:174
 #, rust-format
 msgid "Progress of {}"
 msgstr "Progresso de {}"
 
 #. Translators: {done} and {total} are sizes, {percent} a number, e.g. "1.2 GB of 4.5 GB (27%)"
-#: src/widgets/torrent_row.rs:151
+#: src/widgets/torrent_row.rs:200
 #, rust-format
 msgid "{done} of {total} ({percent}%)"
 msgstr "{done} de {total} ({percent}%)"
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:478
+#: src/widgets/window.rs:595
 #, rust-format
 msgid "Download speed: {}"
 msgstr "Velocidade de download: {}"
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:483
+#: src/widgets/window.rs:600
 #, rust-format
 msgid "Upload speed: {}"
 msgstr "Velocidade de upload: {}"
 
 #. Translators: {} is a size, e.g. "120 GB"
-#: src/widgets/window.rs:487
+#: src/widgets/window.rs:604
 #, rust-format
 msgid "Free space on the server: {}"
 msgstr "Espaço livre no servidor: {}"
 
-#: src/widgets/window.rs:523
+#: src/widgets/window.rs:640
 msgid "_Add Server…"
 msgstr "_Adicionar servidor…"
 
-#: src/widgets/window.rs:524
+#: src/widgets/window.rs:641
 msgid "_Edit Server…"
 msgstr "_Editar servidor…"
+
+#: src/widgets/window/actions.rs:123
+msgid "_Start"
+msgstr "_Iniciar"
+
+#: src/widgets/window/actions.rs:124
+msgid "S_top"
+msgstr "_Parar"
+
+#: src/widgets/window/actions.rs:127
+msgid "_No Category"
+msgstr "_Sem categoria"
+
+#: src/widgets/window/actions.rs:132
+msgid "New _Category…"
+msgstr "Nova _categoria…"
+
+#: src/widgets/window/actions.rs:136
+msgid "_Category"
+msgstr "_Categoria"
+
+#: src/widgets/window/actions.rs:137
+msgid "_Tags…"
+msgstr "_Tags…"
+
+#: src/widgets/window/actions.rs:138
+msgid "_Move…"
+msgstr "_Mover…"
+
+#: src/widgets/window/actions.rs:139
+msgid "_Rename…"
+msgstr "_Renomear…"
+
+#: src/widgets/window/actions.rs:142
+msgid "_Delete…"
+msgstr "_Apagar…"
+
+#: src/widgets/window/actions.rs:177
+#, rust-format
+msgid "{} Selected"
+msgid_plural "{} Selected"
+msgstr[0] "{} selecionado"
+msgstr[1] "{} selecionados"
+
+#: src/widgets/window/actions.rs:219
+msgid "_Undo"
+msgstr "_Desfazer"
+
+#: src/widgets/window/actions.rs:248
+#, rust-format
+msgid "“{}” started"
+msgid_plural "{} torrents started"
+msgstr[0] "“{}” iniciado"
+msgstr[1] "{} torrents iniciados"
+
+#: src/widgets/window/actions.rs:254
+#, rust-format
+msgid "“{}” stopped"
+msgid_plural "{} torrents stopped"
+msgstr[0] "“{}” parado"
+msgstr[1] "{} torrents parados"
+
+#. Translators: {} is a torrent name or, in the plural, a number
+#: src/widgets/window/actions.rs:286
+#, rust-format
+msgid "Delete “{}”?"
+msgid_plural "Delete {} Torrents?"
+msgstr[0] "Apagar “{}”?"
+msgstr[1] "Apagar {} torrents?"
+
+#: src/widgets/window/actions.rs:289
+msgid "Also delete the _downloaded files from the server"
+msgstr "Apagar também os arquivos _baixados do servidor"
+
+#: src/widgets/window/actions.rs:294
+msgid ""
+"qBittorrent will stop sharing and forget the torrents. This cannot be undone."
+msgstr ""
+"O qBittorrent vai parar de compartilhar e esquecer os torrents. Isso não "
+"pode ser desfeito."
+
+#: src/widgets/window/actions.rs:302 src/widgets/window/actions.rs:313
+msgid "_Delete"
+msgstr "_Apagar"
+
+#: src/widgets/window/actions.rs:311
+msgid "Delete _Files"
+msgstr "Apagar _arquivos"
+
+#: src/widgets/window/actions.rs:339
+#, rust-format
+msgid "“{}” and its files deleted"
+msgid_plural "{} torrents and their files deleted"
+msgstr[0] "“{}” e os arquivos dele foram apagados"
+msgstr[1] "{} torrents e os arquivos deles foram apagados"
+
+#: src/widgets/window/actions.rs:348
+#, rust-format
+msgid "“{}” deleted"
+msgid_plural "{} torrents deleted"
+msgstr[0] "“{}” apagado"
+msgstr[1] "{} torrents apagados"
+
+#: src/widgets/window/actions.rs:378
+msgid "Category removed"
+msgstr "Categoria removida"
+
+#. Translators: {} is a category name
+#: src/widgets/window/actions.rs:381 src/widgets/window/actions.rs:446
+#, rust-format
+msgid "Category changed to “{}”"
+msgstr "Categoria alterada para “{}”"
+
+#: src/widgets/window/actions.rs:408
+msgid "Save Path on the Server (Optional)"
+msgstr "Pasta no servidor (opcional)"
+
+#: src/widgets/window/actions.rs:414
+msgid "New Category"
+msgstr "Nova categoria"
+
+#: src/widgets/window/actions.rs:421
+msgid "C_reate"
+msgstr "C_riar"
+
+#: src/widgets/window/actions.rs:511
+msgid "Tags changed"
+msgstr "Tags alteradas"
+
+#: src/widgets/window/actions.rs:546
+msgid "Folder on the Server"
+msgstr "Pasta no servidor"
+
+#. Translators: {} is a torrent name or, in the plural, a number
+#: src/widgets/window/actions.rs:556
+#, rust-format
+msgid "Move “{}”"
+msgid_plural "Move {} Torrents"
+msgstr[0] "Mover “{}”"
+msgstr[1] "Mover {} torrents"
+
+#: src/widgets/window/actions.rs:559
+msgid "qBittorrent will move the downloaded data to this folder on the server."
+msgstr "O qBittorrent vai mover os dados baixados para esta pasta no servidor."
+
+#: src/widgets/window/actions.rs:565
+msgid "_Move"
+msgstr "_Mover"
+
+#. Translators: {} is a torrent name or, in the plural, a number
+#: src/widgets/window/actions.rs:588
+#, rust-format
+msgid "Moving “{}”"
+msgid_plural "Moving {} torrents"
+msgstr[0] "Movendo “{}”"
+msgstr[1] "Movendo {} torrents"
+
+#: src/widgets/window/actions.rs:614
+msgid "Rename Torrent"
+msgstr "Renomear torrent"
+
+#: src/widgets/window/actions.rs:616
+msgid "Only the name shown in qBittorrent changes, not the files."
+msgstr "Só o nome exibido no qBittorrent muda, não os arquivos."
+
+#: src/widgets/window/actions.rs:624
+msgid "_Rename"
+msgstr "_Renomear"
+
+#. Translators: {} is the new torrent name
+#: src/widgets/window/actions.rs:660
+#, rust-format
+msgid "Renamed to “{}”"
+msgstr "Renomeado para “{}”"

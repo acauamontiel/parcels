@@ -22,7 +22,7 @@ potfiles = [
 ]
 errors = []
 
-patterns = {".rs": re.compile(r'gettext\(\s*"'), ".blp": re.compile(r'_\("')}
+patterns = {".rs": re.compile(r'gettext\(\s*"'), ".blp": re.compile(r'_\("')}  # also matches ngettext
 for path in sorted((root / "src").rglob("*.rs")) + sorted((root / "data").rglob("*.blp")):
     relative = path.relative_to(root).as_posix()
     if patterns[path.suffix].search(path.read_text()) and relative not in potfiles:
@@ -31,7 +31,7 @@ for path in sorted((root / "src").rglob("*.rs")) + sorted((root / "data").rglob(
 with tempfile.TemporaryDirectory() as tmp:
     pot = pathlib.Path(tmp) / "check.pot"
     subprocess.run(
-        ["xgettext", "--from-code=UTF-8", "--keyword=_", "--keyword=gettext",
+        ["xgettext", "--from-code=UTF-8", "--keyword=_", "--keyword=gettext", "--keyword=ngettext:1,2",
          f"--directory={root}", f"--files-from={root / 'po' / 'POTFILES.in'}",
          f"--output={pot}"],
         check=True, stderr=subprocess.DEVNULL,
@@ -46,6 +46,7 @@ for name in potfiles:
     if not name.endswith(".rs"):
         continue
     source = (root / name).read_text()
+    # For ngettext, this checks the singular, which is the msgid
     for match in re.finditer(r'gettext\(\s*"((?:[^"\\]|\\.)*)"', source):
         if match.group(1) not in msgids:
             line = source.count("\n", 0, match.start()) + 1

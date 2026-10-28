@@ -192,6 +192,13 @@ template $ParcelsWindow: Adw.ApplicationWindow {
             child: Adw.ToolbarView {
               [top]
               Adw.HeaderBar {
+                [start]
+                ToggleButton {
+                  icon-name: "power-profile-power-saver-symbolic";
+                  tooltip-text: _("Alternative Speed Limits");
+                  action-name: "win.alt-speed-limits";
+                }
+
                 title-widget: Adw.WindowTitle content_title {};
 
                 [end]
@@ -227,6 +234,47 @@ template $ParcelsWindow: Adw.ApplicationWindow {
                 title: _("Connection lost. Retrying…");
                 button-label: _("_Retry");
                 button-clicked => $on_banner_retry() swapped;
+              }
+
+              [bottom]
+              ActionBar selection_bar {
+                revealed: false;
+
+                [start]
+                Button {
+                  icon-name: "media-playback-start-symbolic";
+                  tooltip-text: _("Start");
+                  action-name: "win.start";
+                }
+
+                [start]
+                Button {
+                  icon-name: "media-playback-pause-symbolic";
+                  tooltip-text: _("Stop");
+                  action-name: "win.stop";
+                }
+
+                [center]
+                Label selection_label {
+                  ellipsize: end;
+
+                  styles [
+                    "heading",
+                  ]
+                }
+
+                [end]
+                MenuButton selection_menu_button {
+                  icon-name: "view-more-symbolic";
+                  tooltip-text: _("More Actions");
+                }
+
+                [end]
+                Button {
+                  icon-name: "user-trash-symbolic";
+                  tooltip-text: _("Delete");
+                  action-name: "win.delete";
+                }
               }
 
               content: Stack list_stack {
@@ -288,6 +336,18 @@ menu primary_menu {
 }
 
 menu sort_menu {
+  section {
+    item {
+      label: _("_Select All");
+      action: "win.select-all";
+    }
+
+    item {
+      label: _("_Unselect All");
+      action: "win.unselect-all";
+    }
+  }
+
   section {
     label: _("Sort By");
 

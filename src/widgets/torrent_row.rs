@@ -1,9 +1,10 @@
 use std::cell::RefCell;
+use std::rc::Rc;
 
 use adw::subclass::prelude::*;
 use gettextrs::gettext;
-use gtk::glib;
 use gtk::prelude::*;
+use gtk::{gio, glib};
 
 use crate::model::Torrent;
 use crate::utils;
@@ -11,7 +12,7 @@ use crate::utils;
 mod imp {
     use super::*;
 
-    #[derive(Debug, Default, gtk::CompositeTemplate)]
+    #[derive(Default, gtk::CompositeTemplate)]
     #[template(resource = "/br/com/acauamontiel/Parcels/ui/torrent-row.ui")]
     pub struct TorrentRow {
         #[template_child]
@@ -30,6 +31,11 @@ mod imp {
         pub speed_label: TemplateChild<gtk::Label>,
         /// The shown torrent and the handler that refreshes the row when it changes
         pub binding: RefCell<Option<(Torrent, glib::SignalHandlerId)>>,
+        /// Created on first use: most rows never show a context menu
+        pub context_menu: RefCell<Option<gtk::PopoverMenu>>,
+        /// Opens the context menu at a point; set by the list that owns the row
+        #[allow(clippy::type_complexity)]
+        pub menu_opener: RefCell<Option<Rc<dyn Fn(f64, f64)>>>,
     }
 
     #[glib::object_subclass]
@@ -50,10 +56,21 @@ mod imp {
     impl ObjectImpl for TorrentRow {
         fn dispose(&self) {
             self.obj().set_torrent(None);
+            if let Some(menu) = self.context_menu.take() {
+                menu.unparent();
+            }
         }
     }
 
-    impl WidgetImpl for TorrentRow {}
+    impl WidgetImpl for TorrentRow {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
+            self.parent_size_allocate(width, height, baseline);
+            // Popovers must be positioned by their parent
+            if let Some(menu) = self.context_menu.borrow().as_ref() {
+                menu.present();
+            }
+        }
+    }
     impl BoxImpl for TorrentRow {}
 }
 
@@ -94,6 +111,38 @@ impl TorrentRow {
         );
         imp.binding.replace(Some((torrent.clone(), handler)));
         self.update(torrent);
+    }
+
+    pub fn set_menu_opener(&self, opener: impl Fn(f64, f64) + 'static) {
+        self.imp().menu_opener.replace(Some(Rc::new(opener)));
+    }
+
+    /// Opens the context menu from the keyboard, near the start of the row.
+    pub fn open_menu_from_keyboard(&self) {
+        let opener = self.imp().menu_opener.borrow().clone();
+        if let Some(opener) = opener {
+            opener(24.0, f64::from(self.height()) / 2.0);
+        }
+    }
+
+    /// Shows `menu` pointing at (`x`, `y`), in row coordinates.
+    pub fn popup_menu(&self, menu: &gio::MenuModel, x: f64, y: f64) {
+        let imp = self.imp();
+        let popover = imp
+            .context_menu
+            .borrow_mut()
+            .get_or_insert_with(|| {
+                let popover = gtk::PopoverMenu::builder()
+                    .has_arrow(false)
+                    .halign(gtk::Align::Start)
+                    .build();
+                popover.set_parent(self);
+                popover
+            })
+            .clone();
+        popover.set_menu_model(Some(menu));
+        popover.set_pointing_to(Some(&gtk::gdk::Rectangle::new(x as i32, y as i32, 1, 1)));
+        popover.popup();
     }
 
     fn update(&self, torrent: &Torrent) {
