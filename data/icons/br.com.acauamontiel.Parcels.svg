@@ -1,9 +1,19 @@
 <!-- Parcels app icon: a parcel with a download badge. Follows the GNOME app icon guidelines (128 px grid, GNOME palette). -->
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
   <defs>
-    <linearGradient id="front" x1="0" y1="46" x2="0" y2="104" gradientUnits="userSpaceOnUse">
+    <!-- Front: a little darker towards the bottom -->
+    <linearGradient id="front" x1="0" y1="46" x2="0" y2="112" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#c8a073"/>
-      <stop offset="1" stop-color="#b5835a"/>
+      <stop offset="1" stop-color="#a87650"/>
+    </linearGradient>
+    <!-- Side lighting on the rounded vertical edges, as in other GNOME app icons -->
+    <linearGradient id="edges" x1="14" y1="0" x2="114" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#63452c" stop-opacity="0.3"/>
+      <stop offset="0.03" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.08" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.92" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="0.97" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#63452c" stop-opacity="0.3"/>
     </linearGradient>
     <linearGradient id="lid" x1="0" y1="24" x2="0" y2="46" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#e2c29e"/>
@@ -14,10 +24,9 @@
       <stop offset="1" stop-color="#3584e4"/>
     </linearGradient>
   </defs>
-  <!-- Depth of the box -->
-  <rect x="14" y="56" width="100" height="56" rx="8" fill="#865e3c"/>
   <!-- Front -->
-  <path d="M14 46h100v50a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#front)"/>
+  <path d="M14 46h100v58a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#front)"/>
+  <path d="M14 46h100v58a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#edges)"/>
   <!-- Lid, seen from slightly above -->
   <path d="M25 24h78a5 5 0 0 1 4.6 3l6.4 19H14l6.4-19a5 5 0 0 1 4.6-3z" fill="url(#lid)"/>
   <!-- Fold between lid and front -->
