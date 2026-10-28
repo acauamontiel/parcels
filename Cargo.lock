@@ -1715,6 +1715,7 @@ dependencies = [
 name = "parcels"
 version = "0.1.0"
 dependencies = [
+ "ashpd",
  "gettext-rs",
  "gtk4",
  "libadwaita",

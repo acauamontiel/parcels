@@ -15,6 +15,7 @@ codegen-units = 1
 
 [dependencies]
 adw = { package = "libadwaita", version = "0.9", features = ["v1_10"] }
+ashpd = { version = "0.13", default-features = false, features = ["tokio", "background"] }
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 gtk = { package = "gtk4", version = "0.11", features = ["v4_24"] }
 oo7 = { version = "0.6", default-features = false, features = ["tokio", "native_crypto"] }

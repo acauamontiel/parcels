@@ -1,5 +1,6 @@
 pub mod add_dialog;
 mod detail_rows;
+pub mod preferences_dialog;
 mod server_dialog;
 mod sidebar;
 mod tags_dialog;
@@ -8,6 +9,7 @@ mod torrent_row;
 mod window;
 
 pub use add_dialog::AddDialog;
+pub use preferences_dialog::PreferencesDialog;
 pub use server_dialog::ServerDialog;
 pub use sidebar::Sidebar;
 pub use torrent_page::TorrentPage;

@@ -25,6 +25,31 @@
       <summary>Refresh interval</summary>
       <description>How often to fetch updates from the server while the window is visible, in milliseconds. In the background, updates are fetched every 10 seconds.</description>
     </key>
+    <key name="run-in-background" type="b">
+      <default>true</default>
+      <summary>Run in the background</summary>
+      <description>Keep checking the server and sending notifications after the window is closed.</description>
+    </key>
+    <key name="autostart" type="b">
+      <default>false</default>
+      <summary>Start automatically</summary>
+      <description>Start Parcels in the background when you log in.</description>
+    </key>
+    <key name="notify-completed" type="b">
+      <default>true</default>
+      <summary>Notify when downloads finish</summary>
+    </key>
+    <key name="notify-connection" type="b">
+      <default>true</default>
+      <summary>Notify about connection problems</summary>
+      <description>Notify when the server stays unreachable for longer than connection-notify-delay, and when it comes back.</description>
+    </key>
+    <key name="connection-notify-delay" type="u">
+      <range min="10" max="3600"/>
+      <default>60</default>
+      <summary>Connection notification delay</summary>
+      <description>Seconds the server must stay unreachable before a notification is sent.</description>
+    </key>
     <key name="sort-by" type="s">
       <choices>
         <choice value="added"/>

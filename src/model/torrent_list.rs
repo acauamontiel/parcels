@@ -59,6 +59,10 @@ mod imp {
                     Signal::builder("updated").build(),
                     // The set of categories or tags changed
                     Signal::builder("labels-changed").build(),
+                    // A torrent that was downloading finished
+                    Signal::builder("torrent-completed")
+                        .param_types([Torrent::static_type()])
+                        .build(),
                 ]
             })
         }
@@ -122,6 +126,17 @@ impl TorrentList {
         })
     }
 
+    pub fn connect_torrent_completed<F: Fn(&Self, &Torrent) + 'static>(
+        &self,
+        f: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("torrent-completed", false, move |args| {
+            let list: Self = args[0].get().expect("signal emitter");
+            f(&list, &args[1].get::<Torrent>().expect("torrent"));
+            None
+        })
+    }
+
     /// Forgets everything, e.g. when switching servers.
     pub fn clear(&self) {
         let imp = self.imp();
@@ -163,11 +178,20 @@ impl TorrentList {
         }
 
         let mut added = Vec::new();
+        let mut completed = Vec::new();
         {
             let mut by_hash = imp.by_hash.borrow_mut();
             for (hash, patch) in &data.torrents {
                 match by_hash.get(hash) {
-                    Some(torrent) => torrent.apply(patch),
+                    Some(torrent) => {
+                        // Only torrents seen downloading count: new ones that are
+                        // already complete (e.g. on connect) don't
+                        let was_complete = is_complete(torrent);
+                        torrent.apply(patch);
+                        if !was_complete && is_complete(torrent) {
+                            completed.push(torrent.clone());
+                        }
+                    }
                     None => {
                         let torrent = Torrent::new(hash);
                         torrent.apply(patch);
@@ -192,6 +216,9 @@ impl TorrentList {
         }
 
         self.emit_by_name::<()>("updated", &[]);
+        for torrent in completed {
+            self.emit_by_name::<()>("torrent-completed", &[&torrent]);
+        }
     }
 
     fn remove(&self, hashes: &[String]) {
@@ -270,6 +297,11 @@ impl TorrentList {
             self.notify_free_space();
         }
     }
+}
+
+/// All selected files are downloaded. Torrents without metadata aren't complete.
+fn is_complete(torrent: &Torrent) -> bool {
+    torrent.has_metadata() && torrent.progress() >= 1.0
 }
 
 #[cfg(test)]
@@ -409,6 +441,44 @@ mod tests {
         let torrent = list.model().item(0).and_downcast::<Torrent>().unwrap();
         assert_eq!(torrent.status(), TorrentStatus::StoppedDownloading);
         assert_eq!(torrent.category(), "linux");
+    }
+
+    #[test]
+    fn reports_finished_downloads_once() {
+        use qbittorrent_client::maindata::TorrentPatch;
+
+        let list = TorrentList::default();
+        let completed = std::rc::Rc::new(RefCell::new(Vec::new()));
+        list.connect_torrent_completed(glib::clone!(
+            #[strong]
+            completed,
+            move |_, torrent| completed.borrow_mut().push(torrent.hash())
+        ));
+
+        // Already complete when first seen: not reported
+        list.apply(&fixture("01-full.json"));
+        assert!(completed.borrow().is_empty());
+
+        let patch = |progress: f64| {
+            let mut data = MainData {
+                rid: 2,
+                ..Default::default()
+            };
+            data.torrents.insert(
+                "new".into(),
+                TorrentPatch {
+                    name: Some("New".into()),
+                    progress: Some(progress),
+                    has_metadata: Some(true),
+                    ..Default::default()
+                },
+            );
+            data
+        };
+        list.apply(&patch(0.5));
+        list.apply(&patch(1.0));
+        list.apply(&patch(1.0));
+        assert_eq!(*completed.borrow(), ["new"]);
     }
 
     #[test]

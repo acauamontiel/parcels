@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 14:46+0000\n"
+"POT-Creation-Date: 2026-10-28 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:2
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
 #: data/resources/ui/window.blp:50 data/resources/ui/window.blp:148
-#: data/resources/ui/window.blp:161 src/application.rs:133 src/main.rs:27
+#: data/resources/ui/window.blp:161 src/application.rs:240 src/main.rs:29
 msgid "Parcels"
 msgstr ""
 
@@ -71,15 +71,55 @@ msgid ""
 "milliseconds. In the background, updates are fetched every 10 seconds."
 msgstr ""
 
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:30
+msgid "Run in the background"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:31
+msgid ""
+"Keep checking the server and sending notifications after the window is "
+"closed."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:35
+msgid "Start automatically"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:36
+msgid "Start Parcels in the background when you log in."
+msgstr ""
+
 #: data/br.com.acauamontiel.Parcels.gschema.xml.in:40
-msgid "Sort torrents by"
+msgid "Notify when downloads finish"
 msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.gschema.xml.in:44
+msgid "Notify about connection problems"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:45
+msgid ""
+"Notify when the server stays unreachable for longer than connection-notify-"
+"delay, and when it comes back."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:50
+msgid "Connection notification delay"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:51
+msgid "Seconds the server must stay unreachable before a notification is sent."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:65
+msgid "Sort torrents by"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:69
 msgid "Sort in descending order"
 msgstr ""
 
-#: data/br.com.acauamontiel.Parcels.gschema.xml.in:48
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:73
 msgid "Window maximized state"
 msgstr ""
 
@@ -173,6 +213,68 @@ msgstr ""
 msgid "Don't Create Subfolder"
 msgstr ""
 
+#: data/resources/ui/preferences-dialog.blp:8
+#: data/resources/ui/shortcuts-dialog.blp:50
+#: data/resources/ui/torrent-page.blp:34
+msgid "General"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:12
+msgid "Background"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:15
+msgid "Run in Background"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:16
+msgid "Keep checking the server for notifications after the window is closed"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:20
+msgid "Start Automatically"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:21
+msgid "Start in the background when you log in"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:26
+msgid "Notifications"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:29
+msgid "Finished Downloads"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:33
+msgid "Connection Problems"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:34
+msgid "When the server is unreachable for a while, and when it comes back"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:38
+msgid "Wait Before Notifying"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:39
+msgid "Seconds"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:51
+msgid "Updates"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:54
+msgid "Refresh Interval"
+msgstr ""
+
+#: data/resources/ui/preferences-dialog.blp:55
+msgid "Seconds between updates while the window is open"
+msgstr ""
+
 #: data/resources/ui/server-dialog.blp:41
 msgid "Address"
 msgstr ""
@@ -218,7 +320,7 @@ msgid "_Remove Server"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:9 src/widgets/add_dialog.rs:338
-#: src/widgets/window.rs:808
+#: src/widgets/window.rs:817
 msgid "Open Torrent Files"
 msgstr ""
 
@@ -238,28 +340,31 @@ msgstr ""
 msgid "Unselect All"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:34 data/resources/ui/window.blp:304
+#: data/resources/ui/shortcuts-dialog.blp:34
+msgid "Show Details"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:39 data/resources/ui/window.blp:304
 msgid "Delete"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:39
+#: data/resources/ui/shortcuts-dialog.blp:44
 msgid "Open Context Menu"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:45
-#: data/resources/ui/torrent-page.blp:34
-msgid "General"
-msgstr ""
-
-#: data/resources/ui/shortcuts-dialog.blp:48
-msgid "Keyboard Shortcuts"
-msgstr ""
-
 #: data/resources/ui/shortcuts-dialog.blp:53
-msgid "Close Window"
+msgid "Preferences"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:58
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:63
+msgid "Close Window"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:68
 msgid "Quit"
 msgstr ""
 
@@ -405,65 +510,98 @@ msgid "_Add Torrents…"
 msgstr ""
 
 #: data/resources/ui/window.blp:371
-msgid "_Keyboard Shortcuts"
+msgid "_Preferences"
 msgstr ""
 
 #: data/resources/ui/window.blp:376
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: data/resources/ui/window.blp:381
 msgid "_About Parcels"
 msgstr ""
 
-#: data/resources/ui/window.blp:385
+#: data/resources/ui/window.blp:390
 msgid "_Select All"
 msgstr ""
 
-#: data/resources/ui/window.blp:390
+#: data/resources/ui/window.blp:395
 msgid "_Unselect All"
 msgstr ""
 
-#: data/resources/ui/window.blp:396
+#: data/resources/ui/window.blp:401
 msgid "Sort By"
 msgstr ""
 
-#: data/resources/ui/window.blp:399
+#: data/resources/ui/window.blp:404
 msgid "Date Added"
 msgstr ""
 
-#: data/resources/ui/window.blp:405 src/widgets/window/actions.rs:417
+#: data/resources/ui/window.blp:410 src/widgets/window/actions.rs:417
 #: src/widgets/window/actions.rs:620
 msgid "Name"
 msgstr ""
 
-#: data/resources/ui/window.blp:411 src/widgets/torrent_page.rs:46
+#: data/resources/ui/window.blp:416 src/widgets/torrent_page.rs:46
 msgid "Progress"
 msgstr ""
 
-#: data/resources/ui/window.blp:417 src/widgets/torrent_page.rs:56
+#: data/resources/ui/window.blp:422 src/widgets/torrent_page.rs:56
 msgid "Size"
 msgstr ""
 
-#: data/resources/ui/window.blp:423 src/widgets/torrent_page.rs:48
+#: data/resources/ui/window.blp:428 src/widgets/torrent_page.rs:48
 msgid "Download Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:429 src/widgets/torrent_page.rs:49
+#: data/resources/ui/window.blp:434 src/widgets/torrent_page.rs:49
 msgid "Upload Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:435 src/widgets/torrent_page.rs:47
+#: data/resources/ui/window.blp:440 src/widgets/torrent_page.rs:47
 msgid "Time Remaining"
 msgstr ""
 
-#: data/resources/ui/window.blp:441 src/widgets/torrent_page.rs:52
+#: data/resources/ui/window.blp:446 src/widgets/torrent_page.rs:52
 msgid "Ratio"
 msgstr ""
 
-#: data/resources/ui/window.blp:449
+#: data/resources/ui/window.blp:454
 msgid "_Descending"
 msgstr ""
 
+#: src/application.rs:44
+msgid "Start in the background, without showing the window"
+msgstr ""
+
+#: src/application.rs:161
+#, rust-format
+msgid "Connected to “{}”"
+msgstr ""
+
+#. Translators: Status shown for apps running in the background; {} is a server name
+#: src/application.rs:165
+#, rust-format
+msgid "Can't reach “{}”"
+msgstr ""
+
+#: src/application.rs:246
+msgid ""
+"Manage a qBittorrent server from your desktop. Parcels is not affiliated "
+"with the qBittorrent project."
+msgstr ""
+
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.rs:142
+#: src/application.rs:253
 msgid "translator-credits"
+msgstr ""
+
+#: src/application.rs:256
+msgid "Inspired By"
+msgstr ""
+
+#: src/application.rs:260
+msgid "Based On"
 msgstr ""
 
 #: src/model/filter.rs:53 src/utils.rs:56
@@ -496,6 +634,28 @@ msgstr ""
 
 #: src/model/filter.rs:60
 msgid "No Tags"
+msgstr ""
+
+#: src/notifications.rs:81
+msgid "Download Finished"
+msgstr ""
+
+#: src/notifications.rs:92
+msgid "Connection Lost"
+msgstr ""
+
+#: src/notifications.rs:95
+#, rust-format
+msgid "Parcels can't reach “{}”. It will keep trying."
+msgstr ""
+
+#: src/notifications.rs:114
+msgid "Connection Restored"
+msgstr ""
+
+#: src/notifications.rs:117
+#, rust-format
+msgid "Parcels is connected to “{}” again"
 msgstr ""
 
 #: src/model/source.rs:41
@@ -669,7 +829,7 @@ msgstr ""
 msgid "Enter a magnet link or the address of a torrent file"
 msgstr ""
 
-#: src/widgets/add_dialog.rs:331 src/widgets/window.rs:801
+#: src/widgets/add_dialog.rs:331 src/widgets/window.rs:810
 msgid "Torrent Files"
 msgstr ""
 
@@ -716,6 +876,26 @@ msgstr ""
 
 #: src/widgets/detail_rows.rs:235
 msgid "Maximum"
+msgstr ""
+
+#: src/widgets/preferences_dialog.rs:171
+msgid ""
+"Parcels is not allowed to run in the background. Check the app's permissions "
+"in Settings."
+msgstr ""
+
+#: src/widgets/preferences_dialog.rs:176
+msgid "Parcels is not allowed to start automatically"
+msgstr ""
+
+#: src/widgets/preferences_dialog.rs:183
+msgid "Could not ask the system to run Parcels in the background"
+msgstr ""
+
+#: src/widgets/preferences_dialog.rs:194
+msgid ""
+"Parcels keeps checking your qBittorrent server to notify you when downloads "
+"finish"
 msgstr ""
 
 #. Translators: {} is a list of example addresses
@@ -947,44 +1127,44 @@ msgid "Progress of {}"
 msgstr ""
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:649
+#: src/widgets/window.rs:658
 #, rust-format
 msgid "Download speed: {}"
 msgstr ""
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:654
+#: src/widgets/window.rs:663
 #, rust-format
 msgid "Upload speed: {}"
 msgstr ""
 
 #. Translators: {} is a size, e.g. "120 GB"
-#: src/widgets/window.rs:658
+#: src/widgets/window.rs:667
 #, rust-format
 msgid "Free space on the server: {}"
 msgstr ""
 
-#: src/widgets/window.rs:694
+#: src/widgets/window.rs:703
 msgid "_Add Server…"
 msgstr ""
 
-#: src/widgets/window.rs:695
+#: src/widgets/window.rs:704
 msgid "_Edit Server…"
 msgstr ""
 
-#: src/widgets/window.rs:756
+#: src/widgets/window.rs:765
 msgid "Add a server first, then add the torrents again"
 msgstr ""
 
 #. Translators: {} is a number of torrents
-#: src/widgets/window.rs:773
+#: src/widgets/window.rs:782
 #, rust-format
 msgid "Torrent added"
 msgid_plural "{} torrents added"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window.rs:905
+#: src/widgets/window.rs:914
 msgid "The clipboard has no magnet link or torrent file"
 msgstr ""
 

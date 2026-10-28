@@ -1,6 +1,8 @@
 mod application;
+mod background;
 mod config;
 mod model;
+mod notifications;
 mod runtime;
 mod secrets;
 mod session;

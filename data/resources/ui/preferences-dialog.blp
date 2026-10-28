@@ -1,0 +1,67 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ParcelsPreferencesDialog: Adw.PreferencesDialog {
+  search-enabled: false;
+
+  Adw.PreferencesPage {
+    title: _("General");
+    icon-name: "emblem-system-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Background");
+
+      Adw.SwitchRow background_row {
+        title: _("Run in Background");
+        subtitle: _("Keep checking the server for notifications after the window is closed");
+      }
+
+      Adw.SwitchRow autostart_row {
+        title: _("Start Automatically");
+        subtitle: _("Start in the background when you log in");
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Notifications");
+
+      Adw.SwitchRow notify_completed_row {
+        title: _("Finished Downloads");
+      }
+
+      Adw.SwitchRow notify_connection_row {
+        title: _("Connection Problems");
+        subtitle: _("When the server is unreachable for a while, and when it comes back");
+      }
+
+      Adw.SpinRow connection_delay_row {
+        title: _("Wait Before Notifying");
+        subtitle: _("Seconds");
+
+        adjustment: Adjustment {
+          lower: 10;
+          upper: 3600;
+          step-increment: 10;
+          page-increment: 60;
+        };
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Updates");
+
+      Adw.SpinRow refresh_row {
+        title: _("Refresh Interval");
+        subtitle: _("Seconds between updates while the window is open");
+        digits: 1;
+
+        adjustment: Adjustment {
+          lower: 0.5;
+          upper: 60;
+          step-increment: 0.5;
+          page-increment: 5;
+        };
+      }
+    }
+  }
+}

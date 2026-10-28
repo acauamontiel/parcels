@@ -2,6 +2,7 @@ data/br.com.acauamontiel.Parcels.desktop.in.in
 data/br.com.acauamontiel.Parcels.gschema.xml.in
 data/br.com.acauamontiel.Parcels.metainfo.xml.in.in
 data/resources/ui/add-dialog.blp
+data/resources/ui/preferences-dialog.blp
 data/resources/ui/server-dialog.blp
 data/resources/ui/shortcuts-dialog.blp
 data/resources/ui/torrent-page.blp
@@ -10,12 +11,14 @@ data/resources/ui/window.blp
 src/application.rs
 src/main.rs
 src/model/filter.rs
+src/notifications.rs
 src/model/source.rs
 src/secrets.rs
 src/session.rs
 src/utils.rs
 src/widgets/add_dialog.rs
 src/widgets/detail_rows.rs
+src/widgets/preferences_dialog.rs
 src/widgets/server_dialog.rs
 src/widgets/sidebar.rs
 src/widgets/tags_dialog.rs

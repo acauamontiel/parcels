@@ -2,6 +2,7 @@ blueprints = custom_target(
   'blueprints',
   input: files(
     'ui/add-dialog.blp',
+    'ui/preferences-dialog.blp',
     'ui/server-dialog.blp',
     'ui/shortcuts-dialog.blp',
     'ui/torrent-page.blp',

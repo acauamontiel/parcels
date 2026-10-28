@@ -92,6 +92,7 @@ mod imp {
         /// The add dialog, while open: new sources go to it
         pub add_dialog: glib::WeakRef<AddDialog>,
         pub search: RefCell<String>,
+        pub quitting: std::cell::Cell<bool>,
     }
 
     impl Default for Window {
@@ -135,6 +136,7 @@ mod imp {
                 category_items: gio::Menu::new(),
                 add_dialog: Default::default(),
                 search: Default::default(),
+                quitting: Default::default(),
             }
         }
     }
@@ -189,10 +191,17 @@ mod imp {
 
     impl WindowImpl for Window {
         fn close_request(&self) -> glib::Propagation {
-            if let Err(err) = self.obj().save_window_size() {
+            let obj = self.obj();
+            if let Err(err) = obj.save_window_size() {
                 tracing::warn!("Failed to save window state: {err}");
             }
 
+            // Keep running for notifications: hide instead of closing. The
+            // session slows its refreshes down while the window is hidden.
+            if self.settings.boolean("run-in-background") && !obj.is_quitting() {
+                obj.set_visible(false);
+                return glib::Propagation::Stop;
+            }
             self.parent_close_request()
         }
     }
@@ -912,6 +921,16 @@ impl Window {
 
     fn show_server_dialog(&self, server: Option<&Server>) {
         ServerDialog::new(self.manager(), server).present(Some(self));
+    }
+
+    /// Quitting closes the window for real, even when running in the background.
+    pub fn quit(&self) {
+        self.imp().quitting.set(true);
+        self.close();
+    }
+
+    fn is_quitting(&self) -> bool {
+        self.imp().quitting.get()
     }
 
     fn save_window_size(&self) -> Result<(), glib::BoolError> {

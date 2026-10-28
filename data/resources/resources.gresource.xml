@@ -3,6 +3,7 @@
   <gresource prefix="/br/com/acauamontiel/Parcels/">
     <!-- AdwApplication loads shortcuts-dialog.ui automatically and provides app.shortcuts -->
     <file compressed="true" preprocess="xml-stripblanks">ui/add-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/preferences-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/server-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/torrent-page.ui</file>
