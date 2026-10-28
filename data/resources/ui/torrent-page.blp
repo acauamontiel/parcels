@@ -1,0 +1,160 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ParcelsTorrentPage: Adw.NavigationPage {
+  tag: "details";
+
+  child: Adw.BreakpointBin {
+    width-request: 360;
+    height-request: 200;
+
+    Adw.Breakpoint {
+      condition ("max-width: 550sp")
+
+      setters {
+        switcher_bar.reveal: true;
+        header_bar.title-widget: null;
+      }
+    }
+
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar header_bar {
+        title-widget: Adw.ViewSwitcher {
+          stack: view_stack;
+          policy: wide;
+        };
+      }
+
+      content: Adw.ViewStack view_stack {
+        notify::visible-child-name => $on_page_changed() swapped;
+
+        Adw.ViewStackPage {
+          name: "general";
+          title: _("General");
+          icon-name: "dialog-information-symbolic";
+
+          child: ScrolledWindow {
+            hscrollbar-policy: never;
+
+            child: Adw.Clamp {
+              margin-top: 24;
+              margin-bottom: 24;
+              margin-start: 12;
+              margin-end: 12;
+
+              child: Box {
+                orientation: vertical;
+                spacing: 24;
+
+                Label name_label {
+                  wrap: true;
+                  wrap-mode: word_char;
+                  selectable: true;
+                  // Selectable with the pointer, without grabbing the focus (and selecting all) on open
+                  can-focus: false;
+                  xalign: 0;
+
+                  styles [
+                    "title-2",
+                  ]
+                }
+
+                Adw.PreferencesGroup transfer_group {
+                  title: _("Transfer");
+                }
+
+                Adw.PreferencesGroup torrent_group {
+                  title: _("Torrent");
+                }
+              };
+            };
+          };
+        }
+
+        Adw.ViewStackPage {
+          name: "files";
+          title: _("Files");
+          icon-name: "folder-symbolic";
+
+          child: Stack files_stack {
+            StackPage {
+              name: "list";
+
+              child: ScrolledWindow {
+                hscrollbar-policy: never;
+
+                child: ListView files_view {
+                  show-separators: true;
+
+                  accessibility {
+                    label: _("Files");
+                  }
+                };
+              };
+            }
+
+            StackPage {
+              name: "empty";
+
+              child: Adw.StatusPage {
+                icon-name: "content-loading-symbolic";
+                title: _("No Files Yet");
+                description: _("The file list appears once qBittorrent has fetched the torrent's metadata");
+              };
+            }
+          };
+        }
+
+        Adw.ViewStackPage {
+          name: "trackers";
+          title: _("Trackers");
+          icon-name: "network-server-symbolic";
+
+          child: Adw.PreferencesPage {
+            Adw.PreferencesGroup trackers_group {}
+          };
+        }
+
+        Adw.ViewStackPage {
+          name: "peers";
+          title: _("Peers");
+          icon-name: "network-workgroup-symbolic";
+
+          child: Stack peers_stack {
+            StackPage {
+              name: "list";
+
+              child: ScrolledWindow {
+                hscrollbar-policy: never;
+
+                child: ListView peers_view {
+                  show-separators: true;
+
+                  accessibility {
+                    label: _("Peers");
+                  }
+                };
+              };
+            }
+
+            StackPage {
+              name: "empty";
+
+              child: Adw.StatusPage {
+                icon-name: "network-workgroup-symbolic";
+                title: _("No Peers");
+                description: _("Connected peers appear here");
+              };
+            }
+          };
+        }
+      };
+
+      [bottom]
+      Adw.ViewSwitcherBar switcher_bar {
+        stack: view_stack;
+      }
+    };
+  };
+}

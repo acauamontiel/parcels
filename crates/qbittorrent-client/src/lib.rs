@@ -8,6 +8,7 @@
 
 mod add;
 mod client;
+mod details;
 mod error;
 mod magnet;
 pub mod maindata;
@@ -18,6 +19,9 @@ mod version;
 
 pub use add::{AddTorrents, ContentLayout, TorrentFileUpload};
 pub use client::{Client, ClientConfig, Credentials, normalize_url};
+pub use details::{
+    FilePriority, PeerPatch, PeersData, TorrentFile, TorrentProperties, Tracker, TrackerStatus,
+};
 pub use error::{Error, Result};
 pub use magnet::{MagnetLink, is_torrent_url};
 pub use maindata::MainData;

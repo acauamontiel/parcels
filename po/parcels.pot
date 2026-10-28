@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 12:58+0000\n"
+"POT-Creation-Date: 2026-10-28 14:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,14 +93,14 @@ msgstr ""
 msgid "Parcels is not affiliated with the qBittorrent project."
 msgstr ""
 
-#: data/resources/ui/add-dialog.blp:5 data/resources/ui/window.blp:215
+#: data/resources/ui/add-dialog.blp:5 data/resources/ui/window.blp:220
 msgid "Add Torrents"
 msgstr ""
 
 #: data/resources/ui/add-dialog.blp:19 data/resources/ui/server-dialog.blp:17
 #: src/widgets/server_dialog.rs:370 src/widgets/tags_dialog.rs:72
-#: src/widgets/window/actions.rs:301 src/widgets/window/actions.rs:420
-#: src/widgets/window/actions.rs:565 src/widgets/window/actions.rs:623
+#: src/widgets/window/actions.rs:314 src/widgets/window/actions.rs:433
+#: src/widgets/window/actions.rs:578 src/widgets/window/actions.rs:636
 msgid "_Cancel"
 msgstr ""
 
@@ -109,7 +109,7 @@ msgid "_Add"
 msgstr ""
 
 #: data/resources/ui/add-dialog.blp:41 data/resources/ui/shortcuts-dialog.blp:6
-#: data/resources/ui/window.blp:315
+#: data/resources/ui/window.blp:320
 msgid "Torrents"
 msgstr ""
 
@@ -117,7 +117,7 @@ msgstr ""
 msgid "Magnet Link or URL"
 msgstr ""
 
-#: data/resources/ui/add-dialog.blp:54 data/resources/ui/window.blp:357
+#: data/resources/ui/add-dialog.blp:54 data/resources/ui/window.blp:364
 msgid "_Open Torrent Files…"
 msgstr ""
 
@@ -218,7 +218,7 @@ msgid "_Remove Server"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:9 src/widgets/add_dialog.rs:338
-#: src/widgets/window.rs:778
+#: src/widgets/window.rs:808
 msgid "Open Torrent Files"
 msgstr ""
 
@@ -226,7 +226,7 @@ msgstr ""
 msgid "Paste Magnet Links or Torrent Files"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:19 data/resources/ui/window.blp:238
+#: data/resources/ui/shortcuts-dialog.blp:19 data/resources/ui/window.blp:243
 msgid "Search"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr ""
 msgid "Unselect All"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:34 data/resources/ui/window.blp:299
+#: data/resources/ui/shortcuts-dialog.blp:34 data/resources/ui/window.blp:304
 msgid "Delete"
 msgstr ""
 
@@ -247,6 +247,7 @@ msgid "Open Context Menu"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:45
+#: data/resources/ui/torrent-page.blp:34
 msgid "General"
 msgstr ""
 
@@ -260,6 +261,44 @@ msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:58
 msgid "Quit"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:64
+msgid "Transfer"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:68
+msgid "Torrent"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:77 data/resources/ui/torrent-page.blp:91
+msgid "Files"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:102
+msgid "No Files Yet"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:103
+msgid ""
+"The file list appears once qBittorrent has fetched the torrent's metadata"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:111
+msgid "Trackers"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:121
+#: data/resources/ui/torrent-page.blp:135 src/widgets/torrent_page.rs:54
+msgid "Peers"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:146
+msgid "No Peers"
+msgstr ""
+
+#: data/resources/ui/torrent-page.blp:147
+msgid "Connected peers appear here"
 msgstr ""
 
 #: data/resources/ui/window.blp:25
@@ -308,116 +347,117 @@ msgstr ""
 msgid "_Edit Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:206 src/model/filter.rs:52
+#: data/resources/ui/window.blp:206 data/resources/ui/window.blp:211
+#: src/model/filter.rs:52
 msgid "All"
 msgstr ""
 
-#: data/resources/ui/window.blp:222
+#: data/resources/ui/window.blp:227
 msgid "Alternative Speed Limits"
 msgstr ""
 
-#: data/resources/ui/window.blp:231
+#: data/resources/ui/window.blp:236
 msgid "Sort"
 msgstr ""
 
-#: data/resources/ui/window.blp:249
+#: data/resources/ui/window.blp:254
 msgid "Search torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:258
+#: data/resources/ui/window.blp:263
 msgid "Connection lost. Retrying…"
 msgstr ""
 
-#: data/resources/ui/window.blp:259
+#: data/resources/ui/window.blp:264
 msgid "_Retry"
 msgstr ""
 
-#: data/resources/ui/window.blp:270
+#: data/resources/ui/window.blp:275
 msgid "Start"
 msgstr ""
 
-#: data/resources/ui/window.blp:277
+#: data/resources/ui/window.blp:282
 msgid "Stop"
 msgstr ""
 
-#: data/resources/ui/window.blp:293
+#: data/resources/ui/window.blp:298
 msgid "More Actions"
 msgstr ""
 
-#: data/resources/ui/window.blp:325
+#: data/resources/ui/window.blp:330
 msgid "No Torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:326
+#: data/resources/ui/window.blp:331
 msgid "Torrents on this server will appear here"
 msgstr ""
 
-#: data/resources/ui/window.blp:335
+#: data/resources/ui/window.blp:340
 msgid "No Results Found"
 msgstr ""
 
-#: data/resources/ui/window.blp:336
+#: data/resources/ui/window.blp:341
 msgid "Try a different search or filter"
 msgstr ""
 
-#: data/resources/ui/window.blp:352
+#: data/resources/ui/window.blp:359
 msgid "_Add Torrents…"
 msgstr ""
 
-#: data/resources/ui/window.blp:364
+#: data/resources/ui/window.blp:371
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/window.blp:369
+#: data/resources/ui/window.blp:376
 msgid "_About Parcels"
 msgstr ""
 
-#: data/resources/ui/window.blp:378
+#: data/resources/ui/window.blp:385
 msgid "_Select All"
 msgstr ""
 
-#: data/resources/ui/window.blp:383
+#: data/resources/ui/window.blp:390
 msgid "_Unselect All"
 msgstr ""
 
-#: data/resources/ui/window.blp:389
+#: data/resources/ui/window.blp:396
 msgid "Sort By"
 msgstr ""
 
-#: data/resources/ui/window.blp:392
+#: data/resources/ui/window.blp:399
 msgid "Date Added"
 msgstr ""
 
-#: data/resources/ui/window.blp:398 src/widgets/window/actions.rs:404
-#: src/widgets/window/actions.rs:607
+#: data/resources/ui/window.blp:405 src/widgets/window/actions.rs:417
+#: src/widgets/window/actions.rs:620
 msgid "Name"
 msgstr ""
 
-#: data/resources/ui/window.blp:404
+#: data/resources/ui/window.blp:411 src/widgets/torrent_page.rs:46
 msgid "Progress"
 msgstr ""
 
-#: data/resources/ui/window.blp:410
+#: data/resources/ui/window.blp:417 src/widgets/torrent_page.rs:56
 msgid "Size"
 msgstr ""
 
-#: data/resources/ui/window.blp:416
+#: data/resources/ui/window.blp:423 src/widgets/torrent_page.rs:48
 msgid "Download Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:422
+#: data/resources/ui/window.blp:429 src/widgets/torrent_page.rs:49
 msgid "Upload Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:428
+#: data/resources/ui/window.blp:435 src/widgets/torrent_page.rs:47
 msgid "Time Remaining"
 msgstr ""
 
-#: data/resources/ui/window.blp:434
+#: data/resources/ui/window.blp:441 src/widgets/torrent_page.rs:52
 msgid "Ratio"
 msgstr ""
 
-#: data/resources/ui/window.blp:442
+#: data/resources/ui/window.blp:449
 msgid "_Descending"
 msgstr ""
 
@@ -426,11 +466,11 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 
-#: src/model/filter.rs:53 src/utils.rs:46
+#: src/model/filter.rs:53 src/utils.rs:56
 msgid "Downloading"
 msgstr ""
 
-#: src/model/filter.rs:54 src/utils.rs:51 src/utils.rs:52
+#: src/model/filter.rs:54 src/utils.rs:61 src/utils.rs:62
 msgid "Seeding"
 msgstr ""
 
@@ -438,7 +478,7 @@ msgstr ""
 msgid "Completed"
 msgstr ""
 
-#: src/model/filter.rs:56 src/utils.rs:53
+#: src/model/filter.rs:56 src/utils.rs:63
 msgid "Stopped"
 msgstr ""
 
@@ -527,14 +567,18 @@ msgstr ""
 msgid "No qBittorrent WebUI was found at this address"
 msgstr ""
 
-#: src/session.rs:344
+#: src/session.rs:343
+msgid "The torrent is no longer on the server"
+msgstr ""
+
+#: src/session.rs:345
 msgid ""
 "qBittorrent did not add the torrents. They may already be on the server, or "
 "the files may not be valid."
 msgstr ""
 
 #. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
-#: src/session.rs:348
+#: src/session.rs:349
 #, rust-format
 msgid ""
 "qBittorrent {found} is not supported. Parcels requires version {minimum} or "
@@ -542,12 +586,12 @@ msgid ""
 msgstr ""
 
 #. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
-#: src/session.rs:354
+#: src/session.rs:355
 #, rust-format
 msgid "The server returned an unexpected error ({})"
 msgstr ""
 
-#: src/session.rs:357
+#: src/session.rs:358
 msgid "The server sent a response Parcels could not understand"
 msgstr ""
 
@@ -581,39 +625,39 @@ msgstr ""
 msgid "{0} s"
 msgstr ""
 
-#: src/utils.rs:48
+#: src/utils.rs:58
 msgid "Fetching metadata"
 msgstr ""
 
-#: src/utils.rs:50
+#: src/utils.rs:60
 msgid "Stalled"
 msgstr ""
 
-#: src/utils.rs:54
+#: src/utils.rs:64
 msgid "Queued"
 msgstr ""
 
-#: src/utils.rs:57
+#: src/utils.rs:67
 msgid "Checking"
 msgstr ""
 
-#: src/utils.rs:58
+#: src/utils.rs:68
 msgid "Allocating"
 msgstr ""
 
-#: src/utils.rs:59
+#: src/utils.rs:69
 msgid "Moving"
 msgstr ""
 
-#: src/utils.rs:60
+#: src/utils.rs:70
 msgid "Error"
 msgstr ""
 
-#: src/utils.rs:61
+#: src/utils.rs:71
 msgid "Missing files"
 msgstr ""
 
-#: src/utils.rs:62
+#: src/utils.rs:72
 msgid "Unknown"
 msgstr ""
 
@@ -625,7 +669,7 @@ msgstr ""
 msgid "Enter a magnet link or the address of a torrent file"
 msgstr ""
 
-#: src/widgets/add_dialog.rs:331 src/widgets/window.rs:771
+#: src/widgets/add_dialog.rs:331 src/widgets/window.rs:801
 msgid "Torrent Files"
 msgstr ""
 
@@ -639,6 +683,39 @@ msgstr ""
 #: src/widgets/add_dialog.rs:504
 #, rust-format
 msgid "“{}” is too large to be a torrent file"
+msgstr ""
+
+#: src/widgets/detail_rows.rs:82
+msgid "Download Priority"
+msgstr ""
+
+#. Translators: {done} and {total} are sizes, {percent} a number, e.g. "1.2 GB of 4.5 GB (27%)"
+#: src/widgets/detail_rows.rs:196 src/widgets/torrent_page.rs:227
+#: src/widgets/torrent_row.rs:200
+#, rust-format
+msgid "{done} of {total} ({percent}%)"
+msgstr ""
+
+#. Translators: Accessible label of the priority selector; {} is a file name
+#: src/widgets/detail_rows.rs:219
+#, rust-format
+msgid "Priority of {}"
+msgstr ""
+
+#: src/widgets/detail_rows.rs:232
+msgid "Don't Download"
+msgstr ""
+
+#: src/widgets/detail_rows.rs:233
+msgid "Normal"
+msgstr ""
+
+#: src/widgets/detail_rows.rs:234
+msgid "High"
+msgstr ""
+
+#: src/widgets/detail_rows.rs:235
+msgid "Maximum"
 msgstr ""
 
 #. Translators: {} is a list of example addresses
@@ -717,115 +794,259 @@ msgstr ""
 msgid "Tags marked with a dash are on some of the selected torrents"
 msgstr ""
 
+#: src/widgets/torrent_page.rs:45
+msgid "Status"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:50
+msgid "Downloaded"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:51
+msgid "Uploaded"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:53
+msgid "Seeds"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:55
+msgid "Wasted"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:57
+msgid "Pieces"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:58
+msgid "Save Folder"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:59
+msgid "Added On"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:60
+msgid "Completed On"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:61
+msgid "Created"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:62
+msgid "Info Hash v1"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:63
+msgid "Info Hash v2"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:64
+msgid "Private"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:65
+msgid "Comment"
+msgstr ""
+
+#. Translators: e.g. "500 × 128 kB (have 54)"
+#: src/widgets/torrent_page.rs:278
+#, rust-format
+msgid "{count} × {size} (have {have})"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:295
+#, rust-format
+msgid "{date} by {program}"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:310
+msgid "Yes"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:312
+msgid "No"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:523
+msgid "Distributed Hash Table (DHT)"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:524
+msgid "Peer Exchange (PeX)"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:525
+msgid "Local Peer Discovery (LSD)"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:533
+#, rust-format
+msgid "{} seed"
+msgid_plural "{} seeds"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/widgets/torrent_page.rs:541
+#, rust-format
+msgid "{} peer"
+msgid_plural "{} peers"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/widgets/torrent_page.rs:575
+#, rust-format
+msgid "“{}” is no longer on the server"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:588
+msgid "Disabled"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:589
+msgid "Not contacted yet"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:590
+msgid "Working"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:591
+msgid "Updating"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:592
+msgid "Not working"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:593
+msgid "Tracker error"
+msgstr ""
+
+#: src/widgets/torrent_page.rs:594
+msgid "Unreachable"
+msgstr ""
+
+#. Translators: {speed} is the current speed, {average} the average, e.g. "1.2 MB/s (average 900 kB/s)"
+#: src/widgets/torrent_page.rs:601
+#, rust-format
+msgid "{speed} (average {average})"
+msgstr ""
+
+#. Translators: {connected} and {total} are numbers of seeds or peers
+#: src/widgets/torrent_page.rs:610
+#, rust-format
+msgid "{connected} connected of {total}"
+msgstr ""
+
 #. Translators: Accessible label of the progress bar; {} is the torrent name
 #: src/widgets/torrent_row.rs:174
 #, rust-format
 msgid "Progress of {}"
 msgstr ""
 
-#. Translators: {done} and {total} are sizes, {percent} a number, e.g. "1.2 GB of 4.5 GB (27%)"
-#: src/widgets/torrent_row.rs:200
-#, rust-format
-msgid "{done} of {total} ({percent}%)"
-msgstr ""
-
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:619
+#: src/widgets/window.rs:649
 #, rust-format
 msgid "Download speed: {}"
 msgstr ""
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:624
+#: src/widgets/window.rs:654
 #, rust-format
 msgid "Upload speed: {}"
 msgstr ""
 
 #. Translators: {} is a size, e.g. "120 GB"
-#: src/widgets/window.rs:628
+#: src/widgets/window.rs:658
 #, rust-format
 msgid "Free space on the server: {}"
 msgstr ""
 
-#: src/widgets/window.rs:664
+#: src/widgets/window.rs:694
 msgid "_Add Server…"
 msgstr ""
 
-#: src/widgets/window.rs:665
+#: src/widgets/window.rs:695
 msgid "_Edit Server…"
 msgstr ""
 
-#: src/widgets/window.rs:726
+#: src/widgets/window.rs:756
 msgid "Add a server first, then add the torrents again"
 msgstr ""
 
 #. Translators: {} is a number of torrents
-#: src/widgets/window.rs:743
+#: src/widgets/window.rs:773
 #, rust-format
 msgid "Torrent added"
 msgid_plural "{} torrents added"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window.rs:875
+#: src/widgets/window.rs:905
 msgid "The clipboard has no magnet link or torrent file"
 msgstr ""
 
-#: src/widgets/window/actions.rs:123
+#: src/widgets/window/actions.rs:131
+msgid "_Details"
+msgstr ""
+
+#: src/widgets/window/actions.rs:134
 msgid "_Start"
 msgstr ""
 
-#: src/widgets/window/actions.rs:124
+#: src/widgets/window/actions.rs:135
 msgid "S_top"
 msgstr ""
 
-#: src/widgets/window/actions.rs:127
+#: src/widgets/window/actions.rs:138
 msgid "_No Category"
 msgstr ""
 
-#: src/widgets/window/actions.rs:132
+#: src/widgets/window/actions.rs:143
 msgid "New _Category…"
 msgstr ""
 
-#: src/widgets/window/actions.rs:136
+#: src/widgets/window/actions.rs:147
 msgid "_Category"
 msgstr ""
 
-#: src/widgets/window/actions.rs:137
+#: src/widgets/window/actions.rs:148
 msgid "_Tags…"
 msgstr ""
 
-#: src/widgets/window/actions.rs:138
+#: src/widgets/window/actions.rs:149
 msgid "_Move…"
 msgstr ""
 
-#: src/widgets/window/actions.rs:139
+#: src/widgets/window/actions.rs:150
 msgid "_Rename…"
 msgstr ""
 
-#: src/widgets/window/actions.rs:142
+#: src/widgets/window/actions.rs:153
 msgid "_Delete…"
 msgstr ""
 
-#: src/widgets/window/actions.rs:177
+#: src/widgets/window/actions.rs:190
 #, rust-format
 msgid "{} Selected"
 msgid_plural "{} Selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:219
+#: src/widgets/window/actions.rs:232
 msgid "_Undo"
 msgstr ""
 
-#: src/widgets/window/actions.rs:248
+#: src/widgets/window/actions.rs:261
 #, rust-format
 msgid "“{}” started"
 msgid_plural "{} torrents started"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:254
+#: src/widgets/window/actions.rs:267
 #, rust-format
 msgid "“{}” stopped"
 msgid_plural "{} torrents stopped"
@@ -833,112 +1054,112 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. Translators: {} is a torrent name or, in the plural, a number
-#: src/widgets/window/actions.rs:286
+#: src/widgets/window/actions.rs:299
 #, rust-format
 msgid "Delete “{}”?"
 msgid_plural "Delete {} Torrents?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:289
+#: src/widgets/window/actions.rs:302
 msgid "Also delete the _downloaded files from the server"
 msgstr ""
 
-#: src/widgets/window/actions.rs:294
+#: src/widgets/window/actions.rs:307
 msgid ""
 "qBittorrent will stop sharing and forget the torrents. This cannot be undone."
 msgstr ""
 
-#: src/widgets/window/actions.rs:302 src/widgets/window/actions.rs:313
+#: src/widgets/window/actions.rs:315 src/widgets/window/actions.rs:326
 msgid "_Delete"
 msgstr ""
 
-#: src/widgets/window/actions.rs:311
+#: src/widgets/window/actions.rs:324
 msgid "Delete _Files"
 msgstr ""
 
-#: src/widgets/window/actions.rs:339
+#: src/widgets/window/actions.rs:352
 #, rust-format
 msgid "“{}” and its files deleted"
 msgid_plural "{} torrents and their files deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:348
+#: src/widgets/window/actions.rs:361
 #, rust-format
 msgid "“{}” deleted"
 msgid_plural "{} torrents deleted"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:378
+#: src/widgets/window/actions.rs:391
 msgid "Category removed"
 msgstr ""
 
 #. Translators: {} is a category name
-#: src/widgets/window/actions.rs:381 src/widgets/window/actions.rs:446
+#: src/widgets/window/actions.rs:394 src/widgets/window/actions.rs:459
 #, rust-format
 msgid "Category changed to “{}”"
 msgstr ""
 
-#: src/widgets/window/actions.rs:408
+#: src/widgets/window/actions.rs:421
 msgid "Save Path on the Server (Optional)"
 msgstr ""
 
-#: src/widgets/window/actions.rs:414
+#: src/widgets/window/actions.rs:427
 msgid "New Category"
 msgstr ""
 
-#: src/widgets/window/actions.rs:421
+#: src/widgets/window/actions.rs:434
 msgid "C_reate"
 msgstr ""
 
-#: src/widgets/window/actions.rs:511
+#: src/widgets/window/actions.rs:524
 msgid "Tags changed"
 msgstr ""
 
-#: src/widgets/window/actions.rs:546
+#: src/widgets/window/actions.rs:559
 msgid "Folder on the Server"
 msgstr ""
 
 #. Translators: {} is a torrent name or, in the plural, a number
-#: src/widgets/window/actions.rs:556
+#: src/widgets/window/actions.rs:569
 #, rust-format
 msgid "Move “{}”"
 msgid_plural "Move {} Torrents"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:559
+#: src/widgets/window/actions.rs:572
 msgid "qBittorrent will move the downloaded data to this folder on the server."
 msgstr ""
 
-#: src/widgets/window/actions.rs:565
+#: src/widgets/window/actions.rs:578
 msgid "_Move"
 msgstr ""
 
 #. Translators: {} is a torrent name or, in the plural, a number
-#: src/widgets/window/actions.rs:588
+#: src/widgets/window/actions.rs:601
 #, rust-format
 msgid "Moving “{}”"
 msgid_plural "Moving {} torrents"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/window/actions.rs:614
+#: src/widgets/window/actions.rs:627
 msgid "Rename Torrent"
 msgstr ""
 
-#: src/widgets/window/actions.rs:616
+#: src/widgets/window/actions.rs:629
 msgid "Only the name shown in qBittorrent changes, not the files."
 msgstr ""
 
-#: src/widgets/window/actions.rs:624
+#: src/widgets/window/actions.rs:637
 msgid "_Rename"
 msgstr ""
 
 #. Translators: {} is the new torrent name
-#: src/widgets/window/actions.rs:660
+#: src/widgets/window/actions.rs:673
 #, rust-format
 msgid "Renamed to “{}”"
 msgstr ""

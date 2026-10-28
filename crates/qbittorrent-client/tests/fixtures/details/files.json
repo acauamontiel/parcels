@@ -1,0 +1,63 @@
+[
+  {
+    "availability": 1,
+    "index": 0,
+    "is_seed": false,
+    "name": "Blender Open Movies/Big Buck Bunny/bbb-1080p.mp4",
+    "piece_range": [
+      0,
+      190
+    ],
+    "priority": 1,
+    "progress": 0.11534336,
+    "size": 25000000
+  },
+  {
+    "availability": 1,
+    "index": 1,
+    "name": "Blender Open Movies/README.txt",
+    "piece_range": [
+      191,
+      191
+    ],
+    "priority": 1,
+    "progress": 0,
+    "size": 2000
+  },
+  {
+    "availability": 1,
+    "index": 2,
+    "name": "Blender Open Movies/Sintel/Subtitles/sintel-en.srt",
+    "piece_range": [
+      192,
+      192
+    ],
+    "priority": 1,
+    "progress": 0,
+    "size": 30000
+  },
+  {
+    "availability": 1,
+    "index": 3,
+    "name": "Blender Open Movies/Sintel/Subtitles/sintel-pt_BR.srt",
+    "piece_range": [
+      193,
+      193
+    ],
+    "priority": 1,
+    "progress": 0,
+    "size": 30000
+  },
+  {
+    "availability": 1,
+    "index": 4,
+    "name": "Blender Open Movies/Sintel/sintel-4k.mkv",
+    "piece_range": [
+      194,
+      499
+    ],
+    "priority": 1,
+    "progress": 0.1048576,
+    "size": 40000000
+  }
+]

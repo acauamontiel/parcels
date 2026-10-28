@@ -116,7 +116,7 @@ impl Session {
         self.imp().refresh_requested.set(true);
     }
 
-    fn refresh_interval(&self) -> Duration {
+    pub fn refresh_interval(&self) -> Duration {
         if self.foreground() {
             let ms = self
                 .imp()
@@ -340,6 +340,7 @@ pub fn error_message(err: &Error, auth_method: AuthMethod) -> String {
             AuthMethod::Password => gettext("The server requires a username and password"),
         },
         Error::NotQbittorrent => gettext("No qBittorrent WebUI was found at this address"),
+        Error::TorrentNotFound => gettext("The torrent is no longer on the server"),
         Error::TorrentRejected => gettext(
             "qBittorrent did not add the torrents. They may already be on the server, or the files may not be valid.",
         ),

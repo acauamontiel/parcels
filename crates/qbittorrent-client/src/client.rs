@@ -6,7 +6,10 @@ use reqwest::header::REFERER;
 use reqwest::{Method, RequestBuilder, Response, StatusCode};
 use url::Url;
 
-use crate::{AddTorrents, Error, MIN_SERVER_VERSION, MainData, Result, ServerInfo, Version};
+use crate::{
+    AddTorrents, Error, FilePriority, MIN_SERVER_VERSION, MainData, PeersData, Result, ServerInfo,
+    TorrentFile, TorrentProperties, Tracker, Version,
+};
 
 /// How to authenticate against the WebUI.
 #[derive(Clone, PartialEq, Eq)]
@@ -251,6 +254,64 @@ impl Client {
     /// The server's default download folder.
     pub async fn default_save_path(&self) -> Result<String> {
         self.get_text("app/defaultSavePath").await
+    }
+
+    /// General information about one torrent.
+    pub async fn properties(&self, hash: &str) -> Result<TorrentProperties> {
+        self.get_torrent_json("torrents/properties", hash, &[])
+            .await
+    }
+
+    /// The files of a torrent; empty until its metadata is known.
+    pub async fn files(&self, hash: &str) -> Result<Vec<TorrentFile>> {
+        self.get_torrent_json("torrents/files", hash, &[]).await
+    }
+
+    pub async fn trackers(&self, hash: &str) -> Result<Vec<Tracker>> {
+        self.get_torrent_json("torrents/trackers", hash, &[]).await
+    }
+
+    /// Changes to the peers of a torrent since response `rid`.
+    pub async fn torrent_peers(&self, hash: &str, rid: i64) -> Result<PeersData> {
+        self.get_torrent_json("sync/torrentPeers", hash, &[("rid", rid.to_string())])
+            .await
+    }
+
+    /// Sets the download priority of files, by index.
+    pub async fn set_file_priority(
+        &self,
+        hash: &str,
+        indexes: &[u32],
+        priority: FilePriority,
+    ) -> Result<()> {
+        let ids: Vec<String> = indexes.iter().map(u32::to_string).collect();
+        self.post_form(
+            "torrents/filePrio",
+            &[
+                ("hash", hash.to_owned()),
+                ("id", ids.join("|")),
+                ("priority", priority.value().to_string()),
+            ],
+        )
+        .await
+    }
+
+    /// Like `get_json`, mapping 404 to [`Error::TorrentNotFound`].
+    async fn get_torrent_json<T: serde::de::DeserializeOwned>(
+        &self,
+        endpoint: &str,
+        hash: &str,
+        query: &[(&str, String)],
+    ) -> Result<T> {
+        let mut params = vec![("hash", hash.to_owned())];
+        params.extend(query.iter().cloned());
+        match self.get_json(endpoint, &params).await {
+            Err(Error::Http {
+                status: StatusCode::NOT_FOUND,
+                ..
+            }) => Err(Error::TorrentNotFound),
+            result => result,
+        }
     }
 
     /// Starts (resumes) torrents. Was `torrents/resume` before qBittorrent 5.0.

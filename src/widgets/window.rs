@@ -14,7 +14,7 @@ use crate::model::{Server, ServerManager, Torrent, matches_search};
 use crate::session::{ConnectionState, Session};
 use crate::utils;
 use crate::widgets::add_dialog::load_sources;
-use crate::widgets::{AddDialog, ServerDialog, Sidebar, TorrentRow};
+use crate::widgets::{AddDialog, ServerDialog, Sidebar, TorrentPage, TorrentRow};
 
 mod actions;
 
@@ -56,6 +56,10 @@ mod imp {
         pub content_page: TemplateChild<adw::NavigationPage>,
         #[template_child]
         pub content_title: TemplateChild<adw::WindowTitle>,
+        #[template_child]
+        pub content_nav: TemplateChild<adw::NavigationView>,
+        #[template_child]
+        pub list_page: TemplateChild<adw::NavigationPage>,
         #[template_child]
         pub search_bar: TemplateChild<gtk::SearchBar>,
         #[template_child]
@@ -109,6 +113,8 @@ mod imp {
                 upload_speed_label: Default::default(),
                 content_page: Default::default(),
                 content_title: Default::default(),
+                content_nav: Default::default(),
+                list_page: Default::default(),
                 search_bar: Default::default(),
                 search_entry: Default::default(),
                 banner: Default::default(),
@@ -251,6 +257,8 @@ impl Window {
             move |manager| {
                 let id = manager.active_server().map(|s| s.id()).unwrap_or_default();
                 win.change_action_state("active-server", &id.to_variant());
+                // Details belong to the previous server
+                win.imp().content_nav.pop_to_tag("list");
                 win.update_view();
             }
         ));
@@ -445,7 +453,6 @@ impl Window {
                 let row = TorrentRow::default();
                 win.setup_context_menu(&row, item);
                 item.set_child(Some(&row));
-                item.set_activatable(false);
             }
         ));
         factory.connect_bind(|_, item| {
@@ -463,6 +470,20 @@ impl Window {
             }
         });
         imp.torrent_view.set_factory(Some(&factory));
+        // Enter or double click opens the details
+        imp.torrent_view.connect_activate(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |view, position| {
+                let torrent = view
+                    .model()
+                    .and_then(|model| model.item(position))
+                    .and_downcast::<Torrent>();
+                if let Some(torrent) = torrent {
+                    win.show_details(&torrent);
+                }
+            }
+        ));
 
         filter_model.connect_items_changed(clone!(
             #[weak(rename_to = win)]
@@ -570,10 +591,19 @@ impl Window {
         }
     }
 
+    pub fn show_details(&self, torrent: &Torrent) {
+        let imp = self.imp();
+        imp.split_view.set_show_content(true);
+        imp.content_nav.pop_to_tag("list");
+        let page = TorrentPage::new(torrent, self.session());
+        imp.content_nav.push(&page);
+    }
+
     fn on_filter_changed(&self) {
         let imp = self.imp();
         let title = imp.sidebar.filter().title();
         imp.content_page.set_title(&title);
+        imp.list_page.set_title(&title);
         imp.content_title.set_title(&title);
         self.refilter();
     }

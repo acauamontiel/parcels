@@ -59,6 +59,13 @@ impl Window {
         let move_ = gio::ActionEntry::builder("move")
             .activate(|win: &Self, _, _| win.show_move_dialog())
             .build();
+        let details = gio::ActionEntry::builder("details")
+            .activate(|win: &Self, _, _| {
+                if let [torrent] = win.selected_torrents().as_slice() {
+                    win.show_details(torrent);
+                }
+            })
+            .build();
         let rename = gio::ActionEntry::builder("rename")
             .activate(|win: &Self, _, _| win.show_rename_dialog())
             .build();
@@ -88,6 +95,7 @@ impl Window {
             new_category,
             edit_tags,
             move_,
+            details,
             rename,
             select_all,
             unselect_all,
@@ -119,6 +127,9 @@ impl Window {
         let imp = self.imp();
         let menu = imp.torrent_menu.get().expect("set in setup()");
 
+        let details = gio::Menu::new();
+        details.append(Some(&gettext("_Details")), Some("win.details"));
+
         let state = gio::Menu::new();
         state.append(Some(&gettext("_Start")), Some("win.start"));
         state.append(Some(&gettext("S_top")), Some("win.stop"));
@@ -141,6 +152,7 @@ impl Window {
         let delete = gio::Menu::new();
         delete.append(Some(&gettext("_Delete…")), Some("win.delete"));
 
+        menu.append_section(None, &details);
         menu.append_section(None, &state);
         menu.append_section(None, &edit);
         menu.append_section(None, &delete);
@@ -169,6 +181,7 @@ impl Window {
             self.set_action_enabled(name, count > 0);
         }
         self.set_action_enabled("rename", count == 1);
+        self.set_action_enabled("details", count == 1);
 
         let imp = self.imp();
         imp.selection_bar.set_revealed(count > 0);

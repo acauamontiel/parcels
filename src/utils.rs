@@ -41,6 +41,16 @@ pub fn format_duration(seconds: i64) -> String {
     }
 }
 
+/// Formats a Unix time as a local date and time; `None` for unknown dates (≤ 0).
+pub fn format_date(unix_time: i64) -> Option<String> {
+    if unix_time <= 0 {
+        return None;
+    }
+    let date = glib::DateTime::from_unix_local(unix_time).ok()?;
+    // %c: the locale's preferred date and time representation
+    date.format("%c").ok().map(|text| text.to_string())
+}
+
 pub fn state_label(state: TorrentState) -> String {
     match state {
         TorrentState::Downloading | TorrentState::ForcedDownloading => gettext("Downloading"),
@@ -91,6 +101,13 @@ mod tests {
         assert_eq!(format_duration(3 * 3600 + 13 * 60 + 5), "3 h 13 min");
         assert_eq!(format_duration(2 * 86_400 + 5 * 3600), "2 d 5 h");
         assert_eq!(format_duration(-5), "0 s");
+    }
+
+    #[test]
+    fn dates() {
+        assert_eq!(format_date(-1), None);
+        assert_eq!(format_date(0), None);
+        assert!(format_date(1_793_197_061).is_some_and(|d| d.contains("2026")));
     }
 
     #[test]

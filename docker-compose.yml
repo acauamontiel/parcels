@@ -7,9 +7,11 @@
 #   docker compose run --rm flatpak build-aux/dev.sh build
 #
 # The `qbittorrent` service is a throwaway server for manual and integration
-# tests (WebUI at http://localhost:8080, user admin, password adminadmin):
+# tests (WebUI at http://localhost:8080, user admin, password adminadmin).
+# `qbittorrent-peer` is a second instance (WebUI at http://localhost:8081, same
+# credentials) to seed to the first one, so transfers and peers show up:
 #
-#   docker compose --profile test up -d qbittorrent
+#   docker compose --profile test up -d qbittorrent qbittorrent-peer
 services:
   flatpak:
     image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51
@@ -33,6 +35,26 @@ services:
     volumes:
       - ./build-aux/qbittorrent-test/qBittorrent.conf:/fixture/qBittorrent.conf:ro
     # Start from a known profile on every run, with fixed credentials
+    entrypoint:
+      - /sbin/tini
+      - -g
+      - --
+      - sh
+      - -c
+      - mkdir -p /config/qBittorrent/config && cp /fixture/qBittorrent.conf /config/qBittorrent/config/ && exec /entrypoint.sh
+
+  qbittorrent-peer:
+    image: qbittorrentofficial/qbittorrent-nox:${QBT_VERSION:-5.3.0-2}
+    container_name: parcels-qbittorrent-peer
+    profiles: [test]
+    environment:
+      QBT_LEGAL_NOTICE: confirm
+      QBT_WEBUI_PORT: 8081
+      QBT_TORRENTING_PORT: 6882
+    ports:
+      - 8081:8081
+    volumes:
+      - ./build-aux/qbittorrent-test/qBittorrent.conf:/fixture/qBittorrent.conf:ro
     entrypoint:
       - /sbin/tini
       - -g

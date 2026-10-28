@@ -1,0 +1,10 @@
+{
+  "peers": {
+    "172.19.0.3:6882": {
+      "dl_speed": 395360,
+      "downloaded": 9125294,
+      "files": "Blender Open Movies/Big Buck Bunny/bbb-1080p.mp4"
+    }
+  },
+  "rid": 2
+}

@@ -513,3 +513,33 @@ mod add {
         }
     }
 }
+
+#[tokio::test]
+async fn details_of_a_removed_torrent() {
+    let server = MockServer::start().await;
+    Mock::given(path("/api/v2/torrents/properties"))
+        .respond_with(ResponseTemplate::new(404).set_body_string("Not Found"))
+        .mount(&server)
+        .await;
+    let err = client(&server, "", Credentials::None)
+        .properties("gone")
+        .await
+        .unwrap_err();
+    assert!(matches!(err, Error::TorrentNotFound), "{err:?}");
+}
+
+#[tokio::test]
+async fn sets_file_priorities() {
+    let server = MockServer::start().await;
+    Mock::given(method("POST"))
+        .and(path("/api/v2/torrents/filePrio"))
+        .and(body_string("hash=abc&id=0%7C3&priority=0"))
+        .respond_with(ResponseTemplate::new(200))
+        .expect(1)
+        .mount(&server)
+        .await;
+    client(&server, "", Credentials::None)
+        .set_file_priority("abc", &[0, 3], qbittorrent_client::FilePriority::Skip)
+        .await
+        .unwrap();
+}

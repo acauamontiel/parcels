@@ -4,6 +4,7 @@ blueprints = custom_target(
     'ui/add-dialog.blp',
     'ui/server-dialog.blp',
     'ui/shortcuts-dialog.blp',
+    'ui/torrent-page.blp',
     'ui/torrent-row.blp',
     'ui/window.blp',
   ),

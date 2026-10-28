@@ -1,0 +1,99 @@
+[
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 0,
+    "num_peers": 0,
+    "num_seeds": 0,
+    "status": 2,
+    "tier": -1,
+    "url": "** [DHT] **"
+  },
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 0,
+    "num_peers": 0,
+    "num_seeds": 0,
+    "status": 2,
+    "tier": -1,
+    "url": "** [PeX] **"
+  },
+  {
+    "msg": "",
+    "num_downloaded": 0,
+    "num_leeches": 0,
+    "num_peers": 0,
+    "num_seeds": 1,
+    "status": 2,
+    "tier": -1,
+    "url": "** [LSD] **"
+  },
+  {
+    "endpoints": [
+      {
+        "bt_version": 2,
+        "min_announce": 1793197094,
+        "msg": "Host not found (authoritative)",
+        "name": "127.0.0.1:6881",
+        "next_announce": 1793197149,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 4,
+        "updating": false
+      },
+      {
+        "bt_version": 1,
+        "min_announce": 1793197094,
+        "msg": "Host not found (authoritative)",
+        "name": "127.0.0.1:6881",
+        "next_announce": 1793197149,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 4,
+        "updating": false
+      },
+      {
+        "bt_version": 2,
+        "min_announce": 1793197094,
+        "msg": "Host not found (authoritative)",
+        "name": "172.19.0.2:6881",
+        "next_announce": 1793197149,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 4,
+        "updating": false
+      },
+      {
+        "bt_version": 1,
+        "min_announce": 1793197094,
+        "msg": "Host not found (authoritative)",
+        "name": "172.19.0.2:6881",
+        "next_announce": 1793197149,
+        "num_downloaded": -1,
+        "num_leeches": -1,
+        "num_peers": -1,
+        "num_seeds": -1,
+        "status": 4,
+        "updating": false
+      }
+    ],
+    "min_announce": 1793197094,
+    "msg": "Host not found (authoritative)",
+    "next_announce": 1793197149,
+    "num_downloaded": -1,
+    "num_leeches": -1,
+    "num_peers": -1,
+    "num_seeds": -1,
+    "status": 4,
+    "tier": 0,
+    "updating": false,
+    "url": "http://tracker.invalid:6969/announce"
+  }
+]

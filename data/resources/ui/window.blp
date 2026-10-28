@@ -206,137 +206,144 @@ template $ParcelsWindow: Adw.ApplicationWindow {
               title: _("All");
               tag: "torrents";
 
-              child: Adw.ToolbarView {
-                [top]
-                Adw.HeaderBar {
-                  [start]
-                  Button {
-                    icon-name: "list-add-symbolic";
-                    tooltip-text: _("Add Torrents");
-                    action-name: "win.add-torrent";
-                  }
+              child: Adw.NavigationView content_nav {
+                Adw.NavigationPage list_page {
+                  title: _("All");
+                  tag: "list";
 
-                  [start]
-                  ToggleButton {
-                    icon-name: "power-profile-power-saver-symbolic";
-                    tooltip-text: _("Alternative Speed Limits");
-                    action-name: "win.alt-speed-limits";
-                  }
+                  child: Adw.ToolbarView {
+                    [top]
+                    Adw.HeaderBar {
+                      [start]
+                      Button {
+                        icon-name: "list-add-symbolic";
+                        tooltip-text: _("Add Torrents");
+                        action-name: "win.add-torrent";
+                      }
 
-                  title-widget: Adw.WindowTitle content_title {};
+                      [start]
+                      ToggleButton {
+                        icon-name: "power-profile-power-saver-symbolic";
+                        tooltip-text: _("Alternative Speed Limits");
+                        action-name: "win.alt-speed-limits";
+                      }
 
-                  [end]
-                  MenuButton {
-                    icon-name: "view-sort-descending-symbolic";
-                    tooltip-text: _("Sort");
-                    menu-model: sort_menu;
-                  }
+                      title-widget: Adw.WindowTitle content_title {};
 
-                  [end]
-                  ToggleButton search_button {
-                    icon-name: "system-search-symbolic";
-                    tooltip-text: _("Search");
-                    active: bind search_bar.search-mode-enabled bidirectional;
-                  }
-                }
+                      [end]
+                      MenuButton {
+                        icon-name: "view-sort-descending-symbolic";
+                        tooltip-text: _("Sort");
+                        menu-model: sort_menu;
+                      }
 
-                [top]
-                SearchBar search_bar {
-                  child: Adw.Clamp {
-                    maximum-size: 400;
+                      [end]
+                      ToggleButton search_button {
+                        icon-name: "system-search-symbolic";
+                        tooltip-text: _("Search");
+                        active: bind search_bar.search-mode-enabled bidirectional;
+                      }
+                    }
 
-                    child: SearchEntry search_entry {
-                      placeholder-text: _("Search torrents");
-                      hexpand: true;
-                      search-changed => $on_search_changed() swapped;
+                    [top]
+                    SearchBar search_bar {
+                      child: Adw.Clamp {
+                        maximum-size: 400;
+
+                        child: SearchEntry search_entry {
+                          placeholder-text: _("Search torrents");
+                          hexpand: true;
+                          search-changed => $on_search_changed() swapped;
+                        };
+                      };
+                    }
+
+                    [top]
+                    Adw.Banner banner {
+                      title: _("Connection lost. Retrying…");
+                      button-label: _("_Retry");
+                      button-clicked => $on_banner_retry() swapped;
+                    }
+
+                    [bottom]
+                    ActionBar selection_bar {
+                      revealed: false;
+
+                      [start]
+                      Button {
+                        icon-name: "media-playback-start-symbolic";
+                        tooltip-text: _("Start");
+                        action-name: "win.start";
+                      }
+
+                      [start]
+                      Button {
+                        icon-name: "media-playback-pause-symbolic";
+                        tooltip-text: _("Stop");
+                        action-name: "win.stop";
+                      }
+
+                      [center]
+                      Label selection_label {
+                        ellipsize: end;
+
+                        styles [
+                          "heading",
+                        ]
+                      }
+
+                      [end]
+                      MenuButton selection_menu_button {
+                        icon-name: "view-more-symbolic";
+                        tooltip-text: _("More Actions");
+                      }
+
+                      [end]
+                      Button {
+                        icon-name: "user-trash-symbolic";
+                        tooltip-text: _("Delete");
+                        action-name: "win.delete";
+                      }
+                    }
+
+                    content: Stack list_stack {
+                      StackPage {
+                        name: "list";
+
+                        child: ScrolledWindow {
+                          hscrollbar-policy: never;
+
+                          child: ListView torrent_view {
+                            show-separators: true;
+
+                            accessibility {
+                              label: _("Torrents");
+                            }
+                          };
+                        };
+                      }
+
+                      StackPage {
+                        name: "empty";
+
+                        child: Adw.StatusPage empty_page {
+                          title: _("No Torrents");
+                          description: _("Torrents on this server will appear here");
+                        };
+                      }
+
+                      StackPage {
+                        name: "no-results";
+
+                        child: Adw.StatusPage {
+                          icon-name: "edit-find-symbolic";
+                          title: _("No Results Found");
+                          description: _("Try a different search or filter");
+                        };
+                      }
                     };
                   };
                 }
-
-                [top]
-                Adw.Banner banner {
-                  title: _("Connection lost. Retrying…");
-                  button-label: _("_Retry");
-                  button-clicked => $on_banner_retry() swapped;
-                }
-
-                [bottom]
-                ActionBar selection_bar {
-                  revealed: false;
-
-                  [start]
-                  Button {
-                    icon-name: "media-playback-start-symbolic";
-                    tooltip-text: _("Start");
-                    action-name: "win.start";
-                  }
-
-                  [start]
-                  Button {
-                    icon-name: "media-playback-pause-symbolic";
-                    tooltip-text: _("Stop");
-                    action-name: "win.stop";
-                  }
-
-                  [center]
-                  Label selection_label {
-                    ellipsize: end;
-
-                    styles [
-                      "heading",
-                    ]
-                  }
-
-                  [end]
-                  MenuButton selection_menu_button {
-                    icon-name: "view-more-symbolic";
-                    tooltip-text: _("More Actions");
-                  }
-
-                  [end]
-                  Button {
-                    icon-name: "user-trash-symbolic";
-                    tooltip-text: _("Delete");
-                    action-name: "win.delete";
-                  }
-                }
-
-                content: Stack list_stack {
-                  StackPage {
-                    name: "list";
-
-                    child: ScrolledWindow {
-                      hscrollbar-policy: never;
-
-                      child: ListView torrent_view {
-                        show-separators: true;
-
-                        accessibility {
-                          label: _("Torrents");
-                        }
-                      };
-                    };
-                  }
-
-                  StackPage {
-                    name: "empty";
-
-                    child: Adw.StatusPage empty_page {
-                      title: _("No Torrents");
-                      description: _("Torrents on this server will appear here");
-                    };
-                  }
-
-                  StackPage {
-                    name: "no-results";
-
-                    child: Adw.StatusPage {
-                      icon-name: "edit-find-symbolic";
-                      title: _("No Results Found");
-                      description: _("Try a different search or filter");
-                    };
-                  }
-                };
               };
             };
           };

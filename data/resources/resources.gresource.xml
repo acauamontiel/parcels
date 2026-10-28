@@ -5,6 +5,7 @@
     <file compressed="true" preprocess="xml-stripblanks">ui/add-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/server-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/torrent-page.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/torrent-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">icons/scalable/actions/tag-symbolic.svg</file>

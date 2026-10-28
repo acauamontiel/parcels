@@ -37,12 +37,20 @@ docker compose run --rm flatpak build-aux/dev.sh lint
 
 ### Testing against a real server
 
-`docker-compose.yml` has a throwaway qBittorrent for testing, at
-<http://localhost:8080> with user `admin` and password `adminadmin`. Pick the
+`docker-compose.yml` has two throwaway qBittorrent instances for testing: a
+server at <http://localhost:8080> and a peer at <http://localhost:8081>, both
+with user `admin` and password `adminadmin`. Pick the
 version with `QBT_VERSION` (an image tag of `qbittorrentofficial/qbittorrent-nox`):
 
 ```sh
-QBT_VERSION=5.0.0-1 docker compose --profile test up -d qbittorrent
+QBT_VERSION=5.0.0-1 docker compose --profile test up -d qbittorrent qbittorrent-peer
+```
+
+To see a real transfer, with peers and file progress, make the server
+download a torrent from the second test instance:
+
+```sh
+build-aux/qbittorrent-test/seed-from-peer.sh
 ```
 
 The client crate has optional integration tests that run when `QBIT_URL` is

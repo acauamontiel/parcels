@@ -1,0 +1,27 @@
+{
+  "full_update": true,
+  "peers": {
+    "172.19.0.3:6882": {
+      "client": "qBittorrent/5.3.0",
+      "connection": "\u03bcTP",
+      "contribution": 0,
+      "country": null,
+      "country_code": null,
+      "dl_speed": 421990,
+      "downloaded": 7175650,
+      "files": "Blender Open Movies/Sintel/sintel-4k.mkv",
+      "flags": "D L P",
+      "flags_desc": "D = Interested (local) and unchoked (peer)\nL = Peer from LSD\nP = \u03bcTP",
+      "host_name": "",
+      "ip": "172.19.0.3",
+      "peer_id_client": "-qB5300-",
+      "port": 6882,
+      "progress": 1,
+      "relevance": 1,
+      "up_speed": 0,
+      "uploaded": 0
+    }
+  },
+  "rid": 1,
+  "show_flags": false
+}
