@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2026 Acauã Montiel -->
+<component type="desktop-application">
+  <id>@app-id@</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Parcels</name>
+  <summary>Remote control for qBittorrent</summary>
+  <description>
+    <p>
+      Parcels lets you manage a qBittorrent instance running on another machine,
+      such as a home server or a seedbox, from a native GNOME app.
+    </p>
+    <p>
+      Parcels is not affiliated with the qBittorrent project.
+    </p>
+  </description>
+  <url type="homepage">https://github.com/acauamontiel/parcels</url>
+  <url type="bugtracker">https://github.com/acauamontiel/parcels/issues</url>
+  <url type="vcs-browser">https://github.com/acauamontiel/parcels</url>
+  <url type="translate">https://github.com/acauamontiel/parcels/tree/main/po</url>
+  <content_rating type="oars-1.1" />
+  <requires>
+    <display_length compare="ge">360</display_length>
+  </requires>
+  <supports>
+    <control>keyboard</control>
+    <control>pointing</control>
+    <control>touch</control>
+  </supports>
+  <releases>
+    <release version="0.1.0" date="2026-10-28" type="development">
+      <description translate="no">
+        <p>Initial development snapshot.</p>
+      </description>
+    </release>
+  </releases>
+  <developer id="br.com.acauamontiel">
+    <name translate="no">Acauã Montiel</name>
+  </developer>
+  <update_contact>acaua@engaged.com.br</update_contact>
+  <translation type="gettext">@gettext-package@</translation>
+  <launchable type="desktop-id">@app-id@.desktop</launchable>
+</component>

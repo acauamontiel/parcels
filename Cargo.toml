@@ -1,0 +1,18 @@
+[package]
+name = "parcels"
+version = "0.1.0"
+authors = ["Acauã Montiel <acaua@engaged.com.br>"]
+edition = "2024"
+license = "GPL-3.0-or-later"
+publish = false
+
+[profile.release]
+lto = true
+codegen-units = 1
+
+[dependencies]
+adw = { package = "libadwaita", version = "0.9", features = ["v1_10"] }
+gettext-rs = { version = "0.7", features = ["gettext-system"] }
+gtk = { package = "gtk4", version = "0.11", features = ["v4_24"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }

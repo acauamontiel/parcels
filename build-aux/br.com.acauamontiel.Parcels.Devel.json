@@ -1,0 +1,60 @@
+{
+    "id": "br.com.acauamontiel.Parcels.Devel",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "51",
+    "sdk": "org.gnome.Sdk",
+    "sdk-extensions": [
+        "org.freedesktop.Sdk.Extension.rust-stable",
+        "org.freedesktop.Sdk.Extension.llvm22"
+    ],
+    "command": "parcels",
+    "finish-args": [
+        "--share=ipc",
+        "--share=network",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--device=dri",
+        "--env=RUST_LOG=parcels=debug",
+        "--env=G_MESSAGES_DEBUG=none",
+        "--env=RUST_BACKTRACE=1"
+    ],
+    "build-options": {
+        "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm22/bin",
+        "build-args": [
+            "--share=network"
+        ],
+        "env": {
+            "CARGO_REGISTRIES_CRATES_IO_PROTOCOL": "sparse",
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+            "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
+            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+            "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold"
+        },
+        "test-args": [
+            "--socket=x11",
+            "--share=network"
+        ]
+    },
+    "modules": [
+        {
+            "name": "parcels",
+            "buildsystem": "meson",
+            "run-tests": true,
+            "config-opts": [
+                "-Dprofile=development"
+            ],
+            "sources": [
+                {
+                    "type": "dir",
+                    "path": "../",
+                    "skip": [
+                        ".flatpak",
+                        ".flatpak-builder",
+                        "target",
+                        "_build"
+                    ]
+                }
+            ]
+        }
+    ]
+}

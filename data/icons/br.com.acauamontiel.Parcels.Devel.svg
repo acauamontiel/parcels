@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Placeholder app icon (Devel profile). To be replaced by a design following the GNOME icon guidelines. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect x="8" y="12" width="112" height="108" rx="20" fill="#1a5fb4"/>
+  <rect x="8" y="8" width="112" height="104" rx="20" fill="#3584e4"/>
+  <path fill="#f6d32d" d="M64 22 26 39v46l38 17 38-17V39z"/>
+  <path fill="#e5a50a" d="M64 56v46L26 85V39z"/>
+  <path fill="#f9f06b" d="M64 22 26 39l38 17 38-17z"/>
+  <path fill="#c64600" d="m45 30.5 38 17V62l8-3.6V43.9l-38-17z"/>
+  <clipPath id="c"><rect x="8" y="8" width="112" height="112" rx="20"/></clipPath>
+  <g clip-path="url(#c)">
+    <path fill="#241f31" d="M8 98h112v22H8z"/>
+    <path fill="#f6f5f4" d="m18 98-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22z"/>
+  </g>
+</svg>

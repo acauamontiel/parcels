@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the parcels package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: parcels\n"
+"Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
+"POT-Creation-Date: 2026-10-28 01:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:2
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
+#: data/resources/ui/window.blp:12 src/application.rs:90 src/main.rs:22
+msgid "Parcels"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:3
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:8
+#: data/resources/ui/window.blp:26
+msgid "Remote control for qBittorrent"
+msgstr ""
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:9
+msgid "torrent;bittorrent;qbittorrent;magnet;download;remote;"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:6
+msgid "Window width"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:10
+msgid "Window height"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:10
+msgid ""
+"Parcels lets you manage a qBittorrent instance running on another machine, "
+"such as a home server or a seedbox, from a native GNOME app."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:14
+msgid "Parcels is not affiliated with the qBittorrent project."
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:6
+msgid "General"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:9
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:14
+msgid "Close Window"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:19
+msgid "Quit"
+msgstr ""
+
+#: data/resources/ui/window.blp:19
+msgid "Main Menu"
+msgstr ""
+
+#: data/resources/ui/window.blp:25
+msgid "Welcome to Parcels"
+msgstr ""
+
+#: data/resources/ui/window.blp:34
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: data/resources/ui/window.blp:39
+msgid "_About Parcels"
+msgstr ""
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/application.rs:99
+msgid "translator-credits"
+msgstr ""

@@ -1,0 +1,21 @@
+# Development environment for Parcels.
+#
+# Parcels is a desktop app, so the "service" here is the Flathub build image:
+# it has the GNOME SDK, flatpak-builder and the linters used by CI, which keeps
+# local builds identical to CI. See build-aux/dev.sh for the available commands:
+#
+#   docker compose run --rm flatpak build-aux/dev.sh build
+services:
+  flatpak:
+    image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51
+    container_name: parcels-flatpak
+    # flatpak-builder sandboxes every build step with bubblewrap
+    privileged: true
+    working_dir: /src
+    volumes:
+      - .:/src
+      # Seeded from the image on first use; keeps SDK extensions between runs
+      - flatpak-system:/var/lib/flatpak
+
+volumes:
+  flatpak-system:

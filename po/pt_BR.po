@@ -1,0 +1,97 @@
+# Brazilian Portuguese translation for Parcels.
+# Copyright (C) 2026 Acauã Montiel
+# This file is distributed under the same license as the parcels package.
+# Acauã Montiel, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: parcels\n"
+"Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
+"POT-Creation-Date: 2026-10-28 01:41+0000\n"
+"PO-Revision-Date: 2026-10-28 01:41+0000\n"
+"Last-Translator: Acauã Montiel\n"
+"Language-Team: Brazilian Portuguese\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:2
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
+#: data/resources/ui/window.blp:12 src/application.rs:90 src/main.rs:22
+msgid "Parcels"
+msgstr "Parcels"
+
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:3
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:8
+#: data/resources/ui/window.blp:26
+msgid "Remote control for qBittorrent"
+msgstr "Controle remoto para o qBittorrent"
+
+#. Translators: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/br.com.acauamontiel.Parcels.desktop.in.in:9
+msgid "torrent;bittorrent;qbittorrent;magnet;download;remote;"
+msgstr "torrent;bittorrent;qbittorrent;magnet;download;remoto;baixar;"
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:6
+msgid "Window width"
+msgstr "Largura da janela"
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:10
+msgid "Window height"
+msgstr "Altura da janela"
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:14
+msgid "Window maximized state"
+msgstr "Estado maximizado da janela"
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:10
+msgid ""
+"Parcels lets you manage a qBittorrent instance running on another machine, "
+"such as a home server or a seedbox, from a native GNOME app."
+msgstr ""
+"O Parcels permite gerenciar uma instância do qBittorrent rodando em outra "
+"máquina, como um servidor doméstico ou uma seedbox, a partir de um app "
+"nativo do GNOME."
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:14
+msgid "Parcels is not affiliated with the qBittorrent project."
+msgstr "O Parcels não tem vínculo com o projeto qBittorrent."
+
+#: data/resources/ui/shortcuts-dialog.blp:6
+msgid "General"
+msgstr "Geral"
+
+#: data/resources/ui/shortcuts-dialog.blp:9
+msgid "Keyboard Shortcuts"
+msgstr "Atalhos de teclado"
+
+#: data/resources/ui/shortcuts-dialog.blp:14
+msgid "Close Window"
+msgstr "Fechar janela"
+
+#: data/resources/ui/shortcuts-dialog.blp:19
+msgid "Quit"
+msgstr "Sair"
+
+#: data/resources/ui/window.blp:19
+msgid "Main Menu"
+msgstr "Menu principal"
+
+#: data/resources/ui/window.blp:25
+msgid "Welcome to Parcels"
+msgstr "Boas-vindas ao Parcels"
+
+#: data/resources/ui/window.blp:34
+msgid "_Keyboard Shortcuts"
+msgstr "_Atalhos de teclado"
+
+#: data/resources/ui/window.blp:39
+msgid "_About Parcels"
+msgstr "_Sobre o Parcels"
+
+#. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
+#: src/application.rs:99
+msgid "translator-credits"
+msgstr "Acauã Montiel"
