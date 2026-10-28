@@ -40,6 +40,10 @@ pub enum Error {
     #[error("qBittorrent {found} is not supported, version {minimum} or later is required")]
     UnsupportedVersion { found: Version, minimum: Version },
 
+    /// None of the torrents could be added: already on the server, or invalid
+    #[error("qBittorrent did not add the torrents")]
+    TorrentRejected,
+
     #[error("unexpected response from the server (HTTP {status})")]
     Http { status: StatusCode, body: String },
 

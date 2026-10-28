@@ -14,314 +14,351 @@ template $ParcelsWindow: Adw.ApplicationWindow {
   }
 
   content: Adw.ToastOverlay toast_overlay {
-    child: Stack stack {
-      transition-type: crossfade;
+    child: Overlay drop_overlay {
+      [overlay]
+      Revealer drop_revealer {
+        transition-type: crossfade;
+        can-target: false;
 
-      StackPage {
-        name: "status";
+        child: Adw.StatusPage {
+          icon-name: "folder-download-symbolic";
+          title: _("Drop to Add Torrents");
+          description: _("Torrent files and magnet links");
 
-        child: Adw.ToolbarView {
-          [top]
-          Adw.HeaderBar {
-            [start]
-            MenuButton status_server_button {
-              icon-name: "network-server-symbolic";
-              tooltip-text: _("Servers");
-            }
+          styles [
+            "drop-target",
+          ]
+        };
+      }
 
-            title-widget: Adw.WindowTitle status_title {
-              title: _("Parcels");
-            };
+      child: Stack stack {
+        transition-type: crossfade;
 
-            [end]
-            MenuButton {
-              primary: true;
-              icon-name: "open-menu-symbolic";
-              tooltip-text: _("Main Menu");
-              menu-model: primary_menu;
-            }
-          }
+        StackPage {
+          name: "status";
 
-          content: Stack status_stack {
-            transition-type: crossfade;
+          child: Adw.ToolbarView {
+            [top]
+            Adw.HeaderBar {
+              [start]
+              MenuButton status_server_button {
+                icon-name: "network-server-symbolic";
+                tooltip-text: _("Servers");
+              }
 
-            StackPage {
-              name: "no-servers";
-
-              child: Adw.StatusPage no_servers_page {
-                title: _("No Servers");
-                description: _("Add a qBittorrent server with the WebUI turned on to manage its torrents from here");
-
-                child: Button {
-                  label: _("_Add Server");
-                  use-underline: true;
-                  can-shrink: true;
-                  halign: center;
-                  action-name: "win.add-server";
-
-                  styles [
-                    "pill",
-                    "suggested-action",
-                  ]
-                };
+              title-widget: Adw.WindowTitle status_title {
+                title: _("Parcels");
               };
+
+              [end]
+              MenuButton {
+                primary: true;
+                icon-name: "open-menu-symbolic";
+                tooltip-text: _("Main Menu");
+                menu-model: primary_menu;
+              }
             }
 
-            StackPage {
-              name: "connecting";
+            content: Stack status_stack {
+              transition-type: crossfade;
 
-              child: Adw.StatusPage connecting_page {
-                title: _("Connecting…");
+              StackPage {
+                name: "no-servers";
 
-                paintable: Adw.SpinnerPaintable {
-                  widget: connecting_page;
-                };
-              };
-            }
+                child: Adw.StatusPage no_servers_page {
+                  title: _("No Servers");
+                  description: _("Add a qBittorrent server with the WebUI turned on to manage its torrents from here");
 
-            StackPage {
-              name: "failed";
-
-              child: Adw.StatusPage failed_page {
-                icon-name: "network-offline-symbolic";
-                title: _("Unable to Connect");
-
-                child: Box {
-                  orientation: vertical;
-                  spacing: 12;
-                  halign: center;
-
-                  Button {
-                    label: _("_Try Again");
+                  child: Button {
+                    label: _("_Add Server");
                     use-underline: true;
                     can-shrink: true;
-                    action-name: "win.reconnect";
+                    halign: center;
+                    action-name: "win.add-server";
 
                     styles [
                       "pill",
                       "suggested-action",
                     ]
-                  }
-
-                  Button {
-                    label: _("_Edit Server");
-                    use-underline: true;
-                    can-shrink: true;
-                    action-name: "win.edit-server";
-
-                    styles [
-                      "pill",
-                    ]
-                  }
-                };
-              };
-            }
-          };
-        };
-      }
-
-      StackPage {
-        name: "torrents";
-
-        child: Adw.NavigationSplitView split_view {
-          min-sidebar-width: 200;
-          max-sidebar-width: 280;
-
-          sidebar: Adw.NavigationPage {
-            title: _("Parcels");
-            tag: "sidebar";
-
-            child: Adw.ToolbarView {
-              [top]
-              Adw.HeaderBar {
-                [start]
-                MenuButton sidebar_server_button {
-                  icon-name: "network-server-symbolic";
-                  tooltip-text: _("Servers");
-                }
-
-                title-widget: Adw.WindowTitle sidebar_title {
-                  title: _("Parcels");
-                };
-
-                [end]
-                MenuButton {
-                  primary: true;
-                  icon-name: "open-menu-symbolic";
-                  tooltip-text: _("Main Menu");
-                  menu-model: primary_menu;
-                }
-              }
-
-              content: $ParcelsSidebar sidebar {};
-
-              [bottom]
-              Box {
-                spacing: 12;
-                margin-top: 6;
-                margin-bottom: 6;
-                margin-start: 12;
-                margin-end: 12;
-
-                Label download_speed_label {
-                  xalign: 0;
-                  hexpand: true;
-
-                  styles [
-                    "caption",
-                    "numeric",
-                  ]
-                }
-
-                Label upload_speed_label {
-                  xalign: 1;
-
-                  styles [
-                    "caption",
-                    "numeric",
-                  ]
-                }
-              }
-            };
-          };
-
-          content: Adw.NavigationPage content_page {
-            title: _("All");
-            tag: "torrents";
-
-            child: Adw.ToolbarView {
-              [top]
-              Adw.HeaderBar {
-                [start]
-                ToggleButton {
-                  icon-name: "power-profile-power-saver-symbolic";
-                  tooltip-text: _("Alternative Speed Limits");
-                  action-name: "win.alt-speed-limits";
-                }
-
-                title-widget: Adw.WindowTitle content_title {};
-
-                [end]
-                MenuButton {
-                  icon-name: "view-sort-descending-symbolic";
-                  tooltip-text: _("Sort");
-                  menu-model: sort_menu;
-                }
-
-                [end]
-                ToggleButton search_button {
-                  icon-name: "system-search-symbolic";
-                  tooltip-text: _("Search");
-                  active: bind search_bar.search-mode-enabled bidirectional;
-                }
-              }
-
-              [top]
-              SearchBar search_bar {
-                child: Adw.Clamp {
-                  maximum-size: 400;
-
-                  child: SearchEntry search_entry {
-                    placeholder-text: _("Search torrents");
-                    hexpand: true;
-                    search-changed => $on_search_changed() swapped;
                   };
                 };
               }
 
-              [top]
-              Adw.Banner banner {
-                title: _("Connection lost. Retrying…");
-                button-label: _("_Retry");
-                button-clicked => $on_banner_retry() swapped;
+              StackPage {
+                name: "connecting";
+
+                child: Adw.StatusPage connecting_page {
+                  title: _("Connecting…");
+
+                  paintable: Adw.SpinnerPaintable {
+                    widget: connecting_page;
+                  };
+                };
               }
 
-              [bottom]
-              ActionBar selection_bar {
-                revealed: false;
+              StackPage {
+                name: "failed";
 
-                [start]
-                Button {
-                  icon-name: "media-playback-start-symbolic";
-                  tooltip-text: _("Start");
-                  action-name: "win.start";
-                }
+                child: Adw.StatusPage failed_page {
+                  icon-name: "network-offline-symbolic";
+                  title: _("Unable to Connect");
 
-                [start]
-                Button {
-                  icon-name: "media-playback-pause-symbolic";
-                  tooltip-text: _("Stop");
-                  action-name: "win.stop";
-                }
+                  child: Box {
+                    orientation: vertical;
+                    spacing: 12;
+                    halign: center;
 
-                [center]
-                Label selection_label {
-                  ellipsize: end;
+                    Button {
+                      label: _("_Try Again");
+                      use-underline: true;
+                      can-shrink: true;
+                      action-name: "win.reconnect";
 
-                  styles [
-                    "heading",
-                  ]
-                }
+                      styles [
+                        "pill",
+                        "suggested-action",
+                      ]
+                    }
 
-                [end]
-                MenuButton selection_menu_button {
-                  icon-name: "view-more-symbolic";
-                  tooltip-text: _("More Actions");
-                }
+                    Button {
+                      label: _("_Edit Server");
+                      use-underline: true;
+                      can-shrink: true;
+                      action-name: "win.edit-server";
 
-                [end]
-                Button {
-                  icon-name: "user-trash-symbolic";
-                  tooltip-text: _("Delete");
-                  action-name: "win.delete";
-                }
+                      styles [
+                        "pill",
+                      ]
+                    }
+                  };
+                };
               }
+            };
+          };
+        }
 
-              content: Stack list_stack {
-                StackPage {
-                  name: "list";
+        StackPage {
+          name: "torrents";
 
-                  child: ScrolledWindow {
-                    hscrollbar-policy: never;
+          child: Adw.NavigationSplitView split_view {
+            min-sidebar-width: 200;
+            max-sidebar-width: 280;
 
-                    child: ListView torrent_view {
-                      show-separators: true;
+            sidebar: Adw.NavigationPage {
+              title: _("Parcels");
+              tag: "sidebar";
 
-                      accessibility {
-                        label: _("Torrents");
-                      }
+              child: Adw.ToolbarView {
+                [top]
+                Adw.HeaderBar {
+                  [start]
+                  MenuButton sidebar_server_button {
+                    icon-name: "network-server-symbolic";
+                    tooltip-text: _("Servers");
+                  }
+
+                  title-widget: Adw.WindowTitle sidebar_title {
+                    title: _("Parcels");
+                  };
+
+                  [end]
+                  MenuButton {
+                    primary: true;
+                    icon-name: "open-menu-symbolic";
+                    tooltip-text: _("Main Menu");
+                    menu-model: primary_menu;
+                  }
+                }
+
+                content: $ParcelsSidebar sidebar {};
+
+                [bottom]
+                Box {
+                  spacing: 12;
+                  margin-top: 6;
+                  margin-bottom: 6;
+                  margin-start: 12;
+                  margin-end: 12;
+
+                  Label download_speed_label {
+                    xalign: 0;
+                    hexpand: true;
+
+                    styles [
+                      "caption",
+                      "numeric",
+                    ]
+                  }
+
+                  Label upload_speed_label {
+                    xalign: 1;
+
+                    styles [
+                      "caption",
+                      "numeric",
+                    ]
+                  }
+                }
+              };
+            };
+
+            content: Adw.NavigationPage content_page {
+              title: _("All");
+              tag: "torrents";
+
+              child: Adw.ToolbarView {
+                [top]
+                Adw.HeaderBar {
+                  [start]
+                  Button {
+                    icon-name: "list-add-symbolic";
+                    tooltip-text: _("Add Torrents");
+                    action-name: "win.add-torrent";
+                  }
+
+                  [start]
+                  ToggleButton {
+                    icon-name: "power-profile-power-saver-symbolic";
+                    tooltip-text: _("Alternative Speed Limits");
+                    action-name: "win.alt-speed-limits";
+                  }
+
+                  title-widget: Adw.WindowTitle content_title {};
+
+                  [end]
+                  MenuButton {
+                    icon-name: "view-sort-descending-symbolic";
+                    tooltip-text: _("Sort");
+                    menu-model: sort_menu;
+                  }
+
+                  [end]
+                  ToggleButton search_button {
+                    icon-name: "system-search-symbolic";
+                    tooltip-text: _("Search");
+                    active: bind search_bar.search-mode-enabled bidirectional;
+                  }
+                }
+
+                [top]
+                SearchBar search_bar {
+                  child: Adw.Clamp {
+                    maximum-size: 400;
+
+                    child: SearchEntry search_entry {
+                      placeholder-text: _("Search torrents");
+                      hexpand: true;
+                      search-changed => $on_search_changed() swapped;
                     };
                   };
                 }
 
-                StackPage {
-                  name: "empty";
-
-                  child: Adw.StatusPage empty_page {
-                    title: _("No Torrents");
-                    description: _("Torrents on this server will appear here");
-                  };
+                [top]
+                Adw.Banner banner {
+                  title: _("Connection lost. Retrying…");
+                  button-label: _("_Retry");
+                  button-clicked => $on_banner_retry() swapped;
                 }
 
-                StackPage {
-                  name: "no-results";
+                [bottom]
+                ActionBar selection_bar {
+                  revealed: false;
 
-                  child: Adw.StatusPage {
-                    icon-name: "edit-find-symbolic";
-                    title: _("No Results Found");
-                    description: _("Try a different search or filter");
-                  };
+                  [start]
+                  Button {
+                    icon-name: "media-playback-start-symbolic";
+                    tooltip-text: _("Start");
+                    action-name: "win.start";
+                  }
+
+                  [start]
+                  Button {
+                    icon-name: "media-playback-pause-symbolic";
+                    tooltip-text: _("Stop");
+                    action-name: "win.stop";
+                  }
+
+                  [center]
+                  Label selection_label {
+                    ellipsize: end;
+
+                    styles [
+                      "heading",
+                    ]
+                  }
+
+                  [end]
+                  MenuButton selection_menu_button {
+                    icon-name: "view-more-symbolic";
+                    tooltip-text: _("More Actions");
+                  }
+
+                  [end]
+                  Button {
+                    icon-name: "user-trash-symbolic";
+                    tooltip-text: _("Delete");
+                    action-name: "win.delete";
+                  }
                 }
+
+                content: Stack list_stack {
+                  StackPage {
+                    name: "list";
+
+                    child: ScrolledWindow {
+                      hscrollbar-policy: never;
+
+                      child: ListView torrent_view {
+                        show-separators: true;
+
+                        accessibility {
+                          label: _("Torrents");
+                        }
+                      };
+                    };
+                  }
+
+                  StackPage {
+                    name: "empty";
+
+                    child: Adw.StatusPage empty_page {
+                      title: _("No Torrents");
+                      description: _("Torrents on this server will appear here");
+                    };
+                  }
+
+                  StackPage {
+                    name: "no-results";
+
+                    child: Adw.StatusPage {
+                      icon-name: "edit-find-symbolic";
+                      title: _("No Results Found");
+                      description: _("Try a different search or filter");
+                    };
+                  }
+                };
               };
             };
           };
-        };
-      }
+        }
+      };
     };
   };
 }
 
 menu primary_menu {
+  section {
+    item {
+      label: _("_Add Torrents…");
+      action: "win.add-torrent";
+    }
+
+    item {
+      label: _("_Open Torrent Files…");
+      action: "win.open-torrent";
+    }
+  }
+
   section {
     item {
       label: _("_Keyboard Shortcuts");

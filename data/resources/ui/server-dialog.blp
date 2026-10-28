@@ -49,7 +49,9 @@ template $ParcelsServerDialog: Adw.Dialog {
 
         Adw.SwitchRow invalid_certs_row {
           title: _("Accept Invalid Certificates");
-          subtitle: _("Only for servers with a self-signed certificate. Other devices on the network could impersonate this server.");
+          subtitle: _(
+            "Only for servers with a self-signed certificate. Other devices on the network could impersonate this server."
+          );
         }
       }
 

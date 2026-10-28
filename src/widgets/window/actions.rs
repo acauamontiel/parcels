@@ -207,7 +207,7 @@ impl Window {
         ));
     }
 
-    pub(super) fn show_toast(&self, title: &str) {
+    pub fn show_toast(&self, title: &str) {
         let toast = adw::Toast::builder().title(title).use_markup(false).build();
         self.imp().toast_overlay.add_toast(toast);
     }

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 11:33+0000\n"
+"POT-Creation-Date: 2026-10-28 12:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,8 +20,8 @@ msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:2
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
-#: data/resources/ui/window.blp:33 data/resources/ui/window.blp:131
-#: data/resources/ui/window.blp:144 src/application.rs:122 src/main.rs:27
+#: data/resources/ui/window.blp:50 data/resources/ui/window.blp:148
+#: data/resources/ui/window.blp:161 src/application.rs:133 src/main.rs:27
 msgid "Parcels"
 msgstr ""
 
@@ -93,15 +93,84 @@ msgstr ""
 msgid "Parcels is not affiliated with the qBittorrent project."
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:17 src/widgets/server_dialog.rs:370
-#: src/widgets/tags_dialog.rs:72 src/widgets/window/actions.rs:301
-#: src/widgets/window/actions.rs:420 src/widgets/window/actions.rs:565
-#: src/widgets/window/actions.rs:623
+#: data/resources/ui/add-dialog.blp:5 data/resources/ui/window.blp:215
+msgid "Add Torrents"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:19 data/resources/ui/server-dialog.blp:17
+#: src/widgets/server_dialog.rs:370 src/widgets/tags_dialog.rs:72
+#: src/widgets/window/actions.rs:301 src/widgets/window/actions.rs:420
+#: src/widgets/window/actions.rs:565 src/widgets/window/actions.rs:623
 msgid "_Cancel"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:38
+#: data/resources/ui/add-dialog.blp:27 src/widgets/server_dialog.rs:108
+msgid "_Add"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:41 data/resources/ui/shortcuts-dialog.blp:6
+#: data/resources/ui/window.blp:315
+msgid "Torrents"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:47
+msgid "Magnet Link or URL"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:54 data/resources/ui/window.blp:357
+msgid "_Open Torrent Files…"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:62
+msgid "Destination"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:65 data/resources/ui/server-dialog.blp:38
 msgid "Server"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:71
+msgid "Category"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:76
+msgid "Save Folder on the Server"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:81
+msgid "Tags, Separated by Commas"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:86
+msgid "Options"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:89
+msgid "Start Downloading"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:90
+msgid "Turn off to add the torrents stopped"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:95
+msgid "Content Layout"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:99
+msgid "Server Default"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:100
+msgid "Original"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:101
+msgid "Create Subfolder"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:102
+msgid "Don't Create Subfolder"
 msgstr ""
 
 #: data/resources/ui/server-dialog.blp:41
@@ -116,227 +185,244 @@ msgstr ""
 msgid "Accept Invalid Certificates"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:52
+#: data/resources/ui/server-dialog.blp:53
 msgid ""
 "Only for servers with a self-signed certificate. Other devices on the "
 "network could impersonate this server."
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:57
+#: data/resources/ui/server-dialog.blp:59
 msgid "Authentication"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:65
-#: data/resources/ui/server-dialog.blp:80
+#: data/resources/ui/server-dialog.blp:67
+#: data/resources/ui/server-dialog.blp:82
 msgid "Password"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:70
-#: data/resources/ui/server-dialog.blp:85
+#: data/resources/ui/server-dialog.blp:72
+#: data/resources/ui/server-dialog.blp:87
 msgid "API Key"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:75
+#: data/resources/ui/server-dialog.blp:77
 msgid "Username"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:93
+#: data/resources/ui/server-dialog.blp:95
 msgid "_Test Connection"
 msgstr ""
 
-#: data/resources/ui/server-dialog.blp:145
+#: data/resources/ui/server-dialog.blp:147
 msgid "_Remove Server"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:6 data/resources/ui/window.blp:291
-msgid "Torrents"
-msgstr ""
-
-#: data/resources/ui/shortcuts-dialog.blp:9 data/resources/ui/window.blp:214
-msgid "Search"
+#: data/resources/ui/shortcuts-dialog.blp:9 src/widgets/add_dialog.rs:338
+#: src/widgets/window.rs:778
+msgid "Open Torrent Files"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:14
+msgid "Paste Magnet Links or Torrent Files"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:19 data/resources/ui/window.blp:238
+msgid "Search"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:24
 msgid "Select All"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:19
+#: data/resources/ui/shortcuts-dialog.blp:29
 msgid "Unselect All"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:24 data/resources/ui/window.blp:275
+#: data/resources/ui/shortcuts-dialog.blp:34 data/resources/ui/window.blp:299
 msgid "Delete"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:29
+#: data/resources/ui/shortcuts-dialog.blp:39
 msgid "Open Context Menu"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:35
+#: data/resources/ui/shortcuts-dialog.blp:45
 msgid "General"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:38
+#: data/resources/ui/shortcuts-dialog.blp:48
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:43
+#: data/resources/ui/shortcuts-dialog.blp:53
 msgid "Close Window"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:48
+#: data/resources/ui/shortcuts-dialog.blp:58
 msgid "Quit"
 msgstr ""
 
-#: data/resources/ui/window.blp:29 data/resources/ui/window.blp:140
+#: data/resources/ui/window.blp:25
+msgid "Drop to Add Torrents"
+msgstr ""
+
+#: data/resources/ui/window.blp:26
+msgid "Torrent files and magnet links"
+msgstr ""
+
+#: data/resources/ui/window.blp:46 data/resources/ui/window.blp:157
 msgid "Servers"
 msgstr ""
 
-#: data/resources/ui/window.blp:40 data/resources/ui/window.blp:151
+#: data/resources/ui/window.blp:57 data/resources/ui/window.blp:168
 msgid "Main Menu"
 msgstr ""
 
-#: data/resources/ui/window.blp:52
+#: data/resources/ui/window.blp:69
 msgid "No Servers"
 msgstr ""
 
-#: data/resources/ui/window.blp:53
+#: data/resources/ui/window.blp:70
 msgid ""
 "Add a qBittorrent server with the WebUI turned on to manage its torrents "
 "from here"
 msgstr ""
 
-#: data/resources/ui/window.blp:56
+#: data/resources/ui/window.blp:73
 msgid "_Add Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:74 src/widgets/server_dialog.rs:268
+#: data/resources/ui/window.blp:91 src/widgets/server_dialog.rs:268
 msgid "Connecting…"
 msgstr ""
 
-#: data/resources/ui/window.blp:87
+#: data/resources/ui/window.blp:104
 msgid "Unable to Connect"
 msgstr ""
 
-#: data/resources/ui/window.blp:95
+#: data/resources/ui/window.blp:112
 msgid "_Try Again"
 msgstr ""
 
-#: data/resources/ui/window.blp:107
+#: data/resources/ui/window.blp:124
 msgid "_Edit Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:189 src/model/filter.rs:52
+#: data/resources/ui/window.blp:206 src/model/filter.rs:52
 msgid "All"
 msgstr ""
 
-#: data/resources/ui/window.blp:198
+#: data/resources/ui/window.blp:222
 msgid "Alternative Speed Limits"
 msgstr ""
 
-#: data/resources/ui/window.blp:207
+#: data/resources/ui/window.blp:231
 msgid "Sort"
 msgstr ""
 
-#: data/resources/ui/window.blp:225
+#: data/resources/ui/window.blp:249
 msgid "Search torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:234
+#: data/resources/ui/window.blp:258
 msgid "Connection lost. Retrying…"
 msgstr ""
 
-#: data/resources/ui/window.blp:235
+#: data/resources/ui/window.blp:259
 msgid "_Retry"
 msgstr ""
 
-#: data/resources/ui/window.blp:246
+#: data/resources/ui/window.blp:270
 msgid "Start"
 msgstr ""
 
-#: data/resources/ui/window.blp:253
+#: data/resources/ui/window.blp:277
 msgid "Stop"
 msgstr ""
 
-#: data/resources/ui/window.blp:269
+#: data/resources/ui/window.blp:293
 msgid "More Actions"
 msgstr ""
 
-#: data/resources/ui/window.blp:301
+#: data/resources/ui/window.blp:325
 msgid "No Torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:302
+#: data/resources/ui/window.blp:326
 msgid "Torrents on this server will appear here"
 msgstr ""
 
-#: data/resources/ui/window.blp:311
+#: data/resources/ui/window.blp:335
 msgid "No Results Found"
 msgstr ""
 
-#: data/resources/ui/window.blp:312
+#: data/resources/ui/window.blp:336
 msgid "Try a different search or filter"
 msgstr ""
 
-#: data/resources/ui/window.blp:327
+#: data/resources/ui/window.blp:352
+msgid "_Add Torrents…"
+msgstr ""
+
+#: data/resources/ui/window.blp:364
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/window.blp:332
+#: data/resources/ui/window.blp:369
 msgid "_About Parcels"
 msgstr ""
 
-#: data/resources/ui/window.blp:341
+#: data/resources/ui/window.blp:378
 msgid "_Select All"
 msgstr ""
 
-#: data/resources/ui/window.blp:346
+#: data/resources/ui/window.blp:383
 msgid "_Unselect All"
 msgstr ""
 
-#: data/resources/ui/window.blp:352
+#: data/resources/ui/window.blp:389
 msgid "Sort By"
 msgstr ""
 
-#: data/resources/ui/window.blp:355
+#: data/resources/ui/window.blp:392
 msgid "Date Added"
 msgstr ""
 
-#: data/resources/ui/window.blp:361 src/widgets/window/actions.rs:404
+#: data/resources/ui/window.blp:398 src/widgets/window/actions.rs:404
 #: src/widgets/window/actions.rs:607
 msgid "Name"
 msgstr ""
 
-#: data/resources/ui/window.blp:367
+#: data/resources/ui/window.blp:404
 msgid "Progress"
 msgstr ""
 
-#: data/resources/ui/window.blp:373
+#: data/resources/ui/window.blp:410
 msgid "Size"
 msgstr ""
 
-#: data/resources/ui/window.blp:379
+#: data/resources/ui/window.blp:416
 msgid "Download Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:385
+#: data/resources/ui/window.blp:422
 msgid "Upload Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:391
+#: data/resources/ui/window.blp:428
 msgid "Time Remaining"
 msgstr ""
 
-#: data/resources/ui/window.blp:397
+#: data/resources/ui/window.blp:434
 msgid "Ratio"
 msgstr ""
 
-#: data/resources/ui/window.blp:405
+#: data/resources/ui/window.blp:442
 msgid "_Descending"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.rs:131
+#: src/application.rs:142
 msgid "translator-credits"
 msgstr ""
 
@@ -364,12 +450,30 @@ msgstr ""
 msgid "Errors"
 msgstr ""
 
-#: src/model/filter.rs:59
+#: src/model/filter.rs:59 src/widgets/add_dialog.rs:250
 msgid "No Category"
 msgstr ""
 
 #: src/model/filter.rs:60
 msgid "No Tags"
+msgstr ""
+
+#: src/model/source.rs:41
+msgid "Magnet link"
+msgstr ""
+
+#: src/model/source.rs:42
+msgid "Link to a torrent file"
+msgstr ""
+
+#. Translators: {size} is e.g. "4.2 GB", {count} a number of files
+#: src/model/source.rs:46
+#, rust-format
+msgid "{size} in {count} files"
+msgstr ""
+
+#: src/model/source.rs:51
+msgid "Not a valid torrent file"
 msgstr ""
 
 #. Translators: Label of the keyring item; {} is the server name
@@ -423,8 +527,14 @@ msgstr ""
 msgid "No qBittorrent WebUI was found at this address"
 msgstr ""
 
+#: src/session.rs:344
+msgid ""
+"qBittorrent did not add the torrents. They may already be on the server, or "
+"the files may not be valid."
+msgstr ""
+
 #. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
-#: src/session.rs:345
+#: src/session.rs:348
 #, rust-format
 msgid ""
 "qBittorrent {found} is not supported. Parcels requires version {minimum} or "
@@ -432,12 +542,12 @@ msgid ""
 msgstr ""
 
 #. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
-#: src/session.rs:351
+#: src/session.rs:354
 #, rust-format
 msgid "The server returned an unexpected error ({})"
 msgstr ""
 
-#: src/session.rs:354
+#: src/session.rs:357
 msgid "The server sent a response Parcels could not understand"
 msgstr ""
 
@@ -507,6 +617,30 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
+#: src/widgets/add_dialog.rs:166
+msgid "Remove"
+msgstr ""
+
+#: src/widgets/add_dialog.rs:320
+msgid "Enter a magnet link or the address of a torrent file"
+msgstr ""
+
+#: src/widgets/add_dialog.rs:331 src/widgets/window.rs:771
+msgid "Torrent Files"
+msgstr ""
+
+#. Translators: {name} is a file name, {error} a system error message
+#: src/widgets/add_dialog.rs:498
+#, rust-format
+msgid "Could not read “{name}”: {error}"
+msgstr ""
+
+#. Translators: {} is a file name
+#: src/widgets/add_dialog.rs:504
+#, rust-format
+msgid "“{}” is too large to be a torrent file"
+msgstr ""
+
 #. Translators: {} is a list of example addresses
 #: src/widgets/server_dialog.rs:90
 #, rust-format
@@ -523,10 +657,6 @@ msgstr ""
 
 #: src/widgets/server_dialog.rs:107
 msgid "Add Server"
-msgstr ""
-
-#: src/widgets/server_dialog.rs:108
-msgid "_Add"
 msgstr ""
 
 #: src/widgets/server_dialog.rs:241
@@ -600,29 +730,45 @@ msgid "{done} of {total} ({percent}%)"
 msgstr ""
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:595
+#: src/widgets/window.rs:619
 #, rust-format
 msgid "Download speed: {}"
 msgstr ""
 
 #. Translators: {} is a speed, e.g. "1.2 MB/s"
-#: src/widgets/window.rs:600
+#: src/widgets/window.rs:624
 #, rust-format
 msgid "Upload speed: {}"
 msgstr ""
 
 #. Translators: {} is a size, e.g. "120 GB"
-#: src/widgets/window.rs:604
+#: src/widgets/window.rs:628
 #, rust-format
 msgid "Free space on the server: {}"
 msgstr ""
 
-#: src/widgets/window.rs:640
+#: src/widgets/window.rs:664
 msgid "_Add Server…"
 msgstr ""
 
-#: src/widgets/window.rs:641
+#: src/widgets/window.rs:665
 msgid "_Edit Server…"
+msgstr ""
+
+#: src/widgets/window.rs:726
+msgid "Add a server first, then add the torrents again"
+msgstr ""
+
+#. Translators: {} is a number of torrents
+#: src/widgets/window.rs:743
+#, rust-format
+msgid "Torrent added"
+msgid_plural "{} torrents added"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/widgets/window.rs:875
+msgid "The clipboard has no magnet link or torrent file"
 msgstr ""
 
 #: src/widgets/window/actions.rs:123

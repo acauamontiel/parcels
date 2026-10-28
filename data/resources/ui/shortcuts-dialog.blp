@@ -6,6 +6,16 @@ Adw.ShortcutsDialog shortcuts_dialog {
     title: _("Torrents");
 
     Adw.ShortcutsItem {
+      title: _("Open Torrent Files");
+      action-name: "win.open-torrent";
+    }
+
+    Adw.ShortcutsItem {
+      title: _("Paste Magnet Links or Torrent Files");
+      accelerator: "<Control>v";
+    }
+
+    Adw.ShortcutsItem {
       title: _("Search");
       action-name: "win.search";
     }

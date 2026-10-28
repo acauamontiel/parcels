@@ -1,1 +1,6 @@
 /* Keep this file minimal: no hardcoded colors, so dark mode and high contrast just work. */
+
+/* Shown over the window while dragging torrents onto it */
+.drop-target {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 12%, var(--window-bg-color) 88%);
+}

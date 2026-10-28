@@ -162,7 +162,7 @@ impl Session {
             #[weak(rename_to = session)]
             self,
             async move {
-                let result = connect(&server).await;
+                let result = connect_server(&server).await;
                 if session.imp().attempt.get() != attempt {
                     return;
                 }
@@ -292,7 +292,7 @@ async fn wait(weak: &glib::WeakRef<Session>, fixed: Option<Duration>) -> bool {
 }
 
 /// Reads the server's secret and connects. Errors are already user-readable.
-async fn connect(server: &Server) -> Result<(Arc<Client>, ServerInfo), String> {
+pub async fn connect_server(server: &Server) -> Result<(Arc<Client>, ServerInfo), String> {
     let secret = if server.needs_secret() {
         secrets::lookup(&server.id()).await.map_err(|err| {
             tracing::error!("Failed to read the keyring: {err}");
@@ -340,6 +340,9 @@ pub fn error_message(err: &Error, auth_method: AuthMethod) -> String {
             AuthMethod::Password => gettext("The server requires a username and password"),
         },
         Error::NotQbittorrent => gettext("No qBittorrent WebUI was found at this address"),
+        Error::TorrentRejected => gettext(
+            "qBittorrent did not add the torrents. They may already be on the server, or the files may not be valid.",
+        ),
         Error::UnsupportedVersion { found, minimum } => {
             // Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
             gettext("qBittorrent {found} is not supported. Parcels requires version {minimum} or later.")

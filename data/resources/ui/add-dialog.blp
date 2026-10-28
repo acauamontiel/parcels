@@ -1,0 +1,110 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ParcelsAddDialog: Adw.Dialog {
+  title: _("Add Torrents");
+  content-width: 480;
+  content-height: 680;
+  default-widget: add_button;
+
+  child: Adw.ToastOverlay toast_overlay {
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {
+        show-start-title-buttons: false;
+        show-end-title-buttons: false;
+
+        [start]
+        Button {
+          label: _("_Cancel");
+          use-underline: true;
+          can-shrink: true;
+          clicked => $on_cancel_clicked() swapped;
+        }
+
+        [end]
+        Button add_button {
+          label: _("_Add");
+          use-underline: true;
+          can-shrink: true;
+          sensitive: false;
+          clicked => $on_add_clicked() swapped;
+
+          styles [
+            "suggested-action",
+          ]
+        }
+      }
+
+      content: Adw.PreferencesPage {
+        Adw.PreferencesGroup sources_group {
+          title: _("Torrents");
+          visible: false;
+        }
+
+        Adw.PreferencesGroup {
+          Adw.EntryRow url_row {
+            title: _("Magnet Link or URL");
+            input-purpose: url;
+            show-apply-button: true;
+            apply => $on_url_apply() swapped;
+          }
+
+          Adw.ButtonRow {
+            title: _("_Open Torrent Files…");
+            use-underline: true;
+            start-icon-name: "document-open-symbolic";
+            activated => $on_open_files() swapped;
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("Destination");
+
+          Adw.ComboRow server_row {
+            title: _("Server");
+            visible: false;
+            notify::selected => $on_server_changed() swapped;
+          }
+
+          Adw.ComboRow category_row {
+            title: _("Category");
+            notify::selected => $on_category_changed() swapped;
+          }
+
+          Adw.EntryRow save_path_row {
+            title: _("Save Folder on the Server");
+            changed => $on_save_path_changed() swapped;
+          }
+
+          Adw.EntryRow tags_row {
+            title: _("Tags, Separated by Commas");
+          }
+        }
+
+        Adw.PreferencesGroup {
+          title: _("Options");
+
+          Adw.SwitchRow start_row {
+            title: _("Start Downloading");
+            subtitle: _("Turn off to add the torrents stopped");
+            active: true;
+          }
+
+          Adw.ComboRow layout_row {
+            title: _("Content Layout");
+
+            model: StringList {
+              strings [
+                _("Server Default"),
+                _("Original"),
+                _("Create Subfolder"),
+                _("Don't Create Subfolder"),
+              ]
+            };
+          }
+        }
+      };
+    };
+  };
+}

@@ -3,16 +3,18 @@ use std::cmp::Ordering;
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
-use gettextrs::gettext;
+use gettextrs::{gettext, ngettext};
 use gtk::glib::clone;
 use gtk::{gio, glib};
 
 use crate::application::Application;
 use crate::config::{APP_ID, PROFILE};
+use crate::model::TorrentSource;
 use crate::model::{Server, ServerManager, Torrent, matches_search};
 use crate::session::{ConnectionState, Session};
 use crate::utils;
-use crate::widgets::{ServerDialog, Sidebar, TorrentRow};
+use crate::widgets::add_dialog::load_sources;
+use crate::widgets::{AddDialog, ServerDialog, Sidebar, TorrentRow};
 
 mod actions;
 
@@ -24,6 +26,8 @@ mod imp {
     pub struct Window {
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
+        pub drop_revealer: TemplateChild<gtk::Revealer>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -81,6 +85,8 @@ mod imp {
         /// Actions on the selected torrents, for the selection bar and context menu
         pub torrent_menu: OnceCell<gio::Menu>,
         pub category_items: gio::Menu,
+        /// The add dialog, while open: new sources go to it
+        pub add_dialog: glib::WeakRef<AddDialog>,
         pub search: RefCell<String>,
     }
 
@@ -88,6 +94,7 @@ mod imp {
         fn default() -> Self {
             Self {
                 toast_overlay: Default::default(),
+                drop_revealer: Default::default(),
                 stack: Default::default(),
                 status_server_button: Default::default(),
                 status_title: Default::default(),
@@ -120,6 +127,7 @@ mod imp {
                 selection: Default::default(),
                 torrent_menu: Default::default(),
                 category_items: gio::Menu::new(),
+                add_dialog: Default::default(),
                 search: Default::default(),
             }
         }
@@ -224,6 +232,8 @@ impl Window {
         self.setup_actions();
         self.setup_torrent_list();
         self.setup_torrent_actions();
+        self.setup_drop_target();
+        self.setup_paste();
 
         // The closures below hold weak references to the window: the manager
         // and session outlive it, and must not keep a closed window alive.
@@ -322,7 +332,21 @@ impl Window {
                 imp.search_entry.grab_focus();
             })
             .build();
-        self.add_action_entries([select_server, add_server, edit_server, reconnect, search]);
+        let add_torrent = gio::ActionEntry::builder("add-torrent")
+            .activate(|win: &Self, _, _| win.show_add_dialog(Vec::new()))
+            .build();
+        let open_torrent = gio::ActionEntry::builder("open-torrent")
+            .activate(|win: &Self, _, _| win.choose_torrent_files())
+            .build();
+        self.add_action_entries([
+            select_server,
+            add_server,
+            edit_server,
+            reconnect,
+            search,
+            add_torrent,
+            open_torrent,
+        ]);
 
         // Sorting actions are stored straight into GSettings
         let settings = &self.imp().settings;
@@ -693,6 +717,167 @@ impl Window {
         {
             action.set_enabled(enabled);
         }
+    }
+
+    /// Opens the add dialog with `sources`, or adds them to the open one.
+    pub fn show_add_dialog(&self, sources: Vec<TorrentSource>) {
+        let imp = self.imp();
+        if self.manager().servers().n_items() == 0 {
+            self.show_toast(&gettext("Add a server first, then add the torrents again"));
+            self.show_server_dialog(None);
+            return;
+        }
+
+        if let Some(dialog) = imp.add_dialog.upgrade() {
+            dialog.add_sources(sources);
+            return;
+        }
+
+        let dialog = AddDialog::new(self.manager(), self.session());
+        dialog.add_sources(sources);
+        dialog.connect_added(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_, count| {
+                // Translators: {} is a number of torrents
+                let message = ngettext("Torrent added", "{} torrents added", count)
+                    .replace("{}", &count.to_string());
+                win.show_toast(&message);
+            }
+        ));
+        imp.add_dialog.set(Some(&dialog));
+        dialog.present(Some(self));
+    }
+
+    /// Handles files opened from the desktop: `.torrent` files and `magnet:` links.
+    pub fn open_files(&self, files: Vec<gio::File>) {
+        glib::spawn_future_local(clone!(
+            #[weak(rename_to = win)]
+            self,
+            async move {
+                let (sources, errors) = load_sources(&files).await;
+                for error in errors {
+                    win.show_toast(&error);
+                }
+                if !sources.is_empty() {
+                    win.show_add_dialog(sources);
+                }
+            }
+        ));
+    }
+
+    fn choose_torrent_files(&self) {
+        let filter = gtk::FileFilter::new();
+        filter.set_name(Some(&gettext("Torrent Files")));
+        filter.add_mime_type("application/x-bittorrent");
+        filter.add_suffix("torrent");
+        let filters = gio::ListStore::new::<gtk::FileFilter>();
+        filters.append(&filter);
+
+        let chooser = gtk::FileDialog::builder()
+            .title(gettext("Open Torrent Files"))
+            .filters(&filters)
+            .default_filter(&filter)
+            .modal(true)
+            .build();
+        glib::spawn_future_local(clone!(
+            #[weak(rename_to = win)]
+            self,
+            async move {
+                if let Ok(files) = chooser.open_multiple_future(Some(&win)).await {
+                    let files = files.iter::<gio::File>().filter_map(Result::ok).collect();
+                    win.open_files(files);
+                }
+            }
+        ));
+    }
+
+    /// Accepts `.torrent` files and magnet links dragged onto the window.
+    fn setup_drop_target(&self) {
+        let target = gtk::DropTarget::new(glib::Type::INVALID, gtk::gdk::DragAction::COPY);
+        target.set_types(&[gtk::gdk::FileList::static_type(), String::static_type()]);
+        target.connect_drop(clone!(
+            #[weak(rename_to = win)]
+            self,
+            #[upgrade_or]
+            false,
+            move |_, value, _, _| {
+                if let Ok(files) = value.get::<gtk::gdk::FileList>() {
+                    win.open_files(files.files());
+                    return true;
+                }
+                let sources = value
+                    .get::<String>()
+                    .map(|text| TorrentSource::from_text(&text))
+                    .unwrap_or_default();
+                if sources.is_empty() {
+                    return false;
+                }
+                win.show_add_dialog(sources);
+                true
+            }
+        ));
+        target.connect_current_drop_notify(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |target| {
+                win.imp()
+                    .drop_revealer
+                    .set_reveal_child(target.current_drop().is_some());
+            }
+        ));
+        self.imp().toast_overlay.add_controller(target);
+    }
+
+    /// Ctrl+V pastes magnet links or `.torrent` files. The shortcut runs in
+    /// the bubble phase, so text fields that handle Ctrl+V keep working.
+    fn setup_paste(&self) {
+        let shortcuts = gtk::ShortcutController::new();
+        shortcuts.set_propagation_phase(gtk::PropagationPhase::Bubble);
+        shortcuts.add_shortcut(gtk::Shortcut::new(
+            gtk::ShortcutTrigger::parse_string("<Control>v"),
+            Some(gtk::CallbackAction::new(|widget, _| {
+                if let Some(win) = widget.downcast_ref::<Self>() {
+                    win.paste();
+                }
+                glib::Propagation::Stop
+            })),
+        ));
+        self.add_controller(shortcuts);
+    }
+
+    fn paste(&self) {
+        let clipboard = self.clipboard();
+        glib::spawn_future_local(clone!(
+            #[weak(rename_to = win)]
+            self,
+            async move {
+                if clipboard
+                    .formats()
+                    .contains_type(gtk::gdk::FileList::static_type())
+                    && let Ok(value) = clipboard
+                        .read_value_future(
+                            gtk::gdk::FileList::static_type(),
+                            glib::Priority::DEFAULT,
+                        )
+                        .await
+                    && let Ok(files) = value.get::<gtk::gdk::FileList>()
+                {
+                    win.open_files(files.files());
+                    return;
+                }
+
+                let text = clipboard.read_text_future().await.ok().flatten();
+                let sources = text
+                    .map(|text| TorrentSource::from_text(&text))
+                    .unwrap_or_default();
+                if sources.is_empty() {
+                    win.show_toast(&gettext("The clipboard has no magnet link or torrent file"));
+                } else {
+                    win.show_add_dialog(sources);
+                }
+            }
+        ));
     }
 
     fn show_server_dialog(&self, server: Option<&Server>) {

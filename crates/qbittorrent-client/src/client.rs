@@ -6,7 +6,7 @@ use reqwest::header::REFERER;
 use reqwest::{Method, RequestBuilder, Response, StatusCode};
 use url::Url;
 
-use crate::{Error, MIN_SERVER_VERSION, MainData, Result, ServerInfo, Version};
+use crate::{AddTorrents, Error, MIN_SERVER_VERSION, MainData, Result, ServerInfo, Version};
 
 /// How to authenticate against the WebUI.
 #[derive(Clone, PartialEq, Eq)]
@@ -216,6 +216,43 @@ impl Client {
             .await
     }
 
+    /// Adds torrents from URLs (magnet or HTTP) and `.torrent` files.
+    ///
+    /// Succeeds if at least one torrent was added or is still being fetched.
+    pub async fn add(&self, torrents: &AddTorrents) -> Result<()> {
+        let response = match self
+            .execute(Method::POST, "torrents/add", |r| {
+                r.multipart(torrents.to_form())
+            })
+            .await
+        {
+            // 409: none added (WebAPI 2.14+); 415: invalid torrent file
+            Err(Error::Http { status, .. }) if matches!(status.as_u16(), 409 | 415) => {
+                return Err(Error::TorrentRejected);
+            }
+            result => result?,
+        };
+
+        let body = response.text().await.map_err(Error::from_reqwest)?;
+        // Before WebAPI 2.14 the body is "Ok." or "Fails."; since then, counts in JSON
+        if body.trim() == "Fails." {
+            return Err(Error::TorrentRejected);
+        }
+        if let Ok(result) = serde_json::from_str::<AddResult>(&body)
+            && result.success_count == 0
+            && result.pending_count == 0
+            && result.failure_count > 0
+        {
+            return Err(Error::TorrentRejected);
+        }
+        Ok(())
+    }
+
+    /// The server's default download folder.
+    pub async fn default_save_path(&self) -> Result<String> {
+        self.get_text("app/defaultSavePath").await
+    }
+
     /// Starts (resumes) torrents. Was `torrents/resume` before qBittorrent 5.0.
     pub async fn start(&self, hashes: &[String]) -> Result<()> {
         self.post_form("torrents/start", &[("hashes", join_hashes(hashes))])
@@ -392,6 +429,15 @@ impl Client {
 
         check_status(response).await
     }
+}
+
+#[derive(serde::Deserialize)]
+#[serde(default)]
+#[derive(Default)]
+struct AddResult {
+    success_count: u32,
+    failure_count: u32,
+    pending_count: u32,
 }
 
 /// Hashes are sent as a single parameter, separated by `|`.

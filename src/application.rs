@@ -37,6 +37,16 @@ mod imp {
             self.obj().main_window().present();
         }
 
+        /// Called for `parcels magnet:…`, `parcels file.torrent` and when the
+        /// desktop opens a magnet link or a torrent file with Parcels. With an
+        /// instance already running, the files are forwarded to it.
+        fn open(&self, files: &[gio::File], _hint: &str) {
+            debug!("AdwApplication<Application>::open");
+            let window = self.obj().main_window();
+            window.present();
+            window.open_files(files.to_vec());
+        }
+
         fn startup(&self) {
             debug!("AdwApplication<Application>::startup");
             self.parent_startup();
@@ -115,6 +125,7 @@ impl Application {
         self.set_accels_for_action("app.quit", &["<Control>q"]);
         self.set_accels_for_action("window.close", &["<Control>w"]);
         self.set_accels_for_action("win.search", &["<Control>f"]);
+        self.set_accels_for_action("win.open-torrent", &["<Control>o"]);
     }
 
     fn show_about_dialog(&self) {
@@ -148,6 +159,7 @@ impl Default for Application {
         glib::Object::builder()
             .property("application-id", *APP_ID)
             .property("resource-base-path", "/br/com/acauamontiel/Parcels/")
+            .property("flags", gio::ApplicationFlags::HANDLES_OPEN)
             .build()
     }
 }

@@ -383,3 +383,133 @@ async fn action_errors_are_reported() {
         "{err:?}"
     );
 }
+
+mod add {
+    use qbittorrent_client::{AddTorrents, ContentLayout, Credentials, Error, TorrentFileUpload};
+    use wiremock::matchers::{method, path};
+    use wiremock::{Mock, MockServer, Request, ResponseTemplate};
+
+    use super::client;
+
+    fn body(request: &Request) -> String {
+        String::from_utf8_lossy(&request.body).into_owned()
+    }
+
+    #[tokio::test]
+    async fn sends_urls_files_and_options_as_multipart() {
+        let server = MockServer::start().await;
+        Mock::given(method("POST"))
+            .and(path("/api/v2/torrents/add"))
+            .respond_with(ResponseTemplate::new(200).set_body_string(
+                r#"{"added_torrent_ids":["abc"],"failure_count":0,"pending_count":0,"success_count":1}"#,
+            ))
+            .expect(1)
+            .mount(&server)
+            .await;
+
+        let torrents = AddTorrents {
+            urls: vec![
+                "magnet:?xt=urn:btih:abc".into(),
+                "https://example.com/a.torrent".into(),
+            ],
+            files: vec![TorrentFileUpload {
+                file_name: "debian.torrent".into(),
+                data: b"d4:infodee".to_vec(),
+            }],
+            save_path: Some("/data/isos".into()),
+            category: Some("linux".into()),
+            tags: vec!["iso".into(), "weekend".into()],
+            stopped: true,
+            content_layout: Some(ContentLayout::Subfolder),
+        };
+        client(&server, "", Credentials::None)
+            .add(&torrents)
+            .await
+            .unwrap();
+
+        let requests = server.received_requests().await.unwrap();
+        let body = body(&requests[0]);
+        for expected in [
+            "name=\"urls\"\r\n\r\nmagnet:?xt=urn:btih:abc\nhttps://example.com/a.torrent\r\n",
+            "name=\"torrents\"; filename=\"debian.torrent\"\r\nContent-Type: application/x-bittorrent\r\n\r\nd4:infodee\r\n",
+            "name=\"savepath\"\r\n\r\n/data/isos\r\n",
+            "name=\"category\"\r\n\r\nlinux\r\n",
+            "name=\"tags\"\r\n\r\niso,weekend\r\n",
+            "name=\"stopped\"\r\n\r\ntrue\r\n",
+            "name=\"contentLayout\"\r\n\r\nSubfolder\r\n",
+        ] {
+            assert!(body.contains(expected), "missing {expected:?} in {body}");
+        }
+    }
+
+    #[tokio::test]
+    async fn omits_default_options() {
+        let server = MockServer::start().await;
+        Mock::given(path("/api/v2/torrents/add"))
+            .respond_with(ResponseTemplate::new(200).set_body_string("Ok."))
+            .mount(&server)
+            .await;
+
+        let torrents = AddTorrents {
+            urls: vec!["magnet:?xt=urn:btih:abc".into()],
+            ..Default::default()
+        };
+        client(&server, "", Credentials::None)
+            .add(&torrents)
+            .await
+            .unwrap();
+
+        let body = body(&server.received_requests().await.unwrap()[0]);
+        for absent in ["savepath", "category", "tags", "contentLayout", "torrents"] {
+            assert!(
+                !body.contains(&format!("name=\"{absent}\"")),
+                "unexpected {absent}"
+            );
+        }
+        assert!(body.contains("name=\"stopped\"\r\n\r\nfalse"));
+    }
+
+    #[tokio::test]
+    async fn pending_magnets_are_a_success() {
+        let server = MockServer::start().await;
+        Mock::given(path("/api/v2/torrents/add"))
+            .respond_with(ResponseTemplate::new(202).set_body_string(
+                r#"{"added_torrent_ids":[],"failure_count":0,"pending_count":1,"success_count":0}"#,
+            ))
+            .mount(&server)
+            .await;
+
+        let torrents = AddTorrents {
+            urls: vec!["https://example.com/a.torrent".into()],
+            ..Default::default()
+        };
+        client(&server, "", Credentials::None)
+            .add(&torrents)
+            .await
+            .unwrap();
+    }
+
+    #[tokio::test]
+    async fn rejections_in_every_server_version() {
+        for response in [
+            ResponseTemplate::new(200).set_body_string("Fails."),
+            ResponseTemplate::new(409),
+            ResponseTemplate::new(415).set_body_string("Error: 'x' is not a valid torrent file."),
+        ] {
+            let server = MockServer::start().await;
+            Mock::given(path("/api/v2/torrents/add"))
+                .respond_with(response)
+                .mount(&server)
+                .await;
+            let torrents = AddTorrents {
+                urls: vec!["magnet:?xt=urn:btih:abc".into()],
+                ..Default::default()
+            };
+            let err = client(&server, "", Credentials::None)
+                .add(&torrents)
+                .await
+                .unwrap_err();
+            assert!(matches!(err, Error::TorrentRejected), "{err:?}");
+        }
+    }
+}
