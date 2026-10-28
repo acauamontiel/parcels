@@ -1,0 +1,156 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $ParcelsServerDialog: Adw.Dialog {
+  content-width: 480;
+  default-widget: save_button;
+  focus-widget: url_row;
+
+  child: Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-start-title-buttons: false;
+      show-end-title-buttons: false;
+
+      [start]
+      Button {
+        label: _("_Cancel");
+        use-underline: true;
+        can-shrink: true;
+        clicked => $on_cancel_clicked() swapped;
+      }
+
+      [end]
+      Button save_button {
+        use-underline: true;
+        can-shrink: true;
+        sensitive: false;
+        clicked => $on_save_clicked() swapped;
+
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+
+    content: Adw.PreferencesPage {
+      Adw.PreferencesGroup {
+        title: _("Server");
+
+        Adw.EntryRow url_row {
+          title: _("Address");
+          input-purpose: url;
+          changed => $on_input_changed() swapped;
+        }
+
+        Adw.EntryRow name_row {
+          title: _("Name (Optional)");
+        }
+
+        Adw.SwitchRow invalid_certs_row {
+          title: _("Accept Invalid Certificates");
+          subtitle: _("Only for servers with a self-signed certificate. Other devices on the network could impersonate this server.");
+        }
+      }
+
+      Adw.PreferencesGroup auth_group {
+        title: _("Authentication");
+
+        header-suffix: Adw.ToggleGroup auth_toggle {
+          valign: center;
+          notify::active-name => $on_auth_changed() swapped;
+
+          Adw.Toggle {
+            name: "password";
+            label: _("Password");
+          }
+
+          Adw.Toggle {
+            name: "api-key";
+            label: _("API Key");
+          }
+        };
+
+        Adw.EntryRow username_row {
+          title: _("Username");
+          changed => $on_input_changed() swapped;
+        }
+
+        Adw.PasswordEntryRow password_row {
+          title: _("Password");
+          changed => $on_input_changed() swapped;
+        }
+
+        Adw.PasswordEntryRow api_key_row {
+          title: _("API Key");
+          visible: false;
+          changed => $on_input_changed() swapped;
+        }
+      }
+
+      Adw.PreferencesGroup {
+        Adw.ButtonRow test_row {
+          title: _("_Test Connection");
+          use-underline: true;
+          sensitive: false;
+          activated => $on_test_activated() swapped;
+        }
+
+        Adw.ActionRow result_row {
+          visible: false;
+          title-lines: 0;
+          title-selectable: true;
+
+          [prefix]
+          Stack result_icon {
+            StackPage {
+              name: "testing";
+
+              child: Adw.Spinner {};
+            }
+
+            StackPage {
+              name: "success";
+
+              child: Image {
+                icon-name: "object-select-symbolic";
+                accessible-role: presentation;
+
+                styles [
+                  "success",
+                ]
+              };
+            }
+
+            StackPage {
+              name: "error";
+
+              child: Image {
+                icon-name: "dialog-error-symbolic";
+                accessible-role: presentation;
+
+                styles [
+                  "error",
+                ]
+              };
+            }
+          }
+        }
+      }
+
+      Adw.PreferencesGroup remove_group {
+        visible: false;
+
+        Adw.ButtonRow {
+          title: _("_Remove Server");
+          use-underline: true;
+          activated => $on_remove_activated() swapped;
+
+          styles [
+            "destructive-action",
+          ]
+        }
+      }
+    };
+  };
+}

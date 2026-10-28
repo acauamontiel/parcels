@@ -35,6 +35,26 @@ flatpak run br.com.acauamontiel.Parcels.Devel
 docker compose run --rm flatpak build-aux/dev.sh lint
 ```
 
+### Testing against a real server
+
+`docker-compose.yml` has a throwaway qBittorrent for testing, at
+<http://localhost:8080> with user `admin` and password `adminadmin`. Pick the
+version with `QBT_VERSION` (an image tag of `qbittorrentofficial/qbittorrent-nox`):
+
+```sh
+QBT_VERSION=5.0.0-1 docker compose --profile test up -d qbittorrent
+```
+
+The client crate has optional integration tests that run when `QBIT_URL` is
+set, using `QBIT_USER` and `QBIT_PASS` and/or `QBIT_API_KEY`:
+
+```sh
+docker compose run --rm -e QBIT_URL=http://parcels-qbittorrent:8080 -e QBIT_USER=admin -e QBIT_PASS=adminadmin \
+    flatpak build-aux/dev.sh cargo test -p qbittorrent-client --test live
+```
+
+Never commit real credentials.
+
 You can also open the project in [GNOME Builder](https://apps.gnome.org/Builder/),
 which picks up the Flatpak manifest in `build-aux/`.
 

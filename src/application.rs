@@ -6,13 +6,20 @@ use adw::subclass::prelude::*;
 use gtk::{gio, glib};
 
 use crate::config::{APP_ID, PKGDATADIR, PROFILE, VERSION};
+use crate::model::ServerManager;
+use crate::session::Session;
 use crate::widgets::Window;
 
 mod imp {
+    use std::cell::OnceCell;
+
     use super::*;
 
     #[derive(Debug, Default)]
-    pub struct Application;
+    pub struct Application {
+        pub server_manager: OnceCell<ServerManager>,
+        pub session: OnceCell<Session>,
+    }
 
     #[glib::object_subclass]
     impl ObjectSubclass for Application {
@@ -40,6 +47,7 @@ mod imp {
 
             app.setup_gactions();
             app.setup_accels();
+            app.setup_session();
         }
     }
 
@@ -54,6 +62,29 @@ glib::wrapper! {
 }
 
 impl Application {
+    pub fn server_manager(&self) -> ServerManager {
+        self.imp()
+            .server_manager
+            .get_or_init(ServerManager::default)
+            .clone()
+    }
+
+    pub fn session(&self) -> Session {
+        self.imp().session.get_or_init(Session::default).clone()
+    }
+
+    /// Connects to the active server now and whenever it changes.
+    fn setup_session(&self) {
+        let manager = self.server_manager();
+        let session = self.session();
+        manager.connect_active_server_notify(glib::clone!(
+            #[weak]
+            session,
+            move |manager| session.connect_to(manager.active_server())
+        ));
+        session.connect_to(manager.active_server());
+    }
+
     /// Returns the main window, creating it on first use.
     fn main_window(&self) -> Window {
         self.windows()

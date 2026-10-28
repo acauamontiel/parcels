@@ -1,0 +1,21 @@
+[package]
+name = "qbittorrent-client"
+version = "0.1.0"
+authors = ["Acauã Montiel <acaua@engaged.com.br>"]
+edition = "2024"
+license = "GPL-3.0-or-later"
+description = "Async client for the qBittorrent WebUI API (v5.0 and later)"
+publish = false
+
+[dependencies]
+reqwest = { version = "0.13", default-features = false, features = ["rustls", "cookies", "form", "query", "json", "multipart", "http2", "charset"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tracing = "0.1"
+tokio = { version = "1", features = ["sync"] }
+url = "2"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"

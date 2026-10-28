@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 01:41+0000\n"
+"POT-Creation-Date: 2026-10-28 03:21+0000\n"
 "PO-Revision-Date: 2026-10-28 01:41+0000\n"
 "Last-Translator: Acauã Montiel\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -19,13 +19,12 @@ msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:2
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
-#: data/resources/ui/window.blp:12 src/application.rs:90 src/main.rs:22
+#: data/resources/ui/window.blp:19 src/application.rs:121 src/main.rs:26
 msgid "Parcels"
 msgstr "Parcels"
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:3
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:8
-#: data/resources/ui/window.blp:26
 msgid "Remote control for qBittorrent"
 msgstr "Controle remoto para o qBittorrent"
 
@@ -43,6 +42,26 @@ msgid "Window height"
 msgstr "Altura da janela"
 
 #: data/br.com.acauamontiel.Parcels.gschema.xml.in:14
+msgid "Saved servers"
+msgstr "Servidores salvos"
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:15
+msgid ""
+"Each entry has the keys id, name, url, auth-method, username and accept-"
+"invalid-certs. Passwords and API keys are kept in the keyring."
+msgstr ""
+"Cada item tem as chaves id, name, url, auth-method, username e accept-"
+"invalid-certs. Senhas e chaves de API ficam no chaveiro."
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:19
+msgid "Active server"
+msgstr "Servidor ativo"
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:20
+msgid "The id of the server Parcels connects to."
+msgstr "O id do servidor ao qual o Parcels se conecta."
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:24
 msgid "Window maximized state"
 msgstr "Estado maximizado da janela"
 
@@ -58,6 +77,60 @@ msgstr ""
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:14
 msgid "Parcels is not affiliated with the qBittorrent project."
 msgstr "O Parcels não tem vínculo com o projeto qBittorrent."
+
+#: data/resources/ui/server-dialog.blp:17 src/widgets/server_dialog.rs:370
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: data/resources/ui/server-dialog.blp:38
+msgid "Server"
+msgstr "Servidor"
+
+#: data/resources/ui/server-dialog.blp:41
+msgid "Address"
+msgstr "Endereço"
+
+#: data/resources/ui/server-dialog.blp:47
+msgid "Name (Optional)"
+msgstr "Nome (opcional)"
+
+#: data/resources/ui/server-dialog.blp:51
+msgid "Accept Invalid Certificates"
+msgstr "Aceitar certificados inválidos"
+
+#: data/resources/ui/server-dialog.blp:52
+msgid ""
+"Only for servers with a self-signed certificate. Other devices on the "
+"network could impersonate this server."
+msgstr ""
+"Só para servidores com certificado autoassinado. Outros dispositivos na rede "
+"poderiam se passar por este servidor."
+
+#: data/resources/ui/server-dialog.blp:57
+msgid "Authentication"
+msgstr "Autenticação"
+
+#: data/resources/ui/server-dialog.blp:65
+#: data/resources/ui/server-dialog.blp:80
+msgid "Password"
+msgstr "Senha"
+
+#: data/resources/ui/server-dialog.blp:70
+#: data/resources/ui/server-dialog.blp:85
+msgid "API Key"
+msgstr "Chave de API"
+
+#: data/resources/ui/server-dialog.blp:75
+msgid "Username"
+msgstr "Usuário"
+
+#: data/resources/ui/server-dialog.blp:93
+msgid "_Test Connection"
+msgstr "_Testar conexão"
+
+#: data/resources/ui/server-dialog.blp:145
+msgid "_Remove Server"
+msgstr "_Remover servidor"
 
 #: data/resources/ui/shortcuts-dialog.blp:6
 msgid "General"
@@ -75,23 +148,203 @@ msgstr "Fechar janela"
 msgid "Quit"
 msgstr "Sair"
 
-#: data/resources/ui/window.blp:19
+#: data/resources/ui/window.blp:15
+msgid "Servers"
+msgstr "Servidores"
+
+#: data/resources/ui/window.blp:26
 msgid "Main Menu"
 msgstr "Menu principal"
 
-#: data/resources/ui/window.blp:25
-msgid "Welcome to Parcels"
-msgstr "Boas-vindas ao Parcels"
+#: data/resources/ui/window.blp:38
+msgid "No Servers"
+msgstr "Nenhum servidor"
 
-#: data/resources/ui/window.blp:34
+#: data/resources/ui/window.blp:39
+msgid ""
+"Add a qBittorrent server with the WebUI turned on to manage its torrents "
+"from here"
+msgstr ""
+"Adicione um servidor qBittorrent com a WebUI ativada para gerenciar os "
+"torrents dele daqui"
+
+#: data/resources/ui/window.blp:42
+msgid "_Add Server"
+msgstr "_Adicionar servidor"
+
+#: data/resources/ui/window.blp:60 src/widgets/server_dialog.rs:268
+msgid "Connecting…"
+msgstr "Conectando…"
+
+#: data/resources/ui/window.blp:73
+msgid "Unable to Connect"
+msgstr "Não foi possível conectar"
+
+#: data/resources/ui/window.blp:81
+msgid "_Try Again"
+msgstr "_Tentar de novo"
+
+#: data/resources/ui/window.blp:93
+msgid "_Edit Server"
+msgstr "_Editar servidor"
+
+#: data/resources/ui/window.blp:110
+msgid "Connected"
+msgstr "Conectado"
+
+#: data/resources/ui/window.blp:121
 msgid "_Keyboard Shortcuts"
 msgstr "_Atalhos de teclado"
 
-#: data/resources/ui/window.blp:39
+#: data/resources/ui/window.blp:126
 msgid "_About Parcels"
 msgstr "_Sobre o Parcels"
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.rs:99
+#: src/application.rs:130
 msgid "translator-credits"
 msgstr "Acauã Montiel"
+
+#. Translators: Label of the keyring item; {} is the server name
+#: src/secrets.rs:51
+#, rust-format
+msgid "Parcels server “{}”"
+msgstr "Servidor “{}” do Parcels"
+
+#: src/session.rs:146 src/widgets/server_dialog.rs:145
+msgid "Could not read the password from the keyring"
+msgstr "Não foi possível ler a senha do chaveiro"
+
+#: src/session.rs:172
+msgid "The server address is not valid"
+msgstr "O endereço do servidor não é válido"
+
+#: src/session.rs:174
+msgid ""
+"Could not reach the server. Check the address and your network connection."
+msgstr ""
+"Não foi possível alcançar o servidor. Verifique o endereço e a sua conexão "
+"de rede."
+
+#: src/session.rs:177
+msgid ""
+"The server certificate is not trusted. If this server uses a self-signed "
+"certificate, turn on “Accept Invalid Certificates” in the server settings."
+msgstr ""
+"O certificado do servidor não é confiável. Se este servidor usa um "
+"certificado autoassinado, ative “Aceitar certificados inválidos” nas "
+"configurações do servidor."
+
+#: src/session.rs:179
+msgid "Invalid username or password"
+msgstr "Usuário ou senha inválidos"
+
+#: src/session.rs:181
+msgid ""
+"This device is temporarily banned by qBittorrent after too many failed login "
+"attempts. Try again later."
+msgstr ""
+"Este dispositivo foi bloqueado temporariamente pelo qBittorrent depois de "
+"muitas tentativas de login sem sucesso. Tente de novo mais tarde."
+
+#: src/session.rs:185
+msgid "The API key was rejected. API keys require qBittorrent 5.2 or later."
+msgstr ""
+"A chave de API foi recusada. Chaves de API exigem o qBittorrent 5.2 ou mais "
+"recente."
+
+#: src/session.rs:187
+msgid "The server requires a username and password"
+msgstr "O servidor exige usuário e senha"
+
+#: src/session.rs:189
+msgid "No qBittorrent WebUI was found at this address"
+msgstr "Nenhuma WebUI do qBittorrent foi encontrada neste endereço"
+
+#. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
+#: src/session.rs:192
+#, rust-format
+msgid ""
+"qBittorrent {found} is not supported. Parcels requires version {minimum} or "
+"later."
+msgstr ""
+"O qBittorrent {found} não é compatível. O Parcels exige a versão {minimum} "
+"ou mais recente."
+
+#. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
+#: src/session.rs:198
+#, rust-format
+msgid "The server returned an unexpected error ({})"
+msgstr "O servidor retornou um erro inesperado ({})"
+
+#: src/session.rs:201
+msgid "The server sent a response Parcels could not understand"
+msgstr "O servidor enviou uma resposta que o Parcels não conseguiu entender"
+
+#. Translators: {} is a list of example addresses
+#: src/widgets/server_dialog.rs:90
+#, rust-format
+msgid "For example: {}"
+msgstr "Por exemplo: {}"
+
+#: src/widgets/server_dialog.rs:101
+msgid "Edit Server"
+msgstr "Editar servidor"
+
+#: src/widgets/server_dialog.rs:102
+msgid "_Save"
+msgstr "_Salvar"
+
+#: src/widgets/server_dialog.rs:107
+msgid "Add Server"
+msgstr "Adicionar servidor"
+
+#: src/widgets/server_dialog.rs:108
+msgid "_Add"
+msgstr "_Adicionar"
+
+#: src/widgets/server_dialog.rs:241
+msgid "Requires qBittorrent 5.2 or later. Generate a key in the WebUI options."
+msgstr ""
+"Exige o qBittorrent 5.2 ou mais recente. Gere uma chave nas opções da WebUI."
+
+#. Translators: {} is a version number, e.g. 5.1.2
+#: src/widgets/server_dialog.rs:280
+#, rust-format
+msgid "Connected to qBittorrent {}"
+msgstr "Conectado ao qBittorrent {}"
+
+#: src/widgets/server_dialog.rs:316
+msgid "Could not save the password in the keyring"
+msgstr "Não foi possível salvar a senha no chaveiro"
+
+#. Translators: {} is the server name
+#: src/widgets/server_dialog.rs:362
+#, rust-format
+msgid "Remove “{}”?"
+msgstr "Remover “{}”?"
+
+#: src/widgets/server_dialog.rs:364
+msgid ""
+"Parcels will forget this server and its password. Torrents on the server are "
+"not affected."
+msgstr ""
+"O Parcels vai esquecer este servidor e a senha dele. Os torrents no servidor "
+"não são afetados."
+
+#: src/widgets/server_dialog.rs:371
+msgid "_Remove"
+msgstr "_Remover"
+
+#: src/widgets/window.rs:208
+msgid "_Add Server…"
+msgstr "_Adicionar servidor…"
+
+#: src/widgets/window.rs:209
+msgid "_Edit Server…"
+msgstr "_Editar servidor…"
+
+#: src/widgets/window.rs:245
+#, rust-format
+msgid "qBittorrent {}"
+msgstr "qBittorrent {}"

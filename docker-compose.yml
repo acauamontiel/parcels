@@ -5,6 +5,11 @@
 # local builds identical to CI. See build-aux/dev.sh for the available commands:
 #
 #   docker compose run --rm flatpak build-aux/dev.sh build
+#
+# The `qbittorrent` service is a throwaway server for manual and integration
+# tests (WebUI at http://localhost:8080, user admin, password adminadmin):
+#
+#   docker compose --profile test up -d qbittorrent
 services:
   flatpak:
     image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51
@@ -16,6 +21,25 @@ services:
       - .:/src
       # Seeded from the image on first use; keeps SDK extensions between runs
       - flatpak-system:/var/lib/flatpak
+
+  qbittorrent:
+    image: qbittorrentofficial/qbittorrent-nox:${QBT_VERSION:-5.3.0-2}
+    container_name: parcels-qbittorrent
+    profiles: [test]
+    environment:
+      QBT_LEGAL_NOTICE: confirm
+    ports:
+      - 8080:8080
+    volumes:
+      - ./build-aux/qbittorrent-test/qBittorrent.conf:/fixture/qBittorrent.conf:ro
+    # Start from a known profile on every run, with fixed credentials
+    entrypoint:
+      - /sbin/tini
+      - -g
+      - --
+      - sh
+      - -c
+      - mkdir -p /config/qBittorrent/config && cp /fixture/qBittorrent.conf /config/qBittorrent/config/ && exec /entrypoint.sh
 
 volumes:
   flatpak-system:

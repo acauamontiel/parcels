@@ -9,6 +9,16 @@
       <default>640</default>
       <summary>Window height</summary>
     </key>
+    <key name="servers" type="aa{sv}">
+      <default>[]</default>
+      <summary>Saved servers</summary>
+      <description>Each entry has the keys id, name, url, auth-method, username and accept-invalid-certs. Passwords and API keys are kept in the keyring.</description>
+    </key>
+    <key name="active-server" type="s">
+      <default>""</default>
+      <summary>Active server</summary>
+      <description>The id of the server Parcels connects to.</description>
+    </key>
     <key name="is-maximized" type="b">
       <default>false</default>
       <summary>Window maximized state</summary>

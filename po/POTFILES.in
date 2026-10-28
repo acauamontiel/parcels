@@ -1,7 +1,12 @@
 data/br.com.acauamontiel.Parcels.desktop.in.in
 data/br.com.acauamontiel.Parcels.gschema.xml.in
 data/br.com.acauamontiel.Parcels.metainfo.xml.in.in
+data/resources/ui/server-dialog.blp
 data/resources/ui/shortcuts-dialog.blp
 data/resources/ui/window.blp
 src/application.rs
 src/main.rs
+src/secrets.rs
+src/session.rs
+src/widgets/server_dialog.rs
+src/widgets/window.rs

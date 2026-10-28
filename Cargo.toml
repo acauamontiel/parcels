@@ -6,6 +6,9 @@ edition = "2024"
 license = "GPL-3.0-or-later"
 publish = false
 
+[workspace]
+members = ["crates/qbittorrent-client"]
+
 [profile.release]
 lto = true
 codegen-units = 1
@@ -14,5 +17,8 @@ codegen-units = 1
 adw = { package = "libadwaita", version = "0.9", features = ["v1_10"] }
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 gtk = { package = "gtk4", version = "0.11", features = ["v4_24"] }
+oo7 = { version = "0.6", default-features = false, features = ["tokio", "native_crypto"] }
+qbittorrent-client = { path = "crates/qbittorrent-client" }
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "time"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }

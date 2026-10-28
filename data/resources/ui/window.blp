@@ -5,25 +5,112 @@ template $ParcelsWindow: Adw.ApplicationWindow {
   width-request: 360;
   height-request: 294;
 
-  content: Adw.ToolbarView {
-    [top]
-    Adw.HeaderBar header_bar {
-      title-widget: Adw.WindowTitle window_title {
-        title: _("Parcels");
-      };
+  content: Adw.ToastOverlay toast_overlay {
+    child: Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar header_bar {
+        [start]
+        MenuButton server_button {
+          icon-name: "network-server-symbolic";
+          tooltip-text: _("Servers");
+        }
 
-      [end]
-      MenuButton {
-        primary: true;
-        icon-name: "open-menu-symbolic";
-        tooltip-text: _("Main Menu");
-        menu-model: primary_menu;
+        title-widget: Adw.WindowTitle window_title {
+          title: _("Parcels");
+        };
+
+        [end]
+        MenuButton {
+          primary: true;
+          icon-name: "open-menu-symbolic";
+          tooltip-text: _("Main Menu");
+          menu-model: primary_menu;
+        }
       }
-    }
 
-    content: Adw.StatusPage status_page {
-      title: _("Welcome to Parcels");
-      description: _("Remote control for qBittorrent");
+      content: Stack stack {
+        transition-type: crossfade;
+
+        StackPage {
+          name: "no-servers";
+
+          child: Adw.StatusPage no_servers_page {
+            title: _("No Servers");
+            description: _("Add a qBittorrent server with the WebUI turned on to manage its torrents from here");
+
+            child: Button {
+              label: _("_Add Server");
+              use-underline: true;
+              can-shrink: true;
+              halign: center;
+              action-name: "win.add-server";
+
+              styles [
+                "pill",
+                "suggested-action",
+              ]
+            };
+          };
+        }
+
+        StackPage {
+          name: "connecting";
+
+          child: Adw.StatusPage connecting_page {
+            title: _("Connecting…");
+
+            paintable: Adw.SpinnerPaintable {
+              widget: connecting_page;
+            };
+          };
+        }
+
+        StackPage {
+          name: "failed";
+
+          child: Adw.StatusPage failed_page {
+            icon-name: "network-offline-symbolic";
+            title: _("Unable to Connect");
+
+            child: Box {
+              orientation: vertical;
+              spacing: 12;
+              halign: center;
+
+              Button {
+                label: _("_Try Again");
+                use-underline: true;
+                can-shrink: true;
+                action-name: "win.reconnect";
+
+                styles [
+                  "pill",
+                  "suggested-action",
+                ]
+              }
+
+              Button {
+                label: _("_Edit Server");
+                use-underline: true;
+                can-shrink: true;
+                action-name: "win.edit-server";
+
+                styles [
+                  "pill",
+                ]
+              }
+            };
+          };
+        }
+
+        StackPage {
+          name: "connected";
+
+          child: Adw.StatusPage connected_page {
+            title: _("Connected");
+          };
+        }
+      };
     };
   };
 }

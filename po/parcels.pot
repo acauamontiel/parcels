@@ -8,24 +8,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 01:41+0000\n"
+"POT-Creation-Date: 2026-10-28 03:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:2
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
-#: data/resources/ui/window.blp:12 src/application.rs:90 src/main.rs:22
+#: data/resources/ui/window.blp:19 src/application.rs:121 src/main.rs:26
 msgid "Parcels"
 msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:3
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:8
-#: data/resources/ui/window.blp:26
 msgid "Remote control for qBittorrent"
 msgstr ""
 
@@ -43,6 +42,24 @@ msgid "Window height"
 msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.gschema.xml.in:14
+msgid "Saved servers"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:15
+msgid ""
+"Each entry has the keys id, name, url, auth-method, username and accept-"
+"invalid-certs. Passwords and API keys are kept in the keyring."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:19
+msgid "Active server"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:20
+msgid "The id of the server Parcels connects to."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:24
 msgid "Window maximized state"
 msgstr ""
 
@@ -54,6 +71,58 @@ msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:14
 msgid "Parcels is not affiliated with the qBittorrent project."
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:17 src/widgets/server_dialog.rs:370
+msgid "_Cancel"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:38
+msgid "Server"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:41
+msgid "Address"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:47
+msgid "Name (Optional)"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:51
+msgid "Accept Invalid Certificates"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:52
+msgid ""
+"Only for servers with a self-signed certificate. Other devices on the "
+"network could impersonate this server."
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:57
+msgid "Authentication"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:65
+#: data/resources/ui/server-dialog.blp:80
+msgid "Password"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:70
+#: data/resources/ui/server-dialog.blp:85
+msgid "API Key"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:75
+msgid "Username"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:93
+msgid "_Test Connection"
+msgstr ""
+
+#: data/resources/ui/server-dialog.blp:145
+msgid "_Remove Server"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:6
@@ -72,23 +141,187 @@ msgstr ""
 msgid "Quit"
 msgstr ""
 
-#: data/resources/ui/window.blp:19
+#: data/resources/ui/window.blp:15
+msgid "Servers"
+msgstr ""
+
+#: data/resources/ui/window.blp:26
 msgid "Main Menu"
 msgstr ""
 
-#: data/resources/ui/window.blp:25
-msgid "Welcome to Parcels"
-msgstr ""
-
-#: data/resources/ui/window.blp:34
-msgid "_Keyboard Shortcuts"
+#: data/resources/ui/window.blp:38
+msgid "No Servers"
 msgstr ""
 
 #: data/resources/ui/window.blp:39
+msgid ""
+"Add a qBittorrent server with the WebUI turned on to manage its torrents "
+"from here"
+msgstr ""
+
+#: data/resources/ui/window.blp:42
+msgid "_Add Server"
+msgstr ""
+
+#: data/resources/ui/window.blp:60 src/widgets/server_dialog.rs:268
+msgid "Connecting…"
+msgstr ""
+
+#: data/resources/ui/window.blp:73
+msgid "Unable to Connect"
+msgstr ""
+
+#: data/resources/ui/window.blp:81
+msgid "_Try Again"
+msgstr ""
+
+#: data/resources/ui/window.blp:93
+msgid "_Edit Server"
+msgstr ""
+
+#: data/resources/ui/window.blp:110
+msgid "Connected"
+msgstr ""
+
+#: data/resources/ui/window.blp:121
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: data/resources/ui/window.blp:126
 msgid "_About Parcels"
 msgstr ""
 
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.rs:99
+#: src/application.rs:130
 msgid "translator-credits"
+msgstr ""
+
+#. Translators: Label of the keyring item; {} is the server name
+#: src/secrets.rs:51
+#, rust-format
+msgid "Parcels server “{}”"
+msgstr ""
+
+#: src/session.rs:146 src/widgets/server_dialog.rs:145
+msgid "Could not read the password from the keyring"
+msgstr ""
+
+#: src/session.rs:172
+msgid "The server address is not valid"
+msgstr ""
+
+#: src/session.rs:174
+msgid ""
+"Could not reach the server. Check the address and your network connection."
+msgstr ""
+
+#: src/session.rs:177
+msgid ""
+"The server certificate is not trusted. If this server uses a self-signed "
+"certificate, turn on “Accept Invalid Certificates” in the server settings."
+msgstr ""
+
+#: src/session.rs:179
+msgid "Invalid username or password"
+msgstr ""
+
+#: src/session.rs:181
+msgid ""
+"This device is temporarily banned by qBittorrent after too many failed login "
+"attempts. Try again later."
+msgstr ""
+
+#: src/session.rs:185
+msgid "The API key was rejected. API keys require qBittorrent 5.2 or later."
+msgstr ""
+
+#: src/session.rs:187
+msgid "The server requires a username and password"
+msgstr ""
+
+#: src/session.rs:189
+msgid "No qBittorrent WebUI was found at this address"
+msgstr ""
+
+#. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
+#: src/session.rs:192
+#, rust-format
+msgid ""
+"qBittorrent {found} is not supported. Parcels requires version {minimum} or "
+"later."
+msgstr ""
+
+#. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
+#: src/session.rs:198
+#, rust-format
+msgid "The server returned an unexpected error ({})"
+msgstr ""
+
+#: src/session.rs:201
+msgid "The server sent a response Parcels could not understand"
+msgstr ""
+
+#. Translators: {} is a list of example addresses
+#: src/widgets/server_dialog.rs:90
+#, rust-format
+msgid "For example: {}"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:101
+msgid "Edit Server"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:102
+msgid "_Save"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:107
+msgid "Add Server"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:108
+msgid "_Add"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:241
+msgid "Requires qBittorrent 5.2 or later. Generate a key in the WebUI options."
+msgstr ""
+
+#. Translators: {} is a version number, e.g. 5.1.2
+#: src/widgets/server_dialog.rs:280
+#, rust-format
+msgid "Connected to qBittorrent {}"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:316
+msgid "Could not save the password in the keyring"
+msgstr ""
+
+#. Translators: {} is the server name
+#: src/widgets/server_dialog.rs:362
+#, rust-format
+msgid "Remove “{}”?"
+msgstr ""
+
+#: src/widgets/server_dialog.rs:364
+msgid ""
+"Parcels will forget this server and its password. Torrents on the server are "
+"not affected."
+msgstr ""
+
+#: src/widgets/server_dialog.rs:371
+msgid "_Remove"
+msgstr ""
+
+#: src/widgets/window.rs:208
+msgid "_Add Server…"
+msgstr ""
+
+#: src/widgets/window.rs:209
+msgid "_Edit Server…"
+msgstr ""
+
+#: src/widgets/window.rs:245
+#, rust-format
+msgid "qBittorrent {}"
 msgstr ""

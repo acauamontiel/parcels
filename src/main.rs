@@ -1,5 +1,9 @@
 mod application;
 mod config;
+mod model;
+mod runtime;
+mod secrets;
+mod session;
 mod widgets;
 
 use gettextrs::{LocaleCategory, gettext};

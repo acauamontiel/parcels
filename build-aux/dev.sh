@@ -7,6 +7,7 @@
 #   build       Build the Devel Flatpak and run its tests (cargo test, clippy, fmt, validators)
 #   bundle      Build and export parcels-devel.flatpak, installable on the host
 #   lint        Run flatpak-builder-lint on the manifest
+#   cargo ARGS  Run cargo inside the GNOME SDK (e.g. `cargo clippy --all-targets`)
 #   screenshot  Start the built app in a headless X server and save a screenshot
 set -eu
 
@@ -41,6 +42,25 @@ case "${1:-}" in
             "$REPO_DIR" parcels-devel.flatpak "$APP_ID"
         echo "Install on the host with: flatpak install --user parcels-devel.flatpak"
         ;;
+    cargo)
+        shift
+        # Forward the optional integration test settings (crates/qbittorrent-client/tests/live.rs)
+        set -- cargo "$@"
+        for var in QBIT_URL QBIT_USER QBIT_PASS QBIT_API_KEY; do
+            eval "value=\${$var:-}"
+            [ -n "$value" ] && set -- "$var=$value" "$@"
+        done
+        flatpak run \
+            --filesystem="$PWD" \
+            --share=network \
+            --env=CARGO_HOME="$PWD/$FLATPAK_DIR/cargo-home" \
+            --env=CARGO_TARGET_DIR="$PWD/target" \
+            --env=PATH=/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm22/bin:/app/bin:/usr/bin \
+            --env=HTTPS_PROXY="${HTTPS_PROXY:-}" \
+            --cwd="$PWD" \
+            --command=env \
+            org.gnome.Sdk//51 "$@"
+        ;;
     lint)
         flatpak-builder-lint manifest "$MANIFEST"
         ;;
@@ -59,7 +79,7 @@ case "${1:-}" in
         echo "Screenshot saved to $out"
         ;;
     *)
-        sed -n '2,13p' "$0"
+        sed -n '2,14p' "$0"
         exit 1
         ;;
 esac
