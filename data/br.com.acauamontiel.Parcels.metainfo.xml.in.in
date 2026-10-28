@@ -67,8 +67,8 @@
     <keyword>remote</keyword>
   </keywords>
   <branding>
-    <color type="primary" scheme_preference="light">#99c1f1</color>
-    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+    <color type="primary" scheme_preference="light">#f2dfc8</color>
+    <color type="primary" scheme_preference="dark">#5e3f26</color>
   </branding>
   <releases>
     <release version="0.1.0" date="2026-10-28">

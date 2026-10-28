@@ -17,10 +17,10 @@ Legend: ✅ done · ⚠️ partly done or needs checking · ❌ missing
 | Secrets | ✅ | Passwords and API keys in the keyring (oo7: Secret portal or Secret Service), never in GSettings |
 | No telemetry or tracking | ✅ | The only network traffic goes to the configured servers |
 | Name and branding | ✅ | "Parcels" doesn't use the qBittorrent trademark; "not affiliated" is stated in the metainfo and About |
-| Application icon | ❌ | Placeholder. Needs a design following the [GNOME app icon guidelines](https://developer.gnome.org/hig/guidelines/app-icons.html), plus a matching symbolic icon |
+| Application icon | ⚠️ | A parcel with a download badge, drawn on the 128 px grid with the GNOME palette per the [app icon guidelines](https://developer.gnome.org/hig/guidelines/app-icons.html), with symbolic and Devel variants. Worth a review by the GNOME design team before applying |
 | AppStream metainfo | ⚠️ | Complete and valid with `appstreamcli validate --pedantic`. Screenshot URLs point to `main`, which doesn't exist yet |
-| Screenshots | ⚠️ | In `data/screenshots/`, taken from the release build with the default style. Retake them once the icon is final |
-| Brand colors | ⚠️ | Set, but chosen for the placeholder icon |
+| Screenshots | ⚠️ | In `data/screenshots/`, taken from the release build with the default style. They resolve once `main` exists |
+| Brand colors | ✅ | Light cardboard (`#f2dfc8`) and dark brown (`#5e3f26`), matching the icon |
 | Release notes | ✅ | In the metainfo, shown by GNOME Software and the About dialog |
 | Human Interface Guidelines | ⚠️ | libadwaita patterns throughout (split view, navigation view, dialogs, toasts, banners, preferences). Needs a review by a GNOME designer |
 | Adaptive layout | ✅ | Usable from 360×294 px: sidebar collapses below 640 sp, details tabs move to a bottom bar below 550 sp |
@@ -35,7 +35,7 @@ Legend: ✅ done · ⚠️ partly done or needs checking · ❌ missing
 
 ## Before submitting to Flathub
 
-1. Replace the placeholder icon (and retake the screenshots with it).
+1. Optionally, have the icon reviewed by the GNOME design team.
 2. Merge into `main` so the screenshot URLs in the metainfo resolve.
 3. Tag `v0.1.0` and add its commit hash to the git source of the release manifest
    (the linter warns about `module-parcels-source-git-no-commit-with-tag` until then).

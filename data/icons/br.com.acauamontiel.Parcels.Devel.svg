@@ -1,15 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Placeholder app icon (Devel profile). To be replaced by a design following the GNOME icon guidelines. -->
+<!-- Parcels app icon: a parcel with a download badge. Follows the GNOME app icon guidelines (128 px grid, GNOME palette). Devel profile. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-  <rect x="8" y="12" width="112" height="108" rx="20" fill="#1a5fb4"/>
-  <rect x="8" y="8" width="112" height="104" rx="20" fill="#3584e4"/>
-  <path fill="#f6d32d" d="M64 22 26 39v46l38 17 38-17V39z"/>
-  <path fill="#e5a50a" d="M64 56v46L26 85V39z"/>
-  <path fill="#f9f06b" d="M64 22 26 39l38 17 38-17z"/>
-  <path fill="#c64600" d="m45 30.5 38 17V62l8-3.6V43.9l-38-17z"/>
-  <clipPath id="c"><rect x="8" y="8" width="112" height="112" rx="20"/></clipPath>
-  <g clip-path="url(#c)">
-    <path fill="#241f31" d="M8 98h112v22H8z"/>
-    <path fill="#f6f5f4" d="m18 98-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22zm22 0-11 22h10l11-22z"/>
+  <defs>
+    <linearGradient id="front" x1="0" y1="46" x2="0" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c8a073"/>
+      <stop offset="1" stop-color="#b5835a"/>
+    </linearGradient>
+    <linearGradient id="lid" x1="0" y1="24" x2="0" y2="46" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e2c29e"/>
+      <stop offset="1" stop-color="#d8b48c"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="62" x2="0" y2="106" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#62a0ea"/>
+      <stop offset="1" stop-color="#3584e4"/>
+    </linearGradient>
+  </defs>
+  <!-- Depth of the box -->
+  <rect x="14" y="56" width="100" height="56" rx="8" fill="#865e3c"/>
+  <!-- Front -->
+  <path d="M14 46h100v50a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z" fill="url(#front)"/>
+  <!-- Lid, seen from slightly above -->
+  <path d="M25 24h78a5 5 0 0 1 4.6 3l6.4 19H14l6.4-19a5 5 0 0 1 4.6-3z" fill="url(#lid)"/>
+  <!-- Fold between lid and front -->
+  <path d="M14 46h100v2H14z" fill="#f0d9bd" opacity="0.7"/>
+  <!-- Tape -->
+  <path d="M56 24h16l3 22H53z" fill="#ecd3b4"/>
+  <path d="M53 46h22v24a2 2 0 0 1-2 2H55a2 2 0 0 1-2-2z" fill="#d6b18a"/>
+  <!-- Shipping label -->
+  <rect x="24" y="62" width="22" height="17" rx="2" fill="#f6f5f4"/>
+  <rect x="28" y="67" width="14" height="2" rx="1" fill="#9a9996"/>
+  <rect x="28" y="72" width="9" height="2" rx="1" fill="#9a9996"/>
+  <!-- Development build: stripes over the base of the box -->
+  <clipPath id="base"><path d="M14 98h100v6a8 8 0 0 1-8 8H22a8 8 0 0 1-8-8z"/></clipPath>
+  <g clip-path="url(#base)">
+    <path d="M14 98h100v14H14z" fill="#241f31"/>
+    <path fill="#f6f5f4" d="m18 98-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14zm14 0-7 14h7l7-14z"/>
   </g>
+  <!-- Download badge -->
+  <circle cx="92" cy="86" r="24" fill="#1a5fb4"/>
+  <circle cx="92" cy="84" r="22" fill="url(#badge)"/>
+  <path d="M88 70h8v14h8l-12 13-12-13h8z" fill="#ffffff"/>
 </svg>
