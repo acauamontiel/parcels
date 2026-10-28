@@ -46,4 +46,22 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - name: Run flatpak-builder-lint
-        run: flatpak-builder-lint manifest build-aux/br.com.acauamontiel.Parcels.Devel.json
+        run: |
+          flatpak-builder-lint manifest build-aux/br.com.acauamontiel.Parcels.Devel.json
+          # Warns until the release tag has a commit hash; only errors fail
+          flatpak-builder-lint manifest build-aux/br.com.acauamontiel.Parcels.json
+
+  cargo-sources:
+    name: Vendored crates up to date
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-51
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - name: Regenerate cargo-sources.json
+        run: |
+          flatpak-cargo-generator Cargo.lock -o /tmp/cargo-sources.json
+          diff -u build-aux/cargo-sources.json /tmp/cargo-sources.json || {
+            echo "::error::build-aux/cargo-sources.json is outdated. Run: build-aux/dev.sh sources"
+            exit 1
+          }

@@ -63,12 +63,31 @@ docker compose run --rm -e QBIT_URL=http://parcels-qbittorrent:8080 -e QBIT_USER
 
 Never commit real credentials.
 
+### Release build
+
+The release manifest, `build-aux/br.com.acauamontiel.Parcels.json`, builds
+offline from vendored crates, as Flathub does. After changing `Cargo.lock`,
+regenerate them, then build the release Flatpak from your checkout and lint it:
+
+```sh
+docker compose run --rm flatpak build-aux/dev.sh sources
+docker compose run --rm flatpak build-aux/dev.sh release
+docker compose run --rm flatpak build-aux/dev.sh lint
+```
+
+See [`docs/circle-checklist.md`](docs/circle-checklist.md) for what is still
+needed before publishing on Flathub and applying to GNOME Circle.
+
 You can also open the project in [GNOME Builder](https://apps.gnome.org/Builder/),
 which picks up the Flatpak manifest in `build-aux/`.
 
 ## Translations
 
 Parcels is translated with gettext. Translation files live in [`po/`](po/).
+
+## Contributing
+
+Parcels follows the [GNOME Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## License
 

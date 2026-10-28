@@ -11,3 +11,4 @@
 /.vscode
 /.flatpak-builder/
 /parcels-devel.flatpak
+/build-aux/.release-local.json

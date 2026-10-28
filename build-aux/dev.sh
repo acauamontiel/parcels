@@ -6,7 +6,9 @@
 # Commands:
 #   build       Build the Devel Flatpak and run its tests (cargo test, clippy, fmt, validators)
 #   bundle      Build and export parcels-devel.flatpak, installable on the host
-#   lint        Run flatpak-builder-lint on the manifest
+#   release     Build the release Flatpak offline, from this checkout instead of the git tag
+#   sources     Regenerate build-aux/cargo-sources.json after changing Cargo.lock
+#   lint        Run flatpak-builder-lint on the manifests and the release build
 #   cargo ARGS  Run cargo inside the GNOME SDK (e.g. `cargo clippy --all-targets`)
 #   screenshot  Start the built app in a headless X server and save a screenshot
 set -eu
@@ -61,8 +63,34 @@ case "${1:-}" in
             --command=env \
             org.gnome.Sdk//51 "$@"
         ;;
+    release)
+        # Same manifest, but with this checkout as the source; the build itself is offline
+        python3 - <<'PY'
+import json
+manifest = json.load(open("build-aux/br.com.acauamontiel.Parcels.json"))
+module = manifest["modules"][-1]
+module["sources"][0] = {"type": "dir", "path": "..", "skip": [".flatpak", ".flatpak-builder", ".cargo", "target", "_build"]}
+json.dump(manifest, open("build-aux/.release-local.json", "w"), indent=4)
+PY
+        flatpak-builder \
+            --install-deps-from=flathub \
+            --force-clean \
+            --disable-rofiles-fuse \
+            --install \
+            --state-dir="$FLATPAK_DIR/state" \
+            --repo="$FLATPAK_DIR/release-repo" \
+            "$FLATPAK_DIR/release-build" build-aux/.release-local.json
+        rm -f build-aux/.release-local.json
+        ;;
+    sources)
+        flatpak-cargo-generator Cargo.lock -o build-aux/cargo-sources.json
+        ;;
     lint)
         flatpak-builder-lint manifest "$MANIFEST"
+        flatpak-builder-lint manifest build-aux/br.com.acauamontiel.Parcels.json
+        if [ -d "$FLATPAK_DIR/release-repo" ]; then
+            flatpak-builder-lint repo "$FLATPAK_DIR/release-repo"
+        fi
         ;;
     screenshot)
         build
@@ -79,7 +107,7 @@ case "${1:-}" in
         echo "Screenshot saved to $out"
         ;;
     *)
-        sed -n '2,14p' "$0"
+        sed -n '2,16p' "$0"
         exit 1
         ;;
 esac

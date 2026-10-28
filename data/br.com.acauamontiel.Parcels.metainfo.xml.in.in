@@ -8,16 +8,45 @@
   <summary>Remote control for qBittorrent</summary>
   <description>
     <p>
-      Parcels lets you manage a qBittorrent instance running on another machine,
-      such as a home server or a seedbox, from a native GNOME app.
+      Parcels lets you manage a qBittorrent server, such as a home server, a
+      NAS or a seedbox, from a native GNOME app.
     </p>
+    <ul>
+      <li>Follow the progress, speed and remaining time of every torrent</li>
+      <li>Add magnet links, links and torrent files, or drop them on the window</li>
+      <li>Open magnet links and torrent files from your browser and file manager</li>
+      <li>Start, stop, delete, move and rename torrents, and sort them with categories and tags</li>
+      <li>Choose which files to download, and see trackers and peers</li>
+      <li>Get notified when downloads finish, even with the window closed</li>
+      <li>Switch between several servers, with passwords kept in your keyring</li>
+    </ul>
     <p>
-      Parcels is not affiliated with the qBittorrent project.
+      Parcels requires qBittorrent 5.0 or later with the WebUI turned on. It is
+      not affiliated with the qBittorrent project.
     </p>
   </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://raw.githubusercontent.com/acauamontiel/parcels/main/data/screenshots/torrents.png</image>
+      <caption>Torrents of a server, with filters by status, category and tag</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/acauamontiel/parcels/main/data/screenshots/files.png</image>
+      <caption>The files of a torrent, each with its own priority</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/acauamontiel/parcels/main/data/screenshots/add.png</image>
+      <caption>Adding a torrent file and a magnet link</caption>
+    </screenshot>
+    <screenshot>
+      <image>https://raw.githubusercontent.com/acauamontiel/parcels/main/data/screenshots/narrow.png</image>
+      <caption>The adaptive layout on a narrow screen</caption>
+    </screenshot>
+  </screenshots>
   <url type="homepage">https://github.com/acauamontiel/parcels</url>
   <url type="bugtracker">https://github.com/acauamontiel/parcels/issues</url>
   <url type="vcs-browser">https://github.com/acauamontiel/parcels</url>
+  <url type="contribute">https://github.com/acauamontiel/parcels#readme</url>
   <url type="translate">https://github.com/acauamontiel/parcels/tree/main/po</url>
   <content_rating type="oars-1.1" />
   <requires>
@@ -27,11 +56,32 @@
     <control>keyboard</control>
     <control>pointing</control>
     <control>touch</control>
+    <internet>always</internet>
   </supports>
+  <keywords>
+    <keyword>torrent</keyword>
+    <keyword>bittorrent</keyword>
+    <keyword>qbittorrent</keyword>
+    <keyword>magnet</keyword>
+    <keyword>download</keyword>
+    <keyword>remote</keyword>
+  </keywords>
+  <branding>
+    <color type="primary" scheme_preference="light">#99c1f1</color>
+    <color type="primary" scheme_preference="dark">#1a5fb4</color>
+  </branding>
   <releases>
-    <release version="0.1.0" date="2026-10-28" type="development">
-      <description translate="no">
-        <p>Initial development snapshot.</p>
+    <release version="0.1.0" date="2026-10-28">
+      <description>
+        <p>First release, with:</p>
+        <ul>
+          <li>Several servers, with username and password or API key authentication</li>
+          <li>A torrent list with filters, search and sorting</li>
+          <li>Torrent actions, categories and tags</li>
+          <li>Adding magnet links and torrent files, also from the desktop</li>
+          <li>Torrent details with files, trackers and peers</li>
+          <li>Notifications and running in the background</li>
+        </ul>
       </description>
     </release>
   </releases>
@@ -41,4 +91,7 @@
   <update_contact>acaua@engaged.com.br</update_contact>
   <translation type="gettext">@gettext-package@</translation>
   <launchable type="desktop-id">@app-id@.desktop</launchable>
+  <provides>
+    <binary>parcels</binary>
+  </provides>
 </component>

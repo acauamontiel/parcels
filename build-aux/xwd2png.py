@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Convert the 24/32-bit XWD framebuffer written by `Xvfb -fbdir` to PNG.
 
-Used by `build-aux/dev.sh screenshot`; avoids depending on ImageMagick.
+Usage: xwd2png.py SOURCE DEST [X Y WIDTH HEIGHT]
+
+The optional rectangle crops the image, e.g. to the window. Used by
+`build-aux/dev.sh screenshot`; avoids depending on ImageMagick.
 """
 import struct
 import sys
 import zlib
 
 
-def main(src, dst):
+def main(src, dst, crop=None):
     data = open(src, "rb").read()
     fields = struct.unpack(">25I", data[:100])
     header_size, byte_order = fields[0], fields[7]
@@ -17,9 +20,13 @@ def main(src, dst):
     if bpp != 32:
         sys.exit(f"unsupported bits per pixel: {bpp}")
     offset = header_size + ncolors * 12
+    left, top = 0, 0
+    if crop:
+        left, top, width, height = crop
     raw = bytearray()
-    for y in range(height):
-        row = data[offset + y * bytes_per_line : offset + y * bytes_per_line + width * 4]
+    for y in range(top, top + height):
+        start = offset + y * bytes_per_line + left * 4
+        row = data[start : start + width * 4]
         raw.append(0)
         for x in range(0, len(row), 4):
             b, g, r = (row[x], row[x + 1], row[x + 2]) if byte_order == 0 else (row[x + 3], row[x + 2], row[x + 1])
@@ -37,4 +44,5 @@ def main(src, dst):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    crop = tuple(int(v) for v in sys.argv[3:7]) if len(sys.argv) >= 7 else None
+    main(sys.argv[1], sys.argv[2], crop)

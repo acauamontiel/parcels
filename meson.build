@@ -59,7 +59,11 @@ else
   rust_target = 'release'
 endif
 
-cargo_home = meson.project_build_root() / 'cargo-home'
+# The release Flatpak sets CARGO_HOME to the vendored crates (build-aux/cargo-sources.json)
+cargo_home = run_command('sh', '-c', 'printf %s "${CARGO_HOME:-}"', check: false).stdout().strip()
+if cargo_home == ''
+  cargo_home = meson.project_build_root() / 'cargo-home'
+endif
 cargo_target = meson.project_build_root() / 'cargo-target'
 cargo_env = environment()
 cargo_env.set('CARGO_HOME', cargo_home)

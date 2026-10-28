@@ -190,6 +190,17 @@ template $ParcelsWindow: Adw.ApplicationWindow {
                     ]
                   }
 
+                  ToggleButton {
+                    icon-name: "power-profile-power-saver-symbolic";
+                    tooltip-text: _("Alternative Speed Limits");
+                    action-name: "win.alt-speed-limits";
+                    valign: center;
+
+                    styles [
+                      "flat",
+                    ]
+                  }
+
                   Label upload_speed_label {
                     xalign: 1;
 
@@ -219,13 +230,6 @@ template $ParcelsWindow: Adw.ApplicationWindow {
                         icon-name: "list-add-symbolic";
                         tooltip-text: _("Add Torrents");
                         action-name: "win.add-torrent";
-                      }
-
-                      [start]
-                      ToggleButton {
-                        icon-name: "power-profile-power-saver-symbolic";
-                        tooltip-text: _("Alternative Speed Limits");
-                        action-name: "win.alt-speed-limits";
                       }
 
                       title-widget: Adw.WindowTitle content_title {};

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 15:01+0000\n"
+"POT-Creation-Date: 2026-10-28 15:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -125,15 +125,115 @@ msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:10
 msgid ""
-"Parcels lets you manage a qBittorrent instance running on another machine, "
-"such as a home server or a seedbox, from a native GNOME app."
+"Parcels lets you manage a qBittorrent server, such as a home server, a NAS "
+"or a seedbox, from a native GNOME app."
 msgstr ""
 
-#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:14
-msgid "Parcels is not affiliated with the qBittorrent project."
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:15
+msgid "Follow the progress, speed and remaining time of every torrent"
 msgstr ""
 
-#: data/resources/ui/add-dialog.blp:5 data/resources/ui/window.blp:220
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:16
+msgid "Add magnet links, links and torrent files, or drop them on the window"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:17
+msgid "Open magnet links and torrent files from your browser and file manager"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:18
+msgid ""
+"Start, stop, delete, move and rename torrents, and sort them with categories "
+"and tags"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:19
+msgid "Choose which files to download, and see trackers and peers"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:20
+msgid "Get notified when downloads finish, even with the window closed"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:21
+msgid "Switch between several servers, with passwords kept in your keyring"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:23
+msgid ""
+"Parcels requires qBittorrent 5.0 or later with the WebUI turned on. It is "
+"not affiliated with the qBittorrent project."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:31
+msgid "Torrents of a server, with filters by status, category and tag"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:35
+msgid "The files of a torrent, each with its own priority"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:39
+msgid "Adding a torrent file and a magnet link"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:43
+msgid "The adaptive layout on a narrow screen"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:62
+msgid "torrent"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:63
+msgid "bittorrent"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:64
+msgid "qbittorrent"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:65
+msgid "magnet"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:66
+msgid "download"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:67
+msgid "remote"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:76
+msgid "First release, with:"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:78
+msgid "Several servers, with username and password or API key authentication"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:79
+msgid "A torrent list with filters, search and sorting"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:80
+msgid "Torrent actions, categories and tags"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:81
+msgid "Adding magnet links and torrent files, also from the desktop"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:82
+msgid "Torrent details with files, trackers and peers"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:83
+msgid "Notifications and running in the background"
+msgstr ""
+
+#: data/resources/ui/add-dialog.blp:5 data/resources/ui/window.blp:231
 msgid "Add Torrents"
 msgstr ""
 
@@ -149,7 +249,7 @@ msgid "_Add"
 msgstr ""
 
 #: data/resources/ui/add-dialog.blp:41 data/resources/ui/shortcuts-dialog.blp:6
-#: data/resources/ui/window.blp:320
+#: data/resources/ui/window.blp:324
 msgid "Torrents"
 msgstr ""
 
@@ -157,7 +257,7 @@ msgstr ""
 msgid "Magnet Link or URL"
 msgstr ""
 
-#: data/resources/ui/add-dialog.blp:54 data/resources/ui/window.blp:364
+#: data/resources/ui/add-dialog.blp:54 data/resources/ui/window.blp:368
 msgid "_Open Torrent Files…"
 msgstr ""
 
@@ -328,7 +428,7 @@ msgstr ""
 msgid "Paste Magnet Links or Torrent Files"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:19 data/resources/ui/window.blp:243
+#: data/resources/ui/shortcuts-dialog.blp:19 data/resources/ui/window.blp:247
 msgid "Search"
 msgstr ""
 
@@ -344,7 +444,7 @@ msgstr ""
 msgid "Show Details"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:39 data/resources/ui/window.blp:304
+#: data/resources/ui/shortcuts-dialog.blp:39 data/resources/ui/window.blp:308
 msgid "Delete"
 msgstr ""
 
@@ -452,121 +552,121 @@ msgstr ""
 msgid "_Edit Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:206 data/resources/ui/window.blp:211
+#: data/resources/ui/window.blp:195
+msgid "Alternative Speed Limits"
+msgstr ""
+
+#: data/resources/ui/window.blp:217 data/resources/ui/window.blp:222
 #: src/model/filter.rs:52
 msgid "All"
 msgstr ""
 
-#: data/resources/ui/window.blp:227
-msgid "Alternative Speed Limits"
-msgstr ""
-
-#: data/resources/ui/window.blp:236
+#: data/resources/ui/window.blp:240
 msgid "Sort"
 msgstr ""
 
-#: data/resources/ui/window.blp:254
+#: data/resources/ui/window.blp:258
 msgid "Search torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:263
+#: data/resources/ui/window.blp:267
 msgid "Connection lost. Retrying…"
 msgstr ""
 
-#: data/resources/ui/window.blp:264
+#: data/resources/ui/window.blp:268
 msgid "_Retry"
 msgstr ""
 
-#: data/resources/ui/window.blp:275
+#: data/resources/ui/window.blp:279
 msgid "Start"
 msgstr ""
 
-#: data/resources/ui/window.blp:282
+#: data/resources/ui/window.blp:286
 msgid "Stop"
 msgstr ""
 
-#: data/resources/ui/window.blp:298
+#: data/resources/ui/window.blp:302
 msgid "More Actions"
 msgstr ""
 
-#: data/resources/ui/window.blp:330
+#: data/resources/ui/window.blp:334
 msgid "No Torrents"
 msgstr ""
 
-#: data/resources/ui/window.blp:331
+#: data/resources/ui/window.blp:335
 msgid "Torrents on this server will appear here"
 msgstr ""
 
-#: data/resources/ui/window.blp:340
+#: data/resources/ui/window.blp:344
 msgid "No Results Found"
 msgstr ""
 
-#: data/resources/ui/window.blp:341
+#: data/resources/ui/window.blp:345
 msgid "Try a different search or filter"
 msgstr ""
 
-#: data/resources/ui/window.blp:359
+#: data/resources/ui/window.blp:363
 msgid "_Add Torrents…"
 msgstr ""
 
-#: data/resources/ui/window.blp:371
+#: data/resources/ui/window.blp:375
 msgid "_Preferences"
 msgstr ""
 
-#: data/resources/ui/window.blp:376
+#: data/resources/ui/window.blp:380
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/window.blp:381
+#: data/resources/ui/window.blp:385
 msgid "_About Parcels"
 msgstr ""
 
-#: data/resources/ui/window.blp:390
+#: data/resources/ui/window.blp:394
 msgid "_Select All"
 msgstr ""
 
-#: data/resources/ui/window.blp:395
+#: data/resources/ui/window.blp:399
 msgid "_Unselect All"
 msgstr ""
 
-#: data/resources/ui/window.blp:401
+#: data/resources/ui/window.blp:405
 msgid "Sort By"
 msgstr ""
 
-#: data/resources/ui/window.blp:404
+#: data/resources/ui/window.blp:408
 msgid "Date Added"
 msgstr ""
 
-#: data/resources/ui/window.blp:410 src/widgets/window/actions.rs:417
+#: data/resources/ui/window.blp:414 src/widgets/window/actions.rs:417
 #: src/widgets/window/actions.rs:620
 msgid "Name"
 msgstr ""
 
-#: data/resources/ui/window.blp:416 src/widgets/torrent_page.rs:46
+#: data/resources/ui/window.blp:420 src/widgets/torrent_page.rs:46
 msgid "Progress"
 msgstr ""
 
-#: data/resources/ui/window.blp:422 src/widgets/torrent_page.rs:56
+#: data/resources/ui/window.blp:426 src/widgets/torrent_page.rs:56
 msgid "Size"
 msgstr ""
 
-#: data/resources/ui/window.blp:428 src/widgets/torrent_page.rs:48
+#: data/resources/ui/window.blp:432 src/widgets/torrent_page.rs:48
 msgid "Download Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:434 src/widgets/torrent_page.rs:49
+#: data/resources/ui/window.blp:438 src/widgets/torrent_page.rs:49
 msgid "Upload Speed"
 msgstr ""
 
-#: data/resources/ui/window.blp:440 src/widgets/torrent_page.rs:47
+#: data/resources/ui/window.blp:444 src/widgets/torrent_page.rs:47
 msgid "Time Remaining"
 msgstr ""
 
-#: data/resources/ui/window.blp:446 src/widgets/torrent_page.rs:52
+#: data/resources/ui/window.blp:450 src/widgets/torrent_page.rs:52
 msgid "Ratio"
 msgstr ""
 
-#: data/resources/ui/window.blp:454
+#: data/resources/ui/window.blp:458
 msgid "_Descending"
 msgstr ""
 
@@ -636,24 +736,24 @@ msgstr ""
 msgid "No Tags"
 msgstr ""
 
-#: src/notifications.rs:81
+#: src/notifications.rs:75
 msgid "Download Finished"
 msgstr ""
 
-#: src/notifications.rs:92
+#: src/notifications.rs:86
 msgid "Connection Lost"
 msgstr ""
 
-#: src/notifications.rs:95
+#: src/notifications.rs:89
 #, rust-format
 msgid "Parcels can't reach “{}”. It will keep trying."
 msgstr ""
 
-#: src/notifications.rs:114
+#: src/notifications.rs:108
 msgid "Connection Restored"
 msgstr ""
 
-#: src/notifications.rs:117
+#: src/notifications.rs:111
 #, rust-format
 msgid "Parcels is connected to “{}” again"
 msgstr ""
