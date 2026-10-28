@@ -1,0 +1,17 @@
+{
+  "rid": 3,
+  "server_state": {
+    "alltime_ul": 1568
+  },
+  "torrents": {
+    "349e3db6ee4dd3094191e013d854bbf9f6d8801a": {
+      "seeding_time": 16,
+      "state": "stoppedUP",
+      "time_active": 16
+    },
+    "a5a1209be56e3bdfa75297d9809240b95358275b": {
+      "seeding_time": 16,
+      "time_active": 16
+    }
+  }
+}

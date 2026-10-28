@@ -4,6 +4,7 @@ mod model;
 mod runtime;
 mod secrets;
 mod session;
+mod utils;
 mod widgets;
 
 use gettextrs::{LocaleCategory, gettext};

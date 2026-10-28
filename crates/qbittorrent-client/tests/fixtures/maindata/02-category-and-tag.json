@@ -1,0 +1,14 @@
+{
+  "rid": 2,
+  "tags": [
+    "docs"
+  ],
+  "torrents": {
+    "349e3db6ee4dd3094191e013d854bbf9f6d8801a": {
+      "category": "music"
+    },
+    "a5a1209be56e3bdfa75297d9809240b95358275b": {
+      "tags": "docs"
+    }
+  }
+}

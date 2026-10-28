@@ -1,0 +1,71 @@
+using Gtk 4.0;
+
+template $ParcelsTorrentRow: Box {
+  spacing: 12;
+  margin-top: 9;
+  margin-bottom: 9;
+  margin-start: 6;
+  margin-end: 6;
+
+  Image status_icon {
+    valign: center;
+    accessible-role: presentation;
+  }
+
+  Box {
+    orientation: vertical;
+    spacing: 6;
+    hexpand: true;
+
+    Box {
+      spacing: 12;
+
+      Label name_label {
+        xalign: 0;
+        hexpand: true;
+        ellipsize: middle;
+
+        styles [
+          "heading",
+        ]
+      }
+
+      Label state_label {
+        xalign: 1;
+
+        styles [
+          "caption",
+          "dim-label",
+        ]
+      }
+    }
+
+    ProgressBar progress_bar {}
+
+    Box details_box {
+      spacing: 12;
+
+      Label details_label {
+        xalign: 0;
+        hexpand: true;
+        ellipsize: end;
+
+        styles [
+          "caption",
+          "dim-label",
+          "numeric",
+        ]
+      }
+
+      Label speed_label {
+        xalign: 1;
+
+        styles [
+          "caption",
+          "dim-label",
+          "numeric",
+        ]
+      }
+    }
+  }
+}

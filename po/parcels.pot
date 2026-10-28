@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: parcels\n"
 "Report-Msgid-Bugs-To: https://github.com/acauamontiel/parcels/issues\n"
-"POT-Creation-Date: 2026-10-28 03:21+0000\n"
+"POT-Creation-Date: 2026-10-28 03:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 
 #: data/br.com.acauamontiel.Parcels.desktop.in.in:2
 #: data/br.com.acauamontiel.Parcels.metainfo.xml.in.in:7
-#: data/resources/ui/window.blp:19 src/application.rs:121 src/main.rs:26
+#: data/resources/ui/window.blp:33 data/resources/ui/window.blp:131
+#: data/resources/ui/window.blp:144 src/application.rs:122 src/main.rs:27
 msgid "Parcels"
 msgstr ""
 
@@ -59,7 +60,25 @@ msgstr ""
 msgid "The id of the server Parcels connects to."
 msgstr ""
 
-#: data/br.com.acauamontiel.Parcels.gschema.xml.in:24
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:25
+msgid "Refresh interval"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:26
+msgid ""
+"How often to fetch updates from the server while the window is visible, in "
+"milliseconds. In the background, updates are fetched every 10 seconds."
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:40
+msgid "Sort torrents by"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:44
+msgid "Sort in descending order"
+msgstr ""
+
+#: data/br.com.acauamontiel.Parcels.gschema.xml.in:48
 msgid "Window maximized state"
 msgstr ""
 
@@ -133,67 +152,179 @@ msgstr ""
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/shortcuts-dialog.blp:14
-msgid "Close Window"
+#: data/resources/ui/shortcuts-dialog.blp:14 data/resources/ui/window.blp:207
+msgid "Search"
 msgstr ""
 
 #: data/resources/ui/shortcuts-dialog.blp:19
+msgid "Close Window"
+msgstr ""
+
+#: data/resources/ui/shortcuts-dialog.blp:24
 msgid "Quit"
 msgstr ""
 
-#: data/resources/ui/window.blp:15
+#: data/resources/ui/window.blp:29 data/resources/ui/window.blp:140
 msgid "Servers"
 msgstr ""
 
-#: data/resources/ui/window.blp:26
+#: data/resources/ui/window.blp:40 data/resources/ui/window.blp:151
 msgid "Main Menu"
 msgstr ""
 
-#: data/resources/ui/window.blp:38
+#: data/resources/ui/window.blp:52
 msgid "No Servers"
 msgstr ""
 
-#: data/resources/ui/window.blp:39
+#: data/resources/ui/window.blp:53
 msgid ""
 "Add a qBittorrent server with the WebUI turned on to manage its torrents "
 "from here"
 msgstr ""
 
-#: data/resources/ui/window.blp:42
+#: data/resources/ui/window.blp:56
 msgid "_Add Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:60 src/widgets/server_dialog.rs:268
+#: data/resources/ui/window.blp:74 src/widgets/server_dialog.rs:268
 msgid "Connecting…"
 msgstr ""
 
-#: data/resources/ui/window.blp:73
+#: data/resources/ui/window.blp:87
 msgid "Unable to Connect"
 msgstr ""
 
-#: data/resources/ui/window.blp:81
+#: data/resources/ui/window.blp:95
 msgid "_Try Again"
 msgstr ""
 
-#: data/resources/ui/window.blp:93
+#: data/resources/ui/window.blp:107
 msgid "_Edit Server"
 msgstr ""
 
-#: data/resources/ui/window.blp:110
-msgid "Connected"
+#: data/resources/ui/window.blp:189 src/model/filter.rs:52
+msgid "All"
 msgstr ""
 
-#: data/resources/ui/window.blp:121
+#: data/resources/ui/window.blp:200
+msgid "Sort"
+msgstr ""
+
+#: data/resources/ui/window.blp:218
+msgid "Search torrents"
+msgstr ""
+
+#: data/resources/ui/window.blp:227
+msgid "Connection lost. Retrying…"
+msgstr ""
+
+#: data/resources/ui/window.blp:228
+msgid "_Retry"
+msgstr ""
+
+#: data/resources/ui/window.blp:243
+msgid "Torrents"
+msgstr ""
+
+#: data/resources/ui/window.blp:253
+msgid "No Torrents"
+msgstr ""
+
+#: data/resources/ui/window.blp:254
+msgid "Torrents on this server will appear here"
+msgstr ""
+
+#: data/resources/ui/window.blp:263
+msgid "No Results Found"
+msgstr ""
+
+#: data/resources/ui/window.blp:264
+msgid "Try a different search or filter"
+msgstr ""
+
+#: data/resources/ui/window.blp:279
 msgid "_Keyboard Shortcuts"
 msgstr ""
 
-#: data/resources/ui/window.blp:126
+#: data/resources/ui/window.blp:284
 msgid "_About Parcels"
 msgstr ""
 
+#: data/resources/ui/window.blp:292
+msgid "Sort By"
+msgstr ""
+
+#: data/resources/ui/window.blp:295
+msgid "Date Added"
+msgstr ""
+
+#: data/resources/ui/window.blp:301
+msgid "Name"
+msgstr ""
+
+#: data/resources/ui/window.blp:307
+msgid "Progress"
+msgstr ""
+
+#: data/resources/ui/window.blp:313
+msgid "Size"
+msgstr ""
+
+#: data/resources/ui/window.blp:319
+msgid "Download Speed"
+msgstr ""
+
+#: data/resources/ui/window.blp:325
+msgid "Upload Speed"
+msgstr ""
+
+#: data/resources/ui/window.blp:331
+msgid "Time Remaining"
+msgstr ""
+
+#: data/resources/ui/window.blp:337
+msgid "Ratio"
+msgstr ""
+
+#: data/resources/ui/window.blp:345
+msgid "_Descending"
+msgstr ""
+
 #. Translators: Replace "translator-credits" with your name/username, and optionally an email or URL.
-#: src/application.rs:130
+#: src/application.rs:131
 msgid "translator-credits"
+msgstr ""
+
+#: src/model/filter.rs:53 src/utils.rs:46
+msgid "Downloading"
+msgstr ""
+
+#: src/model/filter.rs:54 src/utils.rs:51 src/utils.rs:52
+msgid "Seeding"
+msgstr ""
+
+#: src/model/filter.rs:55
+msgid "Completed"
+msgstr ""
+
+#: src/model/filter.rs:56 src/utils.rs:53
+msgid "Stopped"
+msgstr ""
+
+#: src/model/filter.rs:57
+msgid "Active"
+msgstr ""
+
+#: src/model/filter.rs:58
+msgid "Errors"
+msgstr ""
+
+#: src/model/filter.rs:59
+msgid "No Category"
+msgstr ""
+
+#: src/model/filter.rs:60
+msgid "No Tags"
 msgstr ""
 
 #. Translators: Label of the keyring item; {} is the server name
@@ -202,49 +333,49 @@ msgstr ""
 msgid "Parcels server “{}”"
 msgstr ""
 
-#: src/session.rs:146 src/widgets/server_dialog.rs:145
+#: src/session.rs:278 src/widgets/server_dialog.rs:145
 msgid "Could not read the password from the keyring"
 msgstr ""
 
-#: src/session.rs:172
+#: src/session.rs:304
 msgid "The server address is not valid"
 msgstr ""
 
-#: src/session.rs:174
+#: src/session.rs:306
 msgid ""
 "Could not reach the server. Check the address and your network connection."
 msgstr ""
 
-#: src/session.rs:177
+#: src/session.rs:309
 msgid ""
 "The server certificate is not trusted. If this server uses a self-signed "
 "certificate, turn on “Accept Invalid Certificates” in the server settings."
 msgstr ""
 
-#: src/session.rs:179
+#: src/session.rs:311
 msgid "Invalid username or password"
 msgstr ""
 
-#: src/session.rs:181
+#: src/session.rs:313
 msgid ""
 "This device is temporarily banned by qBittorrent after too many failed login "
 "attempts. Try again later."
 msgstr ""
 
-#: src/session.rs:185
+#: src/session.rs:317
 msgid "The API key was rejected. API keys require qBittorrent 5.2 or later."
 msgstr ""
 
-#: src/session.rs:187
+#: src/session.rs:319
 msgid "The server requires a username and password"
 msgstr ""
 
-#: src/session.rs:189
+#: src/session.rs:321
 msgid "No qBittorrent WebUI was found at this address"
 msgstr ""
 
 #. Translators: {found} and {minimum} are version numbers, e.g. 4.6.7 and 5.0.0
-#: src/session.rs:192
+#: src/session.rs:324
 #, rust-format
 msgid ""
 "qBittorrent {found} is not supported. Parcels requires version {minimum} or "
@@ -252,13 +383,79 @@ msgid ""
 msgstr ""
 
 #. Translators: {} is an HTTP status, e.g. "502 Bad Gateway"
-#: src/session.rs:198
+#: src/session.rs:330
 #, rust-format
 msgid "The server returned an unexpected error ({})"
 msgstr ""
 
-#: src/session.rs:201
+#: src/session.rs:333
 msgid "The server sent a response Parcels could not understand"
+msgstr ""
+
+#. Translators: A transfer speed, e.g. "1.2 MB/s"; {} is the size
+#: src/utils.rs:15
+#, rust-format
+msgid "{}/s"
+msgstr ""
+
+#. Translators: Compact duration; {0} is days, {1} is hours
+#: src/utils.rs:31
+#, rust-format
+msgid "{0} d {1} h"
+msgstr ""
+
+#. Translators: Compact duration; {0} is hours, {1} is minutes
+#: src/utils.rs:34
+#, rust-format
+msgid "{0} h {1} min"
+msgstr ""
+
+#. Translators: Compact duration; {0} is minutes
+#: src/utils.rs:37
+#, rust-format
+msgid "{0} min"
+msgstr ""
+
+#. Translators: Compact duration; {0} is seconds
+#: src/utils.rs:40
+#, rust-format
+msgid "{0} s"
+msgstr ""
+
+#: src/utils.rs:48
+msgid "Fetching metadata"
+msgstr ""
+
+#: src/utils.rs:50
+msgid "Stalled"
+msgstr ""
+
+#: src/utils.rs:54
+msgid "Queued"
+msgstr ""
+
+#: src/utils.rs:57
+msgid "Checking"
+msgstr ""
+
+#: src/utils.rs:58
+msgid "Allocating"
+msgstr ""
+
+#: src/utils.rs:59
+msgid "Moving"
+msgstr ""
+
+#: src/utils.rs:60
+msgid "Error"
+msgstr ""
+
+#: src/utils.rs:61
+msgid "Missing files"
+msgstr ""
+
+#: src/utils.rs:62
+msgid "Unknown"
 msgstr ""
 
 #. Translators: {} is a list of example addresses
@@ -313,15 +510,52 @@ msgstr ""
 msgid "_Remove"
 msgstr ""
 
-#: src/widgets/window.rs:208
+#: src/widgets/sidebar.rs:46
+msgid "Filters"
+msgstr ""
+
+#: src/widgets/sidebar.rs:262
+msgid "Categories"
+msgstr ""
+
+#: src/widgets/sidebar.rs:263
+msgid "Tags"
+msgstr ""
+
+#. Translators: Accessible label of the progress bar; {} is the torrent name
+#: src/widgets/torrent_row.rs:125
+#, rust-format
+msgid "Progress of {}"
+msgstr ""
+
+#. Translators: {done} and {total} are sizes, {percent} a number, e.g. "1.2 GB of 4.5 GB (27%)"
+#: src/widgets/torrent_row.rs:151
+#, rust-format
+msgid "{done} of {total} ({percent}%)"
+msgstr ""
+
+#. Translators: {} is a speed, e.g. "1.2 MB/s"
+#: src/widgets/window.rs:478
+#, rust-format
+msgid "Download speed: {}"
+msgstr ""
+
+#. Translators: {} is a speed, e.g. "1.2 MB/s"
+#: src/widgets/window.rs:483
+#, rust-format
+msgid "Upload speed: {}"
+msgstr ""
+
+#. Translators: {} is a size, e.g. "120 GB"
+#: src/widgets/window.rs:487
+#, rust-format
+msgid "Free space on the server: {}"
+msgstr ""
+
+#: src/widgets/window.rs:523
 msgid "_Add Server…"
 msgstr ""
 
-#: src/widgets/window.rs:209
+#: src/widgets/window.rs:524
 msgid "_Edit Server…"
-msgstr ""
-
-#: src/widgets/window.rs:245
-#, rust-format
-msgid "qBittorrent {}"
 msgstr ""

@@ -19,6 +19,30 @@
       <summary>Active server</summary>
       <description>The id of the server Parcels connects to.</description>
     </key>
+    <key name="refresh-interval" type="u">
+      <range min="500" max="60000"/>
+      <default>1500</default>
+      <summary>Refresh interval</summary>
+      <description>How often to fetch updates from the server while the window is visible, in milliseconds. In the background, updates are fetched every 10 seconds.</description>
+    </key>
+    <key name="sort-by" type="s">
+      <choices>
+        <choice value="added"/>
+        <choice value="name"/>
+        <choice value="progress"/>
+        <choice value="size"/>
+        <choice value="download-speed"/>
+        <choice value="upload-speed"/>
+        <choice value="eta"/>
+        <choice value="ratio"/>
+      </choices>
+      <default>"added"</default>
+      <summary>Sort torrents by</summary>
+    </key>
+    <key name="sort-descending" type="b">
+      <default>true</default>
+      <summary>Sort in descending order</summary>
+    </key>
     <key name="is-maximized" type="b">
       <default>false</default>
       <summary>Window maximized state</summary>

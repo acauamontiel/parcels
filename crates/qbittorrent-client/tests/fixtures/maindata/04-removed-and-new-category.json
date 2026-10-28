@@ -1,0 +1,21 @@
+{
+  "categories": {
+    "video": {
+      "download_path": null,
+      "inactive_seeding_time_limit": -2,
+      "name": "video",
+      "ratio_limit": -2,
+      "savePath": "",
+      "seeding_time_limit": -2,
+      "share_limit_action": "Default",
+      "share_limits_mode": "Default"
+    }
+  },
+  "rid": 4,
+  "tags_removed": [
+    "weekend"
+  ],
+  "torrents_removed": [
+    "0123456789abcdef0123456789abcdef01234567"
+  ]
+}

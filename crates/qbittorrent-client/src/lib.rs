@@ -8,11 +8,15 @@
 
 mod client;
 mod error;
+pub mod maindata;
+mod state;
 mod types;
 mod version;
 
 pub use client::{Client, ClientConfig, Credentials, normalize_url};
 pub use error::{Error, Result};
+pub use maindata::MainData;
+pub use state::TorrentState;
 pub use types::ServerInfo;
 pub use version::Version;
 

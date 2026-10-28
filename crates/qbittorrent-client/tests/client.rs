@@ -291,3 +291,23 @@ async fn no_auth_header_with_password_credentials() {
 
     client(&server, "", password()).connect().await.unwrap();
 }
+
+#[tokio::test]
+async fn fetches_maindata_with_rid() {
+    let server = MockServer::start().await;
+    Mock::given(path("/api/v2/sync/maindata"))
+        .and(wiremock::matchers::query_param("rid", "7"))
+        .respond_with(
+            ResponseTemplate::new(200)
+                .set_body_string(r#"{"rid":8,"torrents":{"abc":{"dlspeed":1024}}}"#),
+        )
+        .mount(&server)
+        .await;
+
+    let data = client(&server, "", Credentials::None)
+        .sync_maindata(7)
+        .await
+        .unwrap();
+    assert_eq!(data.rid, 8);
+    assert_eq!(data.torrents["abc"].dlspeed, Some(1024));
+}

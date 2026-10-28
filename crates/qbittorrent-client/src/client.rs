@@ -6,7 +6,7 @@ use reqwest::header::REFERER;
 use reqwest::{Method, RequestBuilder, Response, StatusCode};
 use url::Url;
 
-use crate::{Error, MIN_SERVER_VERSION, Result, ServerInfo, Version};
+use crate::{Error, MIN_SERVER_VERSION, MainData, Result, ServerInfo, Version};
 
 /// How to authenticate against the WebUI.
 #[derive(Clone, PartialEq, Eq)]
@@ -208,6 +208,26 @@ impl Client {
                 body: body.to_owned(),
             }),
         }
+    }
+
+    /// Fetches the changes since response `rid` (0 for a full snapshot).
+    pub async fn sync_maindata(&self, rid: i64) -> Result<MainData> {
+        self.get_json("sync/maindata", &[("rid", rid.to_string())])
+            .await
+    }
+
+    async fn get_json<T: serde::de::DeserializeOwned>(
+        &self,
+        endpoint: &str,
+        query: &[(&str, String)],
+    ) -> Result<T> {
+        let bytes = self
+            .execute(Method::GET, endpoint, |r| r.query(query))
+            .await?
+            .bytes()
+            .await
+            .map_err(Error::from_reqwest)?;
+        serde_json::from_slice(&bytes).map_err(|err| Error::Parse(err.to_string()))
     }
 
     async fn get_version(&self, endpoint: &str) -> Result<Version> {

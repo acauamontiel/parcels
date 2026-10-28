@@ -3,18 +3,25 @@
 //! The session lives in the application, not in the window, so it keeps
 //! running when the window is closed and Parcels stays in the background.
 
-use std::cell::{Cell, RefCell};
+use std::cell::{Cell, OnceCell, RefCell};
 use std::sync::Arc;
+use std::time::{Duration, Instant};
 
 use gettextrs::gettext;
-use gtk::glib;
 use gtk::glib::clone;
 use gtk::prelude::*;
 use gtk::subclass::prelude::*;
+use gtk::{gio, glib};
 use qbittorrent_client::{Client, ClientConfig, Error, ServerInfo};
 
-use crate::model::{AuthMethod, Server};
+use crate::config::APP_ID;
+use crate::model::{AuthMethod, Server, TorrentList};
 use crate::{runtime, secrets};
+
+/// Refresh interval while no window is visible.
+const BACKGROUND_INTERVAL: Duration = Duration::from_secs(10);
+/// Longest wait between retries after network errors.
+const MAX_BACKOFF: Duration = Duration::from_secs(60);
 
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq, glib::Enum)]
 #[enum_type(name = "ParcelsConnectionState")]
@@ -43,6 +50,16 @@ mod imp {
         /// qBittorrent version of the connected server
         #[property(get)]
         pub server_version: RefCell<String>,
+        /// The server could be reached on the last refresh. When false the
+        /// session keeps retrying with exponential backoff.
+        #[property(get)]
+        pub reachable: Cell<bool>,
+        /// A window is visible, so refresh often
+        #[property(get, set)]
+        pub foreground: Cell<bool>,
+        pub torrents: OnceCell<TorrentList>,
+        pub settings: OnceCell<gio::Settings>,
+        pub refresh_requested: Cell<bool>,
         pub client: RefCell<Option<Arc<Client>>>,
         /// Incremented on every connection attempt, so late results of an
         /// abandoned attempt are ignored.
@@ -56,7 +73,14 @@ mod imp {
     }
 
     #[glib::derived_properties]
-    impl ObjectImpl for Session {}
+    impl ObjectImpl for Session {
+        fn constructed(&self) {
+            self.parent_constructed();
+            self.reachable.set(true);
+            self.torrents.get_or_init(TorrentList::default);
+            self.settings.get_or_init(|| gio::Settings::new(*APP_ID));
+        }
+    }
 }
 
 glib::wrapper! {
@@ -76,6 +100,36 @@ impl Session {
         self.imp().client.borrow().clone()
     }
 
+    /// Torrents of the connected server.
+    pub fn torrents(&self) -> &TorrentList {
+        self.imp().torrents.get().expect("set in constructed()")
+    }
+
+    fn set_reachable(&self, reachable: bool) {
+        if self.imp().reachable.replace(reachable) != reachable {
+            self.notify_reachable();
+        }
+    }
+
+    /// Refreshes as soon as possible, e.g. after an action or a "Retry" click.
+    pub fn refresh_now(&self) {
+        self.imp().refresh_requested.set(true);
+    }
+
+    fn refresh_interval(&self) -> Duration {
+        if self.foreground() {
+            let ms = self
+                .imp()
+                .settings
+                .get()
+                .expect("set in constructed()")
+                .uint("refresh-interval");
+            Duration::from_millis(u64::from(ms))
+        } else {
+            BACKGROUND_INTERVAL
+        }
+    }
+
     fn set_state(&self, state: ConnectionState) {
         if self.imp().state.replace(state) != state {
             self.notify_state();
@@ -90,6 +144,8 @@ impl Session {
         imp.client.replace(None);
         imp.server.replace(server.clone());
         self.notify_server();
+        self.torrents().clear();
+        self.set_reachable(true);
 
         let Some(server) = server else {
             self.set_state(ConnectionState::Idle);
@@ -114,27 +170,103 @@ impl Session {
                 match result {
                     Ok((client, info)) => {
                         tracing::info!("Connected to qBittorrent {}", info.version);
-                        session.imp().client.replace(Some(client));
+                        session.imp().client.replace(Some(client.clone()));
                         session
                             .imp()
                             .server_version
                             .replace(info.version.to_string());
                         session.notify_server_version();
-                        session.set_state(ConnectionState::Connected);
+                        session.sync(client, attempt).await;
                     }
-                    Err(message) => {
-                        tracing::warn!("Connection failed: {message}");
-                        session.imp().error_message.replace(message);
-                        session.notify_error_message();
-                        session.set_state(ConnectionState::Failed);
-                    }
+                    Err(message) => session.fail(&message),
                 }
             }
         ));
     }
 
+    fn fail(&self, message: &str) {
+        tracing::warn!("Connection failed: {message}");
+        self.imp().error_message.replace(message.to_owned());
+        self.notify_error_message();
+        self.set_state(ConnectionState::Failed);
+    }
+
+    /// Fetches `sync/maindata` until the connection attempt is superseded.
+    ///
+    /// The first response is a full snapshot; the session only becomes
+    /// `Connected` after it, so the list never shows up half empty.
+    async fn sync(&self, client: Arc<Client>, attempt: u64) {
+        // Hold only a weak reference across awaits
+        let weak = self.downgrade();
+        let mut rid = 0;
+        let mut failures: u32 = 0;
+
+        loop {
+            let request_client = client.clone();
+            let result = runtime::run(async move { request_client.sync_maindata(rid).await }).await;
+
+            let Some(session) = weak.upgrade() else {
+                return;
+            };
+            if session.imp().attempt.get() != attempt {
+                return;
+            }
+
+            let delay = match result {
+                Ok(data) => {
+                    rid = data.rid;
+                    failures = 0;
+                    session.torrents().apply(&data);
+                    session.set_reachable(true);
+                    session.set_state(ConnectionState::Connected);
+                    None
+                }
+                Err(err) if err.is_transient() => {
+                    failures += 1;
+                    tracing::warn!("Refresh failed ({failures} in a row): {err}");
+                    session.set_reachable(false);
+                    // 2, 4, 8… seconds, up to a minute
+                    Some(Duration::from_secs(1 << failures.min(6)).min(MAX_BACKOFF))
+                }
+                Err(err) => {
+                    let auth_method = session
+                        .server()
+                        .map(|s| s.auth_method())
+                        .unwrap_or_default();
+                    session.fail(&error_message(&err, auth_method));
+                    return;
+                }
+            };
+            drop(session);
+
+            if !wait(&weak, delay).await {
+                return;
+            }
+        }
+    }
+
     pub fn reconnect(&self) {
         self.connect_to(self.server());
+    }
+}
+
+/// Waits for the refresh interval (or `fixed`, during backoff) unless a
+/// refresh is requested first. Returns false when the session is gone.
+async fn wait(weak: &glib::WeakRef<Session>, fixed: Option<Duration>) -> bool {
+    let start = Instant::now();
+    loop {
+        glib::timeout_future(Duration::from_millis(250)).await;
+        let Some(session) = weak.upgrade() else {
+            return false;
+        };
+        if session.imp().refresh_requested.replace(false) {
+            return true;
+        }
+        // Re-read the interval: the window may have been shown meanwhile
+        let interval = fixed.unwrap_or_else(|| session.refresh_interval());
+        if start.elapsed() >= interval {
+            return true;
+        }
     }
 }
 

@@ -1720,6 +1720,7 @@ dependencies = [
  "libadwaita",
  "oo7",
  "qbittorrent-client",
+ "serde_json",
  "tokio",
  "tracing",
  "tracing-subscriber",

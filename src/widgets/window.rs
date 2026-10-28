@@ -1,4 +1,5 @@
-use std::cell::OnceCell;
+use std::cell::{OnceCell, RefCell};
+use std::cmp::Ordering;
 
 use adw::prelude::*;
 use adw::subclass::prelude::*;
@@ -8,9 +9,10 @@ use gtk::{gio, glib};
 
 use crate::application::Application;
 use crate::config::{APP_ID, PROFILE};
-use crate::model::{Server, ServerManager};
+use crate::model::{Server, ServerManager, Torrent, matches_search};
 use crate::session::{ConnectionState, Session};
-use crate::widgets::ServerDialog;
+use crate::utils;
+use crate::widgets::{ServerDialog, Sidebar, TorrentRow};
 
 mod imp {
     use super::*;
@@ -21,35 +23,86 @@ mod imp {
         #[template_child]
         pub toast_overlay: TemplateChild<adw::ToastOverlay>,
         #[template_child]
-        pub server_button: TemplateChild<gtk::MenuButton>,
-        #[template_child]
-        pub window_title: TemplateChild<adw::WindowTitle>,
-        #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
+        #[template_child]
+        pub status_server_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub status_title: TemplateChild<adw::WindowTitle>,
+        #[template_child]
+        pub status_stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub no_servers_page: TemplateChild<adw::StatusPage>,
         #[template_child]
         pub failed_page: TemplateChild<adw::StatusPage>,
         #[template_child]
-        pub connected_page: TemplateChild<adw::StatusPage>,
+        pub split_view: TemplateChild<adw::NavigationSplitView>,
+        #[template_child]
+        pub sidebar_server_button: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        pub sidebar_title: TemplateChild<adw::WindowTitle>,
+        #[template_child]
+        pub sidebar: TemplateChild<Sidebar>,
+        #[template_child]
+        pub download_speed_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub upload_speed_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub content_page: TemplateChild<adw::NavigationPage>,
+        #[template_child]
+        pub content_title: TemplateChild<adw::WindowTitle>,
+        #[template_child]
+        pub search_bar: TemplateChild<gtk::SearchBar>,
+        #[template_child]
+        pub search_entry: TemplateChild<gtk::SearchEntry>,
+        #[template_child]
+        pub banner: TemplateChild<adw::Banner>,
+        #[template_child]
+        pub list_stack: TemplateChild<gtk::Stack>,
+        #[template_child]
+        pub torrent_view: TemplateChild<gtk::ListView>,
+        #[template_child]
+        pub empty_page: TemplateChild<adw::StatusPage>,
+
         pub settings: gio::Settings,
         pub manager: OnceCell<ServerManager>,
         pub session: OnceCell<Session>,
+        pub filter: OnceCell<gtk::CustomFilter>,
+        pub sorter: OnceCell<gtk::CustomSorter>,
+        pub filter_model: OnceCell<gtk::FilterListModel>,
+        pub search: RefCell<String>,
     }
 
     impl Default for Window {
         fn default() -> Self {
             Self {
-                toast_overlay: TemplateChild::default(),
-                server_button: TemplateChild::default(),
-                window_title: TemplateChild::default(),
-                stack: TemplateChild::default(),
-                no_servers_page: TemplateChild::default(),
-                failed_page: TemplateChild::default(),
-                connected_page: TemplateChild::default(),
+                toast_overlay: Default::default(),
+                stack: Default::default(),
+                status_server_button: Default::default(),
+                status_title: Default::default(),
+                status_stack: Default::default(),
+                no_servers_page: Default::default(),
+                failed_page: Default::default(),
+                split_view: Default::default(),
+                sidebar_server_button: Default::default(),
+                sidebar_title: Default::default(),
+                sidebar: Default::default(),
+                download_speed_label: Default::default(),
+                upload_speed_label: Default::default(),
+                content_page: Default::default(),
+                content_title: Default::default(),
+                search_bar: Default::default(),
+                search_entry: Default::default(),
+                banner: Default::default(),
+                list_stack: Default::default(),
+                torrent_view: Default::default(),
+                empty_page: Default::default(),
                 settings: gio::Settings::new(*APP_ID),
-                manager: OnceCell::new(),
-                session: OnceCell::new(),
+                manager: Default::default(),
+                session: Default::default(),
+                filter: Default::default(),
+                sorter: Default::default(),
+                filter_model: Default::default(),
+                search: Default::default(),
             }
         }
     }
@@ -61,7 +114,9 @@ mod imp {
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
+            Sidebar::ensure_type();
             klass.bind_template();
+            klass.bind_template_instance_callbacks();
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -81,13 +136,24 @@ mod imp {
 
             let app_icon = format!("{}-symbolic", *APP_ID);
             self.no_servers_page.set_icon_name(Some(&app_icon));
-            self.connected_page.set_icon_name(Some(&app_icon));
+            self.empty_page.set_icon_name(Some(&app_icon));
+            self.search_bar.set_key_capture_widget(Some(&*obj));
 
             obj.load_window_size();
         }
     }
 
-    impl WidgetImpl for Window {}
+    impl WidgetImpl for Window {
+        fn map(&self) {
+            self.parent_map();
+            self.obj().update_foreground();
+        }
+
+        fn unmap(&self) {
+            self.parent_unmap();
+            self.obj().update_foreground();
+        }
+    }
 
     impl WindowImpl for Window {
         fn close_request(&self) -> glib::Propagation {
@@ -111,6 +177,7 @@ glib::wrapper! {
                     gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks]
 impl Window {
     pub fn new(app: &Application) -> Self {
         let window: Self = glib::Object::builder().property("application", app).build();
@@ -130,6 +197,72 @@ impl Window {
         let imp = self.imp();
         imp.manager.set(manager.clone()).expect("set once");
         imp.session.set(session.clone()).expect("set once");
+
+        self.setup_actions();
+        self.setup_torrent_list();
+
+        // The closures below hold weak references to the window: the manager
+        // and session outlive it, and must not keep a closed window alive.
+        manager.servers().connect_items_changed(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_, _, _, _| {
+                win.update_server_menu();
+                win.update_view();
+            }
+        ));
+        manager.connect_active_server_notify(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |manager| {
+                let id = manager.active_server().map(|s| s.id()).unwrap_or_default();
+                win.change_action_state("active-server", &id.to_variant());
+                win.update_view();
+            }
+        ));
+        session.connect_state_notify(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_| win.update_view()
+        ));
+        session.connect_reachable_notify(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_| win.update_banner()
+        ));
+
+        let torrents = session.torrents();
+        imp.sidebar.set_torrents(torrents);
+        imp.sidebar.connect_filter_changed(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_| win.on_filter_changed()
+        ));
+        imp.sidebar.connect_activated(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_| win.imp().split_view.set_show_content(true)
+        ));
+        for property in ["download-speed", "upload-speed", "free-space"] {
+            torrents.connect_notify_local(
+                Some(property),
+                clone!(
+                    #[weak(rename_to = win)]
+                    self,
+                    move |_, _| win.update_transfer_info()
+                ),
+            );
+        }
+
+        self.update_server_menu();
+        self.update_view();
+        self.update_transfer_info();
+        self.on_filter_changed();
+        self.update_foreground();
+    }
+
+    fn setup_actions(&self) {
+        let manager = self.manager();
 
         // Switching servers: a radio item per server, all bound to this action
         let active_id = manager.active_server().map(|s| s.id()).unwrap_or_default();
@@ -157,35 +290,217 @@ impl Window {
         let reconnect = gio::ActionEntry::builder("reconnect")
             .activate(|win: &Self, _, _| win.session().reconnect())
             .build();
-        self.add_action_entries([select_server, add_server, edit_server, reconnect]);
+        let search = gio::ActionEntry::builder("search")
+            .activate(|win: &Self, _, _| {
+                let imp = win.imp();
+                imp.split_view.set_show_content(true);
+                imp.search_bar.set_search_mode(true);
+                imp.search_entry.grab_focus();
+            })
+            .build();
+        self.add_action_entries([select_server, add_server, edit_server, reconnect, search]);
 
-        // The closures below hold weak references to the window: the manager
-        // and session outlive it, and must not keep a closed window alive.
-        manager.servers().connect_items_changed(clone!(
+        // Sorting actions are stored straight into GSettings
+        let settings = &self.imp().settings;
+        self.add_action(&settings.create_action("sort-by"));
+        self.add_action(&settings.create_action("sort-descending"));
+        for key in ["sort-by", "sort-descending"] {
+            settings.connect_changed(
+                Some(key),
+                clone!(
+                    #[weak(rename_to = win)]
+                    self,
+                    move |_, _| win.resort()
+                ),
+            );
+        }
+    }
+
+    fn setup_torrent_list(&self) {
+        let imp = self.imp();
+        let torrents = self.session().torrents();
+
+        let filter = gtk::CustomFilter::new(clone!(
             #[weak(rename_to = win)]
             self,
-            move |_, _, _, _| {
-                win.update_server_menu();
-                win.update_view();
+            #[upgrade_or]
+            false,
+            move |item| {
+                let Some(torrent) = item.downcast_ref::<Torrent>() else {
+                    return false;
+                };
+                win.imp().sidebar.filter().matches(torrent)
+                    && matches_search(torrent, &win.imp().search.borrow())
             }
         ));
-        manager.connect_active_server_notify(clone!(
+        let sorter = gtk::CustomSorter::new(clone!(
             #[weak(rename_to = win)]
             self,
-            move |manager| {
-                let id = manager.active_server().map(|s| s.id()).unwrap_or_default();
-                win.change_action_state("active-server", &id.to_variant());
-                win.update_view();
+            #[upgrade_or]
+            gtk::Ordering::Equal,
+            move |a, b| {
+                match (a.downcast_ref::<Torrent>(), b.downcast_ref::<Torrent>()) {
+                    (Some(a), Some(b)) => win.compare(a, b).into(),
+                    _ => gtk::Ordering::Equal,
+                }
             }
         ));
-        session.connect_state_notify(clone!(
+
+        let filter_model =
+            gtk::FilterListModel::new(Some(torrents.model().clone()), Some(filter.clone()));
+        let sort_model = gtk::SortListModel::new(Some(filter_model.clone()), Some(sorter.clone()));
+        imp.torrent_view
+            .set_model(Some(&gtk::NoSelection::new(Some(sort_model))));
+
+        let factory = gtk::SignalListItemFactory::new();
+        factory.connect_setup(|_, item| {
+            let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
+            item.set_child(Some(&TorrentRow::default()));
+            item.set_activatable(false);
+        });
+        factory.connect_bind(|_, item| {
+            let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
+            let row = item
+                .child()
+                .and_downcast::<TorrentRow>()
+                .expect("a torrent row");
+            row.set_torrent(item.item().and_downcast_ref::<Torrent>());
+        });
+        factory.connect_unbind(|_, item| {
+            let item = item.downcast_ref::<gtk::ListItem>().expect("a list item");
+            if let Some(row) = item.child().and_downcast::<TorrentRow>() {
+                row.set_torrent(None);
+            }
+        });
+        imp.torrent_view.set_factory(Some(&factory));
+
+        filter_model.connect_items_changed(clone!(
             #[weak(rename_to = win)]
             self,
-            move |_| win.update_view()
+            move |_, _, _, _| win.update_list_page()
+        ));
+        // Torrents change in place, so filters and sorting must be re-run
+        torrents.connect_updated(clone!(
+            #[weak(rename_to = win)]
+            self,
+            move |_| {
+                win.refilter();
+                win.resort();
+            }
         ));
 
-        self.update_server_menu();
-        self.update_view();
+        imp.filter.set(filter).expect("set once");
+        imp.sorter.set(sorter).expect("set once");
+        imp.filter_model.set(filter_model).expect("set once");
+    }
+
+    fn compare(&self, a: &Torrent, b: &Torrent) -> Ordering {
+        let settings = &self.imp().settings;
+        let ordering = match settings.string("sort-by").as_str() {
+            "name" => a.name().to_lowercase().cmp(&b.name().to_lowercase()),
+            "progress" => a.progress().total_cmp(&b.progress()),
+            "size" => a.size().cmp(&b.size()),
+            "download-speed" => a.download_speed().cmp(&b.download_speed()),
+            "upload-speed" => a.upload_speed().cmp(&b.upload_speed()),
+            // Unknown ETA (-1) sorts last in ascending order
+            "eta" => (a.eta() < 0, a.eta()).cmp(&(b.eta() < 0, b.eta())),
+            "ratio" => a.ratio().total_cmp(&b.ratio()),
+            _ => a.added_on().cmp(&b.added_on()),
+        };
+        // Ties: by name, so the order is stable
+        let ordering = ordering.then_with(|| a.name().cmp(&b.name()));
+        if settings.boolean("sort-descending") {
+            ordering.reverse()
+        } else {
+            ordering
+        }
+    }
+
+    fn refilter(&self) {
+        if let Some(filter) = self.imp().filter.get() {
+            filter.changed(gtk::FilterChange::Different);
+        }
+        self.update_list_page();
+    }
+
+    fn resort(&self) {
+        if let Some(sorter) = self.imp().sorter.get() {
+            sorter.changed(gtk::SorterChange::Different);
+        }
+    }
+
+    fn on_filter_changed(&self) {
+        let imp = self.imp();
+        let title = imp.sidebar.filter().title();
+        imp.content_page.set_title(&title);
+        imp.content_title.set_title(&title);
+        self.refilter();
+    }
+
+    #[template_callback]
+    fn on_search_changed(&self) {
+        let text = self.imp().search_entry.text().to_string();
+        self.imp().search.replace(text);
+        self.refilter();
+    }
+
+    #[template_callback]
+    fn on_banner_retry(&self) {
+        self.session().refresh_now();
+    }
+
+    fn update_list_page(&self) {
+        let imp = self.imp();
+        let Some(filter_model) = imp.filter_model.get() else {
+            return;
+        };
+        let page = if filter_model.n_items() > 0 {
+            "list"
+        } else if self.session().torrents().len() == 0 {
+            "empty"
+        } else {
+            "no-results"
+        };
+        imp.list_stack.set_visible_child_name(page);
+    }
+
+    fn update_transfer_info(&self) {
+        let imp = self.imp();
+        let torrents = self.session().torrents();
+
+        let download = utils::format_speed(torrents.download_speed());
+        let upload = utils::format_speed(torrents.upload_speed());
+        imp.download_speed_label.set_label(&format!("↓ {download}"));
+        imp.upload_speed_label.set_label(&format!("↑ {upload}"));
+        imp.download_speed_label
+            .update_property(&[gtk::accessible::Property::Label(
+                // Translators: {} is a speed, e.g. "1.2 MB/s"
+                &gettext("Download speed: {}").replace("{}", &download),
+            )]);
+        imp.upload_speed_label
+            .update_property(&[gtk::accessible::Property::Label(
+                // Translators: {} is a speed, e.g. "1.2 MB/s"
+                &gettext("Upload speed: {}").replace("{}", &upload),
+            )]);
+
+        // Translators: {} is a size, e.g. "120 GB"
+        let free = gettext("Free space on the server: {}")
+            .replace("{}", &utils::format_size(torrents.free_space()));
+        imp.download_speed_label.set_tooltip_text(Some(&free));
+        imp.upload_speed_label.set_tooltip_text(Some(&free));
+    }
+
+    fn update_banner(&self) {
+        let session = self.session();
+        let revealed = !session.reachable() && session.state() == ConnectionState::Connected;
+        self.imp().banner.set_revealed(revealed);
+    }
+
+    /// Lets the session refresh often only while the window is on screen.
+    fn update_foreground(&self) {
+        if let Some(session) = self.imp().session.get() {
+            session.set_foreground(self.is_mapped());
+        }
     }
 
     fn update_server_menu(&self) {
@@ -211,7 +526,9 @@ impl Window {
         let menu = gio::Menu::new();
         menu.append_section(None, &servers);
         menu.append_section(None, &actions);
-        self.imp().server_button.set_menu_model(Some(&menu));
+        let imp = self.imp();
+        imp.status_server_button.set_menu_model(Some(&menu));
+        imp.sidebar_server_button.set_menu_model(Some(&menu));
     }
 
     fn update_view(&self) {
@@ -219,36 +536,37 @@ impl Window {
         let session = self.session();
         let has_servers = self.manager().servers().n_items() > 0;
 
-        imp.server_button.set_visible(has_servers);
+        imp.status_server_button.set_visible(has_servers);
         self.set_action_enabled("edit-server", session.server().is_some());
         self.set_action_enabled("reconnect", session.state() != ConnectionState::Connecting);
-        imp.window_title.set_subtitle(
-            &session
-                .server()
-                .map(|server| server.name())
-                .unwrap_or_default(),
-        );
 
-        let page = if !has_servers {
-            "no-servers"
+        // The active server is always visible in a title or subtitle
+        let server_name = session.server().map(|s| s.name()).unwrap_or_default();
+        imp.status_title.set_subtitle(&server_name);
+        imp.sidebar_title.set_subtitle(&server_name);
+        imp.content_title.set_subtitle(&server_name);
+
+        let status_page = if !has_servers {
+            Some("no-servers")
         } else {
             match session.state() {
-                ConnectionState::Idle | ConnectionState::Connecting => "connecting",
+                ConnectionState::Idle | ConnectionState::Connecting => Some("connecting"),
                 ConnectionState::Failed => {
                     imp.failed_page
                         .set_description(Some(&glib::markup_escape_text(&session.error_message())));
-                    "failed"
+                    Some("failed")
                 }
-                ConnectionState::Connected => {
-                    // Translators: {} is a version number, e.g. 5.1.2
-                    let description =
-                        gettext("qBittorrent {}").replace("{}", &session.server_version());
-                    imp.connected_page.set_description(Some(&description));
-                    "connected"
-                }
+                ConnectionState::Connected => None,
             }
         };
-        imp.stack.set_visible_child_name(page);
+        match status_page {
+            Some(page) => {
+                imp.status_stack.set_visible_child_name(page);
+                imp.stack.set_visible_child_name("status");
+            }
+            None => imp.stack.set_visible_child_name("torrents"),
+        }
+        self.update_banner();
     }
 
     fn set_action_enabled(&self, name: &str, enabled: bool) {

@@ -4,7 +4,9 @@
     <!-- AdwApplication loads shortcuts-dialog.ui automatically and provides app.shortcuts -->
     <file compressed="true" preprocess="xml-stripblanks">ui/server-dialog.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/shortcuts-dialog.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">ui/torrent-row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">ui/window.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">icons/scalable/actions/tag-symbolic.svg</file>
     <file compressed="true">style.css</file>
   </gresource>
 </gresources>

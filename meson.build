@@ -103,6 +103,12 @@ test(
 
 if get_option('profile') == 'development'
   test(
+    'check-i18n',
+    find_program('python3'),
+    args: [meson.project_source_root() / 'build-aux' / 'check-i18n.py', meson.project_source_root()],
+  )
+
+  test(
     'cargo-fmt',
     cargo,
     args: ['fmt', '--all', '--manifest-path', meson.project_source_root() / 'Cargo.toml', '--', '--check'],
